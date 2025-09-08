@@ -9,7 +9,7 @@ export default defineConfig(async () => ({
 	plugins: [vue(), tailwindcss()],
 	resolve: {
 		alias: {
-			"@": "/src",
+			"@": "/src", //'@': path.resolve(__dirname, './src'), bun add -D @types/node
 		},
 	},
 	clearScreen: false,
