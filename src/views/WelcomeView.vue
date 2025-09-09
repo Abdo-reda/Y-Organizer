@@ -1,6 +1,7 @@
 <script setup lang="ts">
-import InfoCard from '@/components/common/InfoCard.vue'
+import FunctionCard from '@/components/common/FunctionCard.vue'
 import GratitudeCard from '@/components/core/GratitudeCard.vue';
+import MonthlyCard from '@/components/core/MonthlyCard.vue';
 import NotesCard from '@/components/core/NotesCard.vue';
 
 const defaultValue = "item-1"
@@ -15,15 +16,16 @@ const accordionItems = [
 <template>
     <div class="flex flex-col gap-4 m-4">
         <p> --- welcome view </p>
-        <InfoCard title="Title" sub-title="optional subtitle">
+        <FunctionCard title="Title" sub-title="optional subtitle">
              <template #header-left-actions>
                 //--- left actionsssssssssssssssssssssssssssssssssssss
              </template>
              <template #default>
                 content
              </template>
-        </InfoCard>
+        </FunctionCard>
         <NotesCard class="h-64" />
         <GratitudeCard />
+        <MonthlyCard />
     </div>
 </template>

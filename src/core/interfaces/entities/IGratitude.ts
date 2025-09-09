@@ -1,6 +1,7 @@
 export interface IGratitude {
     id: number;
     color: string;
+    category: string;
     title: IWord[];
     description: string;
 }

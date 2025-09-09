@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { ref } from 'vue';
-import InfoCard from '../common/InfoCard.vue';
+import FunctionCard from '../common/FunctionCard.vue';
 import { IGratitude } from '@/core/interfaces/entities/IGratitude';
 
 //TODO:
@@ -44,12 +44,10 @@ function toggleWordColor(gratitudeId: number, word: number) {
     }
 }
 
-//TODO: I fucking hate everything
-
 </script>
 
 <template>
-    <InfoCard title="Gratitude">
+    <FunctionCard title="Gratitude">
         <template #header-right-actions>
             <button @click="createGratitude"
                 class="absolute right-0 top-0 w-8 h-8 text-gray-400 hover:text-blue-600 hover:bg-blue-50 rounded-full transition-all flex items-center justify-center">
@@ -85,7 +83,7 @@ function toggleWordColor(gratitudeId: number, word: number) {
                 </div>
             </div>
         </template>
-    </InfoCard>
+    </FunctionCard>
 </template>
 
 <style lang="css" scoped>
@@ -96,6 +94,6 @@ function toggleWordColor(gratitudeId: number, word: number) {
 }
 
 .ping {
-    --animate-ping: ping 2s cubic-bezier(0, 0, 0.2, 1) infinite
+    --animate-ping: ping 2.5s cubic-bezier(0, 0, 0.2, 1) infinite
 }
 </style>

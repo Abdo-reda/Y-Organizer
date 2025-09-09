@@ -3,18 +3,17 @@ import {
     Card,
     CardContent,
     CardDescription,
-    CardFooter,
     CardHeader,
     CardTitle,
 } from '@/components/ui/card'
 
-interface IInfoCardProps {
+interface IFunctionCardProps {
     title: string;
     subTitle?: string;
 
 }
 
-defineProps<IInfoCardProps>();
+defineProps<IFunctionCardProps>();
 
 </script>
 
