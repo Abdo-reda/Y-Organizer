@@ -1,23 +1,6 @@
 <template>
   <div class="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100">
-    <!-- Header -->
-    <header class="px-6 py-8">
-      <div class="flex items-center justify-center max-w-4xl mx-auto relative">
-        <div class="flex items-center gap-2">
-          <h1 class="text-3xl font-bold text-blue-600">{{ getRelativeDay() }}</h1>
-          <button 
-            @click="showDatePicker = true"
-            class="text-xs font-medium text-gray-400 hover:text-blue-600 transition-colors"
-          >
-            {{ formatDate() }}
-          </button>
-        </div>
-        
-        <div class="absolute right-0 text-2xl font-medium text-gray-500">
-          {{ currentTime }}
-        </div>
-      </div>
-    </header>
+
 
     <!-- Main Content -->
     <main class="px-6 max-w-4xl mx-auto space-y-6">
