@@ -1,3 +1,4 @@
+import 'gridstack/dist/gridstack.min.css';
 import "@/assets/styles/main.css";
 import { createApp } from "vue";
 import App from "./App.vue";

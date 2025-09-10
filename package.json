@@ -16,6 +16,7 @@
     "@vueuse/core": "^13.9.0",
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
+    "gridstack": "^12.3.3",
     "lucide-vue-next": "^0.542.0",
     "luxon": "^3.7.2",
     "reka-ui": "^2.5.0",
