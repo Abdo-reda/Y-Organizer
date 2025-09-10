@@ -1,5 +1,7 @@
 <script setup lang="ts">
 import { ICardStructure } from "@/core/interfaces/entities/ICardStructure";
+import { GridStack } from "gridstack";
+import { onMounted } from "vue";
 
 //TODO: editable layout
 //- https://github.com/SortableJS/vue.draggable.next
@@ -11,15 +13,28 @@ interface IGridCardLayoutProps {
 }
 
 defineProps<IGridCardLayoutProps>();
+
+onMounted(() => {
+  let grid = GridStack.init({
+    alwaysShowResizeHandle: false,
+    margin: "0.5rem",
+    column: 12,
+    row: 12,
+	// layout
+    // cellHeight: 'auto',
+    // cellHeightThrottle
+    // cellHeightUnit
+  });
+});
 </script>
 
 <template>
-  <div class="grid grid-cols-12 grid-rows-12 gap-2 h-full">
-    <template v-for="(card) in layout" :key="index">
-      <component
-        :style="{ 'grid-column': `${card.row} / span ${card.width}`, 'grid-row': `${card.col} / span ${card.height}` }"
-        :is="card.component"
-      />
+  <div class="grid-stack h-80">
+    <template v-for="(card, index) in layout" :key="index">
+      <!-- :gs-x="card.row" :gs-y="card.col" -->
+      <div class="grid-stack-item" :gs-w="card.width" :gs-h="card.height">
+        <component class="grid-stack-item-content" :is="card.component" />
+      </div>
     </template>
   </div>
 </template>

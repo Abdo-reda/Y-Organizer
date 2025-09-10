@@ -10,6 +10,7 @@
         "@vueuse/core": "^13.9.0",
         "class-variance-authority": "^0.7.1",
         "clsx": "^2.1.1",
+        "gridstack": "^12.3.3",
         "lucide-vue-next": "^0.542.0",
         "luxon": "^3.7.2",
         "reka-ui": "^2.5.0",
@@ -299,6 +300,8 @@
     "fsevents": ["fsevents@2.3.3", "", { "os": "darwin" }, "sha512-5xoDfX+fL7faATnagmWPpbFtwh/R77WmMMqqHGS65C3vvB0YHrgF+B1YmZ3441tMj5n63k0212XNoJwzlhffQw=="],
 
     "graceful-fs": ["graceful-fs@4.2.11", "", {}, "sha512-RbJ5/jmFcNNCcDV5o9eTnBLJ/HszWV0P73bc+Ff4nS/rJj+YaS6IGyiOL0VoBYX+l1Wrl3k63h/KrH+nhJ0XvQ=="],
+
+    "gridstack": ["gridstack@12.3.3", "", {}, "sha512-Bboi4gj7HXGnx1VFXQNde4Nwi5srdUSuCCnOSszKhFjBs8EtMEWhsKX02BjIKkErq/FjQUkNUbXUYeQaVMQ0jQ=="],
 
     "he": ["he@1.2.0", "", { "bin": { "he": "bin/he" } }, "sha512-F/1DnUGPopORZi0ni+CvrCgHQ5FyEAHRLSApuYWMmrbSwoN2Mn/7k+Gl38gJnR7yyDZk6WLXwiGod1JOWNDKGw=="],
 
