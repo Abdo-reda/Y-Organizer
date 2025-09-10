@@ -1,14 +1,12 @@
 <script setup lang="ts">
 import FunctionCard from '@/components/common/FunctionCard.vue'
-import GratitudeCard from '@/components/core/GratitudeCard.vue';
-import MonthlyCard from '@/components/core/MonthlyCard.vue';
-import NotesCard from '@/components/core/NotesCard.vue';
-import TodayHeaderCard from '@/components/core/TodayHeaderCard.vue';
+import GratitudeCard from '@/components/core/cards/GratitudeCard.vue';
+import MonthlyCard from '@/components/core/cards/MonthlyCard.vue';
+import NotesCard from '@/components/core/cards/NotesCard.vue';
+import GridCardLayout from '@/components/core/layout/GridCardLayout.vue';
+import TodayHeader from '@/components/core/layout/TodayHeader.vue';
+import { DEFAULT_CARD_LAYOUT } from '@/core/constants/DefaultCardLayout';
 import { DateTime } from 'luxon';
-
-//TODO: editable layout
-//- https://github.com/SortableJS/vue.draggable.next
-//- https://swapy.tahazsh.com/docs/framework-vue/ //========> MIGHT HAVE ISSUES WITH LICENSE
 
 const defaultValue = "item-1"
 
@@ -24,9 +22,15 @@ const dayDate = DateTime.now();
 
 <template>
     <div class="h-screen overflow-hidden">
-        <TodayHeaderCard :date="dayDate" /> 
-        <main class="h-full">
-            <div class="flex flex-col gap-4 m-4">
+        <TodayHeader :dayDate="dayDate" /> 
+        <div class="w-full">
+
+        </div>
+        <main class="h-full p-4 overflow-hidden">
+            <GridCardLayout :layout="DEFAULT_CARD_LAYOUT" />
+        </main>
+        <!-- <main class="h-full p-4">
+            <div class="flex flex-col gap-4">
                 <FunctionCard title="Title" sub-title="optional subtitle">
                     <template #header-left-actions>
                         //--- left actionsssssssssssssssssssssssssssssssssssss
@@ -39,6 +43,6 @@ const dayDate = DateTime.now();
                 <GratitudeCard />
                 <MonthlyCard />
             </div>
-        </main>
+        </main> -->
     </div>
 </template>

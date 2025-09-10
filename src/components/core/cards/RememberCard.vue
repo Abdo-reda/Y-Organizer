@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import FunctionCard from '../common/FunctionCard.vue';
+import FunctionCard from '@/components/common/FunctionCard.vue';
 
 </script>
 

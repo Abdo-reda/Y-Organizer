@@ -1,0 +1,11 @@
+//------ General Todo
+- Layout, initial created from a config or something
+- Flexible & Editable Layout
+- Make theme customizable, so that it can depend on current activity.
+- Make current activity determine color and theme
+- Make background have gradient/color
+
+//------- Tauri
+- Make a default window size 
+- Remove Header
+- Add Icons and so on ...

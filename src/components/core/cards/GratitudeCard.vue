@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { ref } from 'vue';
-import FunctionCard from '../common/FunctionCard.vue';
+import FunctionCard from '@/components/common/FunctionCard.vue';
 import { IGratitude } from '@/core/interfaces/entities/IGratitude';
 
 //TODO:
