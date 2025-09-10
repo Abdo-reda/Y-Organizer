@@ -21,12 +21,9 @@ const dayDate = DateTime.now();
 </script>
 
 <template>
-    <div class="h-screen overflow-hidden">
+    <div class="h-screen flex flex-col overflow-hidden">
         <TodayHeader :dayDate="dayDate" /> 
-        <div class="w-full">
-
-        </div>
-        <main class="h-full p-4 overflow-hidden">
+        <main class="flex-1 p-4 overflow-hidden">
             <GridCardLayout :layout="DEFAULT_CARD_LAYOUT" />
         </main>
         <!-- <main class="h-full p-4">
