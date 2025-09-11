@@ -24,7 +24,7 @@ defineProps<IFunctionCardProps>();
                 <slot name="header-left-actions" />
             </div>
             <div class="text-center">
-                <CardTitle class="text-2xl font-bold">{{ title }}</CardTitle>
+                <CardTitle class="text-xl font-bold">{{ title }}</CardTitle>
                 <CardDescription>{{ subTitle }}</CardDescription>
             </div>
             <div>

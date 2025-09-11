@@ -1,6 +1,23 @@
 <template>
   <div class="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100">
-
+    <!-- Header -->
+    <header class="px-6 py-8">
+      <div class="flex items-center justify-center max-w-4xl mx-auto relative">
+        <div class="flex items-center gap-2">
+          <h1 class="text-3xl font-bold text-blue-600">{{ getRelativeDay() }}</h1>
+          <button 
+            @click="showDatePicker = true"
+            class="text-xs font-medium text-gray-400 hover:text-blue-600 transition-colors"
+          >
+            {{ formatDate() }}
+          </button>
+        </div>
+        
+        <div class="absolute right-0 text-2xl font-medium text-gray-500">
+          {{ currentTime }}
+        </div>
+      </div>
+    </header>
 
     <!-- Main Content -->
     <main class="px-6 max-w-4xl mx-auto space-y-6">
@@ -176,6 +193,70 @@
         </div>
       </div>
 
+      <!-- Updated Notes card - removed dashed border and renamed to "Notes" -->
+      <div class="bg-white rounded-xl shadow-sm p-6">
+        <div class="text-center mb-6">
+          <h2 class="text-2xl font-bold text-gray-900">Notes</h2>
+        </div>
+        
+        <div 
+          @click="focusNotes"
+          class="min-h-32 p-4 rounded-lg hover:bg-gray-50 transition-colors cursor-text"
+        >
+          <textarea
+            ref="notesTextarea"
+            v-model="todaysNotes"
+            placeholder="Click here to add your thoughts, reflections, or notes for today..."
+            class="w-full h-full min-h-24 resize-none border-none outline-none text-gray-700 placeholder-gray-400 bg-transparent"
+          ></textarea>
+        </div>
+      </div>
+
+      <!-- Added new Gratitude card -->
+      <div class="bg-white rounded-xl shadow-sm p-6 relative">
+        <div class="text-center mb-6 relative">
+          <h2 class="text-2xl font-bold text-gray-900">Gratitude</h2>
+          <button
+            @click="showAddGratitude = true"
+            class="absolute right-0 top-0 w-8 h-8 text-gray-400 hover:text-blue-600 hover:bg-blue-50 rounded-full transition-all flex items-center justify-center"
+          >
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
+            </svg>
+          </button>
+        </div>
+
+        <div class="space-y-3">
+          <div 
+            v-for="gratitude in gratitudes" 
+            :key="gratitude.id"
+            class="flex items-start gap-3 p-3 hover:bg-gray-50 rounded-lg transition-colors"
+          >
+            <div 
+              class="w-3 h-3 rounded-full mt-1 flex-shrink-0"
+              :style="{ backgroundColor: gratitude.color }"
+            ></div>
+            
+            <div class="flex-1">
+              <p class="text-gray-900 leading-relaxed">
+                <span 
+                  v-for="(word, index) in gratitude.words" 
+                  :key="index"
+                  @click="toggleWordColor(gratitude.id, index)"
+                  class="cursor-pointer transition-all duration-200 gratitude-word"
+                  :style="{ 
+                    color: word.isColored ? gratitude.color : 'inherit',
+                    '--hover-color': gratitude.color
+                  }"
+                >
+                  {{ word.text }}{{ index < gratitude.words.length - 1 ? ' ' : '' }}
+                </span>
+              </p>
+              <p v-if="gratitude.description" class="text-xs text-gray-500 mt-1">{{ gratitude.description }}</p>
+            </div>
+          </div>
+        </div>
+      </div>
 
       <!--  Updated Tasks card layout to be vertical and added collapsible Later section with deadlines and priorities -->
       <div class="bg-white rounded-xl shadow-sm p-6 relative">
@@ -860,6 +941,8 @@ const showDatePicker = ref(false)
 const showAddGoal = ref(false)
 const showEditGoal = ref(false)
 const editingGoal = ref({})
+const todaysNotes = ref('')
+const notesTextarea = ref(null)
 const newGoal = ref({
   title: '',
   description: '',
@@ -1134,7 +1217,42 @@ const addGoal = () => {
   }
 }
 
+const focusNotes = () => {
+  if (notesTextarea.value) {
+    notesTextarea.value.focus()
+  }
+}
 
+// Added gratitude-related reactive variables
+const showAddGratitude = ref(false)
+const newGratitude = ref({
+  text: '',
+  description: ''
+})
+
+const gratitudes = ref([
+  {
+    id: 1,
+    text: 'My family and their unwavering support',
+    description: 'They always believe in me',
+    color: '#10b981',
+    words: []
+  },
+  {
+    id: 2,
+    text: 'The beautiful sunrise this morning',
+    description: '',
+    color: '#f59e0b',
+    words: []
+  },
+  {
+    id: 3,
+    text: 'Having a job that I truly enjoy',
+    description: 'It makes every day meaningful',
+    color: '#8b5cf6',
+    words: []
+  }
+])
 
 // Added gratitude-related functions
 const generateRandomColor = () => {
@@ -1147,6 +1265,13 @@ const splitIntoWords = (text) => {
     text: word,
     isColored: false
   }))
+}
+
+const toggleWordColor = (gratitudeId, wordIndex) => {
+  const gratitude = gratitudes.value.find(g => g.id === gratitudeId)
+  if (gratitude) {
+    gratitude.words[wordIndex].isColored = !gratitude.words[wordIndex].isColored
+  }
 }
 
 const addGratitude = () => {
@@ -1499,6 +1624,13 @@ input, textarea {
 
 ::-webkit-scrollbar-thumb:hover {
   background: #2563eb;
+}
+
+/* Added gratitude word hover effect with light opacity */
+.gratitude-word:hover {
+  background-color: color-mix(in srgb, var(--hover-color) 10%, transparent);
+  border-radius: 2px;
+  padding: 1px 2px;
 }
 
 /* Added CSS for animated border effect similar to the provided example */

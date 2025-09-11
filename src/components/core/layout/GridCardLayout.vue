@@ -40,6 +40,7 @@ onMounted(() => {
         row: 12,
         cellHeight: 0,
     });
+    gridStack.setStatic(true); //TODO: remove later
 });
 
 </script>

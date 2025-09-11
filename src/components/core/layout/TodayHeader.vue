@@ -19,15 +19,15 @@ const currentTime = useCurrentTime();
 </script>
 
 <template>
-  <header class="p-4 grid grid-cols-3 select-none">
-    <div class="flex items-center px-2">
+  <header class="p-2 grid grid-cols-3 select-none">
+    <div class="flex items-center px-4">
       <div class="px-2">
-        <p class="text-3xl font-extrabold">Y</p>
+        <p class="text-2xl font-extrabold">Y</p>
       </div>
     </div>
     <div class="flex flex-1 items-center justify-center">
       <div class="flex items-end relative">
-        <h1 class="text-5xl font-bold text-primary capitalize">{{ relativeDate }}</h1>
+        <h1 class="text-4xl font-bold text-primary capitalize">{{ relativeDate }}</h1>
         <Popover>
           <PopoverTrigger as-child>
             <button
@@ -42,8 +42,8 @@ const currentTime = useCurrentTime();
         </Popover>
       </div>
     </div>
-    <div class="flex justify-end items-center px-2">
-      <div class="text-2xl font-bold text-gray-400 hover:text-primary transition-colors">
+    <div class="flex justify-end items-center px-4">
+      <div class="text-xl font-bold text-gray-400 hover:text-primary transition-colors">
         {{ currentTime }}
       </div>
     </div>
