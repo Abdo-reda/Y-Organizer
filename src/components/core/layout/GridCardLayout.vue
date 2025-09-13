@@ -18,11 +18,24 @@ defineProps<IGridCardLayoutProps>();
 
 const gridContainer = useTemplateRef('grid-container')
 let gridStack: GridStack | undefined;
-let isStatic = false;
+let isStatic = true;
 
 function toggleResizing() {
     isStatic = !isStatic;
     gridStack?.setStatic(isStatic);
+}
+
+function initGrid() {
+    if (!gridContainer.value) return;
+    gridStack = GridStack.init({
+        alwaysShowResizeHandle: false,
+        float: true,
+        margin: "0.5rem",
+        column: 12,
+        row: 12,
+        cellHeight: 0,
+    }, gridContainer.value);
+    gridStack.setStatic(isStatic); //TODO: remove later
 }
 
 
@@ -33,14 +46,7 @@ useResizeObserver(gridContainer, (entries) => {
 });
 
 onMounted(() => {
-    gridStack = GridStack.init({
-        alwaysShowResizeHandle: false,
-        margin: "0.5rem",
-        column: 12,
-        row: 12,
-        cellHeight: 0,
-    });
-    gridStack.setStatic(true); //TODO: remove later
+    initGrid();
 });
 
 </script>

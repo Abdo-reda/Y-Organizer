@@ -10,7 +10,9 @@ import { useCurrentTime } from "@/composables/useCurrentTime";
 interface ITodayHeaderProps {
   dayDate: DateTime;
 }
-const props = defineProps<ITodayHeaderProps>();
+const props: ITodayHeaderProps = {
+    dayDate: DateTime.now(),
+} 
 
 const relativeDate = props.dayDate.toRelativeCalendar();
 const isoDate = props.dayDate.toISODate();
