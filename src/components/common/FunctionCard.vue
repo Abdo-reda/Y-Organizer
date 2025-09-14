@@ -19,15 +19,15 @@ defineProps<IFunctionCardProps>();
 
 <template>
     <Card class="gap-0 py-4">
-        <CardHeader class="grid grid-cols-5 gap-4 px-4 items-center">
-            <div class="col-span-1">
+        <CardHeader class="flex gap-2 px-4 items-center">
+            <div class="flex-1 relative">
                 <slot name="header-left-actions" />
             </div>
-            <div class="text-center col-span-3">
+            <div class="flex-1 text-center">
                 <CardTitle class="text-xl font-bold">{{ title }}</CardTitle>
                 <CardDescription>{{ subTitle }}</CardDescription>
             </div>
-            <div class="col-span-1">
+            <div class="flex-1 relative">
                 <slot name="header-right-actions" />
             </div>
         </CardHeader>
