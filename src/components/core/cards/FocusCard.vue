@@ -36,9 +36,9 @@ const { remaining, resume, pause, isActive, stop } = useCountdown(countdown, {
 });
 const formattedRemaining = computed(() => Duration.fromMillis(remaining.value * 1000).toFormat('m:ss'));
 
-const radius = 40; //viewbox is 100, so diameter is 100, so radius is 50...
-const circumference = 2 * Math.PI * radius;
-const offset = (75 / 100) * circumference - circumference;
+// const radius = 40; //viewbox is 100, so diameter is 100, so radius is 50...
+// const circumference = 2 * Math.PI * radius;
+// const offset = (75 / 100) * circumference - circumference;
 
 function toggleTimer() {
     if (isActive.value) pauseTimer()
@@ -97,45 +97,6 @@ const isClicking = ref(false);
                         stroke-width="8px" class="transition-all duration-300"
                         :style="{ strokeDasharray: circumference, strokeDashoffset: offset }" />
                 </svg> -->
-            <!-- <div @click="toggleTimer" @click.ctrl="showEditTimer = true" @click.alt="completePomodoro"
-                    @contextmenu.prevent="resetTimer" class="relative w-32 h-32 cursor-pointer">
-                   
-                    Progress Cricle
-                    <svg class="w-32 h-32 transform -rotate-90" viewBox="0 0 36 36">
-                        <path d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831"
-                            fill="none" stroke="rgba(0,0,0,0.1)" stroke-width="3" />
-                        <path v-if="isTimerActive || isBreakActive"
-                            d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831"
-                            fill="none" :stroke="isBreakActive ? 'url(#breakGradient)' : 'url(#pomodoroGradient)'"
-                            stroke-width="3"
-                            :stroke-dasharray="`${(timeRemaining / (currentTimerDuration * 60)) * 100}, 100`"
-                            stroke-linecap="round" />
-                    </svg>
-
-                    Timer display
-                    <div class="absolute inset-0 flex items-center justify-center">
-                        <div class="text-center">
-                            <span class="text-2xl font-bold text-gray-700">
-                                {{ formatTime(timeRemaining) }}
-                            </span>
-                            <div v-if="isBreakActive" class="text-xs text-gray-500 mt-1">Break</div>
-                        </div>
-                    </div>
-
-                    SVG gradient definitions
-                    <svg width="0" height="0">
-                        <defs>
-                            <linearGradient id="pomodoroGradient" x1="0%" y1="0%" x2="100%" y2="0%">
-                                <stop offset="0%" style="stop-color:#667eea;stop-opacity:1" />
-                                <stop offset="100%" style="stop-color:#764ba2;stop-opacity:1" />
-                            </linearGradient>
-                            <linearGradient id="breakGradient" x1="0%" y1="0%" x2="100%" y2="0%">
-                                <stop offset="0%" style="stop-color:#10b981;stop-opacity:1" />
-                                <stop offset="100%" style="stop-color:#059669;stop-opacity:1" />
-                            </linearGradient>
-                        </defs>
-                    </svg>
-                </div> -->
         </template>
     </FunctionCard>
 </template>
