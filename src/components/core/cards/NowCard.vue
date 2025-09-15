@@ -1,11 +1,10 @@
 <script setup lang="ts">
-import FunctionCard from '@/components/common/FunctionCard.vue';
-import { Button } from '@/components/ui/button/index';
-import { ISession } from '@/core/interfaces/entities/ISession';
-import { ITask } from '@/core/interfaces/entities/ITask';
-import { NotepadTextIcon } from 'lucide-vue-next';
-import { computed, ref, useTemplateRef } from 'vue';
-
+import FunctionCard from "@/components/common/FunctionCard.vue";
+import { Button } from "@/components/ui/button";
+import { ISession } from "@/core/interfaces/entities/ISession";
+import { ITask } from "@/core/interfaces/entities/ITask";
+import { CheckIcon, NotepadTextIcon, ZapIcon } from "lucide-vue-next";
+import { computed, ref, useTemplateRef } from "vue";
 
 //TODO: CURRENT SESSION CARD
 //- current activity title in bold and underneath it in gray is the start and end time of the session and how much is left from now //make it a string for now, I don't want any date calcluations.
@@ -16,8 +15,8 @@ import { computed, ref, useTemplateRef } from 'vue';
 //- a way to add task.. tasks should be simple only a title //maybe a description
 //- a way to clear a task (not going to work on that session)
 //- tasks are automatically put on the slots but you can clear them
-//- when you create a task, you write title and description or choose an existing task from today so the modal will have small cards or suggestions on the right, 
-//- shortcuts? 
+//- when you create a task, you write title and description or choose an existing task from today so the modal will have small cards or suggestions on the right,
+//- shortcuts?
 //- clear
 //- delete
 //- edit
@@ -26,108 +25,100 @@ import { computed, ref, useTemplateRef } from 'vue';
 //- mark as active
 
 interface INowCardProps {
-    currentSession: ISession;
+  currentSession: ISession;
 }
 
 const cardData: INowCardProps = {
-    currentSession: {
-        title: 'working on stuff related to stuff',
-        activity: {
-            categories: [],
-            color: '#11323',
-            description: 'some description',
-            name: 'playing'
-        },
-        endTime: '2:00',
-        notes: 'some notes, i think  think think think think think think think think think think think think think think think think think think think think think think think think think think think think think think think think think think think think think think think think think',
-        startTime: '1:00',
-    }
-}
+  currentSession: {
+    title: "working on stuff related to stuff",
+    activity: {
+      categories: [],
+      color: "#11323",
+      description: "some description",
+      name: "playing",
+    },
+    endTime: "2:00",
+    notes:
+      "some notes, i think  think think think think think think think think think think think think think think think think think think think think think think think think think think think think think think think think think think think think think think think think think",
+    startTime: "1:00",
+  },
+};
 
 const currentSession = cardData.currentSession;
 
 const currentTask: ITask = {
-    activity: "activity",
-    title: "Some title",
-    description: "some description blah blah blah blah blah",
-}
+  activity: "activity",
+  title: "Some title",
+  description: "some description blah blah blah blah blah",
+};
 
-const notesContainer = useTemplateRef('notes-container');
+const notesContainer = useTemplateRef("notes-container");
 const isShowingMoreNotes = ref(false);
 
 // <!-- TODO: disgusting code.. I hate it, I hate myself -->
 const notesContainerStyle = computed(() => {
-    const scrollHeight = notesContainer.value?.scrollHeight ?? 0;
+  const scrollHeight = notesContainer.value?.scrollHeight ?? 0;
 
-    if (isShowingMoreNotes.value) {
-        return {
-            height: scrollHeight ? `${scrollHeight}px` : '100dvh',
-        };
-    } else {
-        return {
-            height: scrollHeight > 48 ? '3rem' : `${scrollHeight}px`,
-        };
-    }
+  if (isShowingMoreNotes.value) {
+    return {
+      height: scrollHeight ? `${scrollHeight}px` : "100dvh",
+    };
+  } else {
+    return {
+      height: scrollHeight > 48 ? "3rem" : `${scrollHeight}px`,
+    };
+  }
 });
-
 </script>
 
 <template>
-    <FunctionCard title="Now">
-        <!-- TODO: make the borderColor depend on activity, and make shadow color as well and transition when activity gets active -->
-        <template #default>
-            <div class="flex flex-col gap-0.5 items-center">
-                <p class="text-3xl font-bold capitalize"> {{ currentSession.activity.name }} </p>
-                <p v-if="currentSession.title" class="text-base text-center text-gray-600 font-semibold capitalize"> {{
-                    currentSession.title }}
-                </p>
-                <div class="text-xs text-gray-500">
-                    <span> {{ currentSession.startTime }} - {{ currentSession.endTime }} </span>
-                    <span class="text-xs"> • 1h 23m remaining</span>
+  <FunctionCard title="Now">
+    <!-- TODO: make the borderColor depend on activity, and make shadow color as well and transition when activity gets active -->
+    <template #default>
+      <div class="flex flex-col gap-0.5 items-center">
+        <p class="text-3xl font-bold capitalize">{{ currentSession.activity.name }}</p>
+        <p v-if="currentSession.title" class="text-base text-center text-gray-600 font-semibold capitalize">
+          {{ currentSession.title }}
+        </p>
+        <div class="text-xs text-gray-500">
+          <span> {{ currentSession.startTime }} - {{ currentSession.endTime }} </span>
+          <span class="text-xs"> • 1h 23m remaining</span>
+        </div>
+        <div class="m-2 w-2/3">
+          <div class="flex items-center justify-between gap-4">
+            <div>
+              <div class="flex items-center gap-2">
+                <div class="relative mt-1">
+                  <div class="absolute bg-primary size-2.5 rounded-full animate-ping" />
+                  <ZapIcon class="fill-primary size-3" /> 
                 </div>
-                <div v-if="currentSession.notes" class="w-5/6">
-                    <div class="p-1 bg-gray-50 border border-dashed rounded-sm">
-                        <div ref="notes-container" class="transition-all overflow-hidden text-gray-500 text-sm"
-                            :style="notesContainerStyle" :class="{
-                                'line-clamp-2': !isShowingMoreNotes
-                            }">
-                            <NotepadTextIcon class="size-4 text-gray-500 inline mx-0.5" />
-                            <p class="inline"> {{ currentSession.notes }} </p>
-                        </div>
-                        <p v-if="(notesContainer?.scrollHeight ?? 0) > 48"
-                            @click="isShowingMoreNotes = !isShowingMoreNotes"
-                            class="text-xs text-gray-500 text-right hover:text-primary select-none transition-colors">
-                            {{ isShowingMoreNotes ? ' show less' : ' show more' }} </p>
-                    </div>
-                </div>
-                <div v-if="currentTask" class="py-1">
-                    <div class="flex items-center gap-2">
-                        <div class="relative mt-1">
-                            <div class="absolute bg-primary size-2.5 rounded-full animate-ping" />
-                            <div class="bg-primary size-2.5 rounded-full" />
-                        </div>
-                        <div class="font-bold text-gray-800">{{ currentTask.title }}</div>
-                    </div>
-                    <div v-if="currentTask.description" class="text-xs text-gray-600">{{
-                        currentTask.description }}</div>
-                    <!-- <div class="flex items-start gap-3">
-                        <div class="relative">
-                            <div class="size-3 bg-primary rounded-full animate-ping"></div>
-                            <div class="absolute bg-primary inset-0 size-3 rounded-full"></div>
-                        </div>
-                        <div class="flex-1">
-                           
-                            <div v-if="currentTask.description" class="text-xs text-gray-600">{{
-                                currentTask.description }}</div>
-                        </div>
-                    </div> -->
-                </div>
-                <div v-else>
-                    <p> ---- no active task --- </p>
-                </div>
+                <div class="font-bold text-gray-800">{{ currentTask.title }}</div>
+              </div>
+              <div v-if="currentTask.description" class="text-xs text-gray-600">{{ currentTask.description }}</div>
             </div>
-            <div class="border-t border-gray-200 m-4"></div>
-            <!-- <div class="flex flex-col gap-2">
+            <Button variant="ghost" class="size-6 rounded-full text-gray-500 hover:text-primary transition-colros">
+              <CheckIcon />
+            </Button>
+          </div>
+          <div class="flex items-center justify-between gap-4">
+            <div>
+              <div class="flex items-center gap-2">
+                <div class="relative mt-1">
+                  <div class="absolute bg-primary size-2.5 rounded-full animate-ping" />
+                  <div class="bg-primary size-2.5 rounded-full" />
+                </div>
+                <div class="font-bold text-gray-800">{{ currentTask.title }}</div>
+              </div>
+              <div v-if="currentTask.description" class="text-xs text-gray-600">{{ currentTask.description }}</div>
+            </div>
+            <Button variant="ghost" class="size-6 rounded-full text-gray-500 hover:text-primary transition-colros">
+              <CheckIcon />
+            </Button>
+          </div>
+        </div>
+      </div>
+      <div class="border-t border-gray-200 m-2"></div>
+      <!-- <div class="flex flex-col gap-2">
                 <div class="p-2 bg-gray-50 border border-gray-200 rounded-lg">
                     <div class="flex items-center justify-between">
                         <div class="flex-1">
@@ -165,6 +156,6 @@ const notesContainerStyle = computed(() => {
                     </button>
                 </div>
             </div> -->
-        </template>
-    </FunctionCard>
+    </template>
+  </FunctionCard>
 </template>
