@@ -6,6 +6,7 @@ import RememberCard from "@/components/core/cards/RememberCard.vue";
 import NowCard from "@/components/core/cards/NowCard.vue";
 import FocusCard from "@/components/core/cards/FocusCard.vue";
 import ScheduleCard from "@/components/core/cards/ScheduleCard.vue";
+import DoodleCard from "@/components/core/cards/DoodleCard.vue";
 
 export const DEFAULT_CARD_LAYOUT: ICardStructure[] = [
 	{
@@ -15,6 +16,13 @@ export const DEFAULT_CARD_LAYOUT: ICardStructure[] = [
 		col: 1,
 		row: 1,
 	},
+    {
+        component: DoodleCard,
+        height: 6,
+        width: 4,
+        col: 1,
+        row: 1,
+    }
 	// {
 	// 	component: FocusCard,
 	// 	height: 6,

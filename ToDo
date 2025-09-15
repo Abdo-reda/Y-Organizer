@@ -1,5 +1,6 @@
 //------ Thinking... & now
-- now card
+- 
+
 
 //------ General pattern
 - [READ] component asks for "fetch" data from (some data will already be fetched...) <--> "store/composable" <--> service <--> tauri //depends but talks to tauri
@@ -8,6 +9,7 @@
 
 //------ General Todo
 - Layout, initial created from a config or something
+- Maybe card titles shouldn't be centered... and maybe the cards design should reflect that... especially the  Now card
 - Flexible & Editable Layout
 - Make theme customizable, so that it can depend on current activity. https://tweakcn.com/editor/theme //use correct classes, primary, secondary, accent and so on ... //anything that will change color should have transition, we can make a class that we reuse over and over agin... 
     //- primary

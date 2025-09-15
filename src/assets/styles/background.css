@@ -3,6 +3,12 @@ body {
     animation: slow-glow 8s infinite ease-in-out alternate;
 }
 
+.dot-background {
+    background-image: radial-gradient(circle, var(--color-gray-300) 1px, transparent 1px);
+    background-size: 20px 20px;
+    background-position: 0 0;
+}
+
 @keyframes slow-glow {
     0% {
         --tw-gradient-to-position: 70%;
