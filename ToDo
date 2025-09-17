@@ -7,6 +7,10 @@
     - component uses data from store, maybe store checks if data is fetched or not... a simple getter maybe?
 - [WRITE] component --> store update stuff --> "updates locally and calls command?" //eager and optimistic.
 
+//----- Tick animation
+https://lottiefiles.com/free-animations/tick
+https://iconscout.com/lottie-animations/tick
+
 //------ General Todo
 - Layout, initial created from a config or something
 - Maybe card titles shouldn't be centered... and maybe the cards design should reflect that... especially the  Now card

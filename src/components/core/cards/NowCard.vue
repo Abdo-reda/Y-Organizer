@@ -3,7 +3,7 @@ import FunctionCard from "@/components/common/FunctionCard.vue";
 import { Button } from "@/components/ui/button";
 import { ISession } from "@/core/interfaces/entities/ISession";
 import { ITask } from "@/core/interfaces/entities/ITask";
-import { CheckIcon, NotepadTextIcon, ZapIcon } from "lucide-vue-next";
+import { CheckIcon, CircleDashedIcon, CircleDotDashedIcon, NotepadTextIcon, TriangleDashedIcon, ZapIcon } from "lucide-vue-next";
 import { computed, ref, useTemplateRef } from "vue";
 
 //TODO: CURRENT SESSION CARD
@@ -85,12 +85,12 @@ const notesContainerStyle = computed(() => {
           <span class="text-xs"> • 1h 23m remaining</span>
         </div>
         <div class="m-2 w-2/3">
-          <div class="flex items-center justify-between gap-4">
+          <div v-if="currentTask" class="flex items-center justify-between gap-4">
             <div>
               <div class="flex items-center gap-2">
                 <div class="relative mt-1">
-                  <div class="absolute bg-primary size-2.5 rounded-full animate-ping" />
-                  <ZapIcon class="fill-primary size-3" /> 
+                  <div class="absolute bg-primary/50 size-2.5 rounded-full animate-ping" />
+                  <ZapIcon class="fill-primary size-3" />
                 </div>
                 <div class="font-bold text-gray-800">{{ currentTask.title }}</div>
               </div>
@@ -100,20 +100,14 @@ const notesContainerStyle = computed(() => {
               <CheckIcon />
             </Button>
           </div>
-          <div class="flex items-center justify-between gap-4">
-            <div>
-              <div class="flex items-center gap-2">
-                <div class="relative mt-1">
-                  <div class="absolute bg-primary size-2.5 rounded-full animate-ping" />
-                  <div class="bg-primary size-2.5 rounded-full" />
-                </div>
-                <div class="font-bold text-gray-800">{{ currentTask.title }}</div>
-              </div>
-              <div v-if="currentTask.description" class="text-xs text-gray-600">{{ currentTask.description }}</div>
+          <div v-else class="flex items-center gap-2 justify-center">
+            <div class="mt-1">
+              <CircleDotDashedIcon class="text-gray-600 size-3 animate-pulse-slow" />
             </div>
-            <Button variant="ghost" class="size-6 rounded-full text-gray-500 hover:text-primary transition-colros">
-              <CheckIcon />
-            </Button>
+            <div class="font-bold text-gray-600 animate-pulse-slow"> -------- No Active Task -------- </div>
+            <div class="mt-1">
+              <CircleDotDashedIcon class="text-gray-600 size-3 animate-pulse-slow" />
+            </div>
           </div>
         </div>
       </div>
