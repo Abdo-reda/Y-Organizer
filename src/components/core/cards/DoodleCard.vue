@@ -10,6 +10,8 @@ import { BrushCleaningIcon, BrushIcon, EraserIcon, SaveIcon } from "lucide-vue-n
 // - context menu? https://www.shadcn-vue.com/docs/components/context-menu?
 // - handle shortcuts? redo, undo, change color and so on...
 // - should colors or brush color depend on activity color/primary color
+// - save svg as png, probably need a canvas
+// '--tw-ring-color': `color-mix(in oklab, ${color} 25%, transparent)`
 
 const fileSaver = useTemplateRef<HTMLAnchorElement>("file-saver");
 const drawContainer = useTemplateRef<HTMLElement>("draw-container");
@@ -62,7 +64,6 @@ function setColor(color: string) {
   brush.value.color = color;
 }
 </script>
-
 <template>
   <FunctionCard title="Doodle">
     <template #header-left-actions>
