@@ -1,5 +1,5 @@
 body {
-    @apply relative overflow-hidden bg-gradient-to-tl from-primary/25 to-transparent to-75%;
+    @apply relative overflow-hidden bg-gradient-to-tl from-primary/25 to-transparent to-75% bg-no-repeat;
     animation: slow-glow 8s infinite ease-in-out alternate;
 }
 

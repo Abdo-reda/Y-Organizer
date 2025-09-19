@@ -5,6 +5,7 @@ import { useDrauu } from "@vueuse/integrations/useDrauu";
 import { useTemplateRef } from "vue";
 import { Button } from "@/components/ui/button";
 import { BrushCleaningIcon, BrushIcon, EraserIcon, SaveIcon } from "lucide-vue-next";
+import { DateTime } from "luxon";
 
 //TODO:
 // - context menu? https://www.shadcn-vue.com/docs/components/context-menu?
@@ -55,7 +56,7 @@ function saveSvg() {
   if (!fileSaver.value) return;
   const svgUrl = URL.createObjectURL(new Blob([drawArea.value?.outerHTML ?? ""], { type: "image/svg+xml" }));
   fileSaver.value.href = svgUrl;
-  fileSaver.value.download = "doodle.svg";
+  fileSaver.value.download = `doodle_${DateTime.now().toISODate()}.svg`;
   fileSaver.value.click();
   URL.revokeObjectURL(svgUrl);
 }
@@ -67,12 +68,12 @@ function setColor(color: string) {
 <template>
   <FunctionCard title="Doodle">
     <template #header-left-actions>
-      <div class="flex gap-2 mx-4">
+      <div class="flex gap-1 md:gap-2 mx-2">
         <button
           @click="setColor(color)"
           v-for="color in colors"
           :key="color"
-          class="rounded-full shadow-sm ring-0 ring-gray-200 size-6 transition-shadow"
+          class="rounded-full shadow-sm ring-0 ring-gray-200 w-1/6 min-w-3 aspect-square transition-shadow"
           :style="{ backgroundColor: color }"
           :class="{
             'ring-3': brush.color === color,

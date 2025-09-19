@@ -1,17 +1,18 @@
-import NotesCard from "@/components/core/cards/NotesCard.vue";
 import { ICardStructure } from "../interfaces/entities/ICardStructure";
-import MonthlyCard from "@/components/core/cards/MonthlyCard.vue";
-import GratitudeCard from "@/components/core/cards/GratitudeCard.vue";
-import RememberCard from "@/components/core/cards/RememberCard.vue";
+import NotesCard from "@/components/core/cards/NotesCard.vue";
 import NowCard from "@/components/core/cards/NowCard.vue";
-import FocusCard from "@/components/core/cards/FocusCard.vue";
-import ScheduleCard from "@/components/core/cards/ScheduleCard.vue";
 import DoodleCard from "@/components/core/cards/DoodleCard.vue";
-import TempCard from "@/components/core/cards/TempCard.vue";
 
 export const DEFAULT_CARD_LAYOUT: ICardStructure[] = [
 	{
 		component: NowCard,
+		height: 6,
+		width: 4,
+		col: 1,
+		row: 1,
+	},
+	{
+		component: NotesCard,
 		height: 6,
 		width: 4,
 		col: 1,

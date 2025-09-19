@@ -1,5 +1,5 @@
 import { useEventListener } from "@vueuse/core";
-import { MaybeRefOrGetter, ShallowRef } from "vue";
+import { MaybeRefOrGetter } from "vue";
 
 type TShortcutCallbacks = {
   onDoubleClick?: (e: MouseEvent) => void;
@@ -31,12 +31,10 @@ export function useMouseShortcuts(targetEl: MaybeRefOrGetter<HTMLElement | null>
     options
   );
 
-  console.log("---- wait what?", targetEl);
   useEventListener(
     targetEl,
     "pointerdown",
     (event) => {
-      console.log("---- pointer down?");
       if (event.button === 2) {
         event.preventDefault();
       }

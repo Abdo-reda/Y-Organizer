@@ -2,6 +2,16 @@
 - 
 
 
+//------ Tauri stuff
+- single instance https://tauri.app/plugin/single-instance/
+- sql interaction https://tauri.app/plugin/sql/
+- automatic updates https://tauri.app/plugin/updater/
+- upload and download files https://tauri.app/plugin/upload/
+- App size optimizations https://tauri.app/concept/size/
+- App icons https://tauri.app/develop/icons/
+- Window customization https://tauri.app/learn/window-customization/
+<!-- - autostart https://tauri.app/plugin/autostart/ -->
+
 //------ General pattern
 - [READ] component asks for "fetch" data from (some data will already be fetched...) <--> "store/composable" <--> service <--> tauri //depends but talks to tauri
     - component uses data from store, maybe store checks if data is fetched or not... a simple getter maybe?

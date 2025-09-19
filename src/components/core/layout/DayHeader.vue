@@ -7,10 +7,10 @@ import { useCurrentTime } from "@/composables/useCurrentTime";
 //TODO:
 //- handle the emit of changing the date... and updating date... either emits or modals ... need to be consistent
 
-interface ITodayHeaderProps {
+interface IDayHeaderProps {
     dayDate: DateTime;
 }
-const props: ITodayHeaderProps = {
+const props: IDayHeaderProps = {
     dayDate: DateTime.now(),
 }
 

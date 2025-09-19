@@ -13,6 +13,7 @@
 		"@formkit/auto-animate": "^0.9.0",
 		"@tauri-apps/api": "^2",
 		"@tauri-apps/plugin-opener": "^2",
+		"@tauri-apps/plugin-sql": "~2",
 		"@vueuse/core": "^13.9.0",
 		"@vueuse/integrations": "^13.9.0",
 		"class-variance-authority": "^0.7.1",
