@@ -18,7 +18,7 @@ defineProps<IFunctionCardProps>();
 </script>
 
 <template>
-    <Card class="gap-0 py-4">
+    <Card class="gap-0 !overflow-hidden py-4">
         <CardHeader class="flex gap-2 px-4 items-center">
             <div class="flex-1 relative">
                 <slot name="header-left-actions" />
@@ -31,7 +31,7 @@ defineProps<IFunctionCardProps>();
                 <slot name="header-right-actions" />
             </div>
         </CardHeader>
-        <CardContent class="h-full px-4 pt-2">
+        <CardContent class="flex-1 px-4 pt-2">
             <slot />
         </CardContent>
     </Card>

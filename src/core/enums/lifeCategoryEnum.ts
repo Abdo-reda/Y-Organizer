@@ -1,6 +1,6 @@
 export enum LifeCategoryEnum {
 	FAMILY = "Family",
-    COUPLE = "Couple",
+    PARTNERSHIP = "Partnership",
     PARENTING = "Parenting",
     SOCIAL = "Social",
     CAREER = "Career",

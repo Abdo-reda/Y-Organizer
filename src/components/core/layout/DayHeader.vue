@@ -3,21 +3,26 @@ import { Calendar } from "@/components/ui/calendar";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import { DateTime } from "luxon";
 import { useCurrentTime } from "@/composables/useCurrentTime";
+import { computed } from "vue";
+import { CalendarDate, parseDate } from "@internationalized/date";
+import useDayState from "@/store/useDayState";
 
-//TODO:
-//- handle the emit of changing the date... and updating date... either emits or modals ... need to be consistent
+//TODO: ENHANCEMENT: the popover keeps moving when you change hte day, either animate it, or make the anchor static and doesnt change, or redesign this part.. figure something out.
 
-interface IDayHeaderProps {
-    dayDate: DateTime;
-}
-const props: IDayHeaderProps = {
-    dayDate: DateTime.now(),
-}
-
-const relativeDate = props.dayDate.toRelativeCalendar();
-const isoDate = props.dayDate.toISODate();
-const dateDayName = props.dayDate.weekdayLong;
+const {selectedDay} = useDayState();
+const relativeDate = computed(() => selectedDay.value.toRelativeCalendar());
+const isoDate = computed(() => selectedDay.value.toISODate());
+const dateDayName = computed(() => selectedDay.value.weekdayLong);
 const { formattedTime } = useCurrentTime();
+
+const calendarDate = computed<CalendarDate>({
+    get: () => parseDate(isoDate.value),
+    set: (value: CalendarDate) => {
+        const parsedDate = DateTime.fromISO(value.toString());
+        if (parsedDate.isValid) selectedDay.value = parsedDate;
+    }
+})
+
 </script>
 
 <template>
@@ -38,7 +43,7 @@ const { formattedTime } = useCurrentTime();
                         </button>
                     </PopoverTrigger>
                     <PopoverContent class="w-auto p-0 m-2">
-                        <Calendar initial-focus />
+                        <Calendar v-model="calendarDate" weekday-format="short" initial-focus />
                     </PopoverContent>
                 </Popover>
             </div>

@@ -2,78 +2,67 @@
 import { ref } from 'vue';
 import FunctionCard from '@/components/common/FunctionCard.vue';
 import { IGratitude } from '@/core/interfaces/entities/IGratitude';
+import useDayGratitudes from '@/store/useDayGratitudes';
+import { LifeCategoryEnum } from '@/core/enums/lifeCategoryEnum';
+import { DateTime } from 'luxon';
+import { Button } from '@/components/ui/button';
+import { PlusIcon } from 'lucide-vue-next';
 
-//TODO:
 
+const { gratitudes, createGratitude, updateGratitude, deleteGratitude } = useDayGratitudes();
 
 const newGratitude = ref({
     text: '',
     description: ''
 })
 
-const gratitudes = ref<IGratitude[]>([
-    {
-        id: 1,
-        title: [{ text: 'Having a job that I truly enjoy', isColored: false }],
-        description: 'They always believe in me',
-        color: '#10b981',
-    },
-    {
-        id: 2,
-        title: [{ text: 'Having a job that I truly enjoy', isColored: false }],
+async function handleCreateGratitude() {
+    await createGratitude({
+        title: 'Temp',
         description: '',
-        color: '#f59e0b',
-    },
-    {
-        id: 3,
-        title: [{ text: 'Having a job that I truly enjoy', isColored: false }],
-        description: 'It makes every day meaningful It makes every day meaningful It makes every day meaningful It makes every day meaningful It makes every day meaningful It makes every day meaningful',
-        color: '#8b5cf6',
-    }
-])
-
-
-function createGratitude() {
-
+        category: LifeCategoryEnum.CAREER,
+        day: DateTime.now().toISODate(),
+        highlights: []
+    })
 }
 
-function toggleWordColor(gratitudeId: number, word: number) {
-    const gratitude = gratitudes.value.find(g => g.id === gratitudeId)
-    if (gratitude) {
-        gratitude.title[word].isColored = !gratitude.title[word].isColored
-    }
+function handleDeleteGratitude(id: number) {
+    deleteGratitude(id);
+}
+
+async function toggleHighlight(gratitudeId: number | undefined, wordIndex: number) {
+    const gratitude = gratitudes.find(g => g.id === gratitudeId)
+    if (!gratitude) return;
+    const highlightIndex = gratitude.highlights.indexOf(wordIndex);
+    if (highlightIndex === -1) gratitude.highlights.push(wordIndex);
+    else gratitude.highlights.splice(highlightIndex, 1)
+    await updateGratitude(gratitude);
 }
 
 </script>
 
 <template>
     <FunctionCard title="Gratitude">
-        <template #header-right-actions>
-            <!-- <button @click="createGratitude"
-                class=" right-0 top-0 w-8 h-8 text-gray-400 hover:text-blue-600 hover:bg-blue-50 rounded-full transition-all flex items-center justify-center">
-                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
-                </svg>
-            </button> -->
-        </template>
         <template #default>
             <div class="flex flex-col gap-2">
+                <!-- gratitude.color -->
                 <div v-for="gratitude in gratitudes" :key="gratitude.id"
                     class="flex items-start gap-3 p-2 hover:bg-gray-50 rounded-lg transition-colors">
-                    <div class="size-2.5 rounded-full flex-shrink-0 mt-2" :style="{ backgroundColor: gratitude.color }">
+                    <div class="size-2.5 rounded-full flex-shrink-0 mt-2" :style="{ backgroundColor: 'red' }">
                     </div>
-                    <div class="size-2.5 rounded-full flex-shrink-0 mt-2 absolute animate-ping ping duration-1000" :style="{ backgroundColor: gratitude.color }">
+                    <div class="size-2.5 rounded-full flex-shrink-0 mt-2 absolute animate-ping ping duration-1000"
+                        :style="{ backgroundColor: 'red' }">
                     </div>
 
                     <div class="flex-1">
                         <p class="text-gray-900 leading-relaxed">
-                            <template v-for="(word, index) in gratitude.title" :key="index">
-                                <span @click="toggleWordColor(gratitude.id, index)"
+                            <template v-for="(word, index) in gratitude.title.trim().split(/\s+/)" :key="index">
+                                <span @click="toggleHighlight(gratitude.id, index)"
                                     class="cursor-pointer transition-all duration-200 gratitude-word" :style="{
-                                        color: word.isColored ? gratitude.color : 'inherit',
-                                        '--hover-color': gratitude.color
+                                        color: gratitude.highlights.some(h => h === index) ? 'red' : 'inherit',
+                                        '--hover-color': 'red'
                                     }">
-                                    {{ word.text }} </span>
+                                    {{ word }} </span>
                                 <span> {{ index < gratitude.title.length - 1 ? ' ' : '' }} </span>
                             </template>
                         </p>
@@ -81,6 +70,13 @@ function toggleWordColor(gratitudeId: number, word: number) {
                             gratitude.description }}</p>
                     </div>
                 </div>
+            </div>
+        </template>
+        <template #header-right-actions>
+            <div class="flex items-center justify-end">
+                <Button variant="ghost" size="icon" class="text-gray-300">
+                    <PlusIcon />
+                </Button>
             </div>
         </template>
     </FunctionCard>

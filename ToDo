@@ -1,5 +1,11 @@
 //------ Thinking... & now
-- 
+- Gratitude card
+
+//---- MVP
+- Dynamic Themes --> depend on activity
+- Window Customization, title bar and so on...
+- AutoUpdates & Version number
+- Basic Cards Functionality which are
 
 
 //------ Tauri stuff
@@ -12,10 +18,6 @@
 - Window customization https://tauri.app/learn/window-customization/
 <!-- - autostart https://tauri.app/plugin/autostart/ -->
 
-//------ General pattern
-- [READ] component asks for "fetch" data from (some data will already be fetched...) <--> "store/composable" <--> service <--> tauri //depends but talks to tauri
-    - component uses data from store, maybe store checks if data is fetched or not... a simple getter maybe?
-- [WRITE] component --> store update stuff --> "updates locally and calls command?" //eager and optimistic.
 
 //----- Tick animation
 https://lottiefiles.com/free-animations/tick

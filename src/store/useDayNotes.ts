@@ -1,7 +1,7 @@
 import { StorageServiceKey } from "@/core/constants/injectionKeys";
-import { DateTime } from "luxon";
 import { inject, ref, watch } from "vue";
 import useDayState from "./useDayState";
+import { LoggingService } from "@/core/services/loggingService";
 
 const { selectedDay } = useDayState();
 
@@ -10,11 +10,12 @@ export default function useDayNotes() {
 	const notes = ref("");
 
 	async function fetchNotes() {
-		console.log("-- fetch notes");
+        LoggingService.log("useDayNotes", "fetching notes...");
 		notes.value = await storageService.getNotes(selectedDay.value);
 	}
 
 	function updateNotes(notes: string) {
+        LoggingService.log("useDayNotes", "updating notes...");
 		storageService.updateNotes(selectedDay.value, notes);
 	}
 

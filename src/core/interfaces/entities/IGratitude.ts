@@ -1,12 +1,10 @@
-export interface IGratitude {
-    id: number;
-    color: string;
-    category: string;
-    title: IWord[];
-    description: string;
-}
+import { LifeCategoryEnum } from "@/core/enums/lifeCategoryEnum";
 
-interface IWord {
-    text: string;
-    isColored: boolean;
+export interface IGratitude {
+    id?: number;
+    title: string;
+    description: string;
+    highlights: number[];
+    category: LifeCategoryEnum;
+    day: string;
 }

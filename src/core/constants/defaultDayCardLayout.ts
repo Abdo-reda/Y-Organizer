@@ -2,8 +2,10 @@ import { ICardStructure } from "../interfaces/entities/ICardStructure";
 import NotesCard from "@/components/core/cards/NotesCard.vue";
 import NowCard from "@/components/core/cards/NowCard.vue";
 import DoodleCard from "@/components/core/cards/DoodleCard.vue";
+import FocusCard from "@/components/core/cards/FocusCard.vue";
+import GratitudeCard from "@/components/core/cards/GratitudeCard.vue";
 
-export const DEFAULT_CARD_LAYOUT: ICardStructure[] = [
+export const DEFAULT_DAY_CARD_LAYOUT: ICardStructure[] = [
 	{
 		component: NowCard,
 		height: 6,
@@ -18,20 +20,20 @@ export const DEFAULT_CARD_LAYOUT: ICardStructure[] = [
 		col: 1,
 		row: 1,
 	},
-	// {
-	// 	component: TempCard,
-	// 	height: 6,
-	// 	width: 4,
-	// 	col: 1,
-	// 	row: 1,
-	// },
+	{
+		component: GratitudeCard,
+		height: 6,
+		width: 4,
+		col: 1,
+		row: 1,
+	},
     {
         component: DoodleCard,
         height: 6,
         width: 4,
         col: 1,
         row: 1,
-    }
+    },
 	// {
 	// 	component: FocusCard,
 	// 	height: 6,
