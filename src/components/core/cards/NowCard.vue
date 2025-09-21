@@ -142,8 +142,8 @@ const currentTask: ITask | null = {
                   <span class="text-sm text-gray-500 line-through">{{ "blaaaaah" }}</span>
                 </div>
               </div>
+              <div class="absolute rounded-sm inset-0 bg-gradient-to-b from-transparent from-75% to-white/75 pointer-events-none" />
             </div>
-            <div class="absolute rounded-sm inset-0 bg-gradient-to-b from-transparent from-75% to-white/75 pointer-events-none" />
           </div>
         </div>
       </div>

@@ -46,14 +46,14 @@ onMounted(() => {
             <div class="flex h-full">
                 <div class="h-full flex flex-col">
                     <template v-for="i in 24" :key="i">
-                        <!-- <div class="flex-1 flex items-center justify-center">
-                            <p class="text-xs text-gray-500 font-semibold"> {{ (i - 1) }}:00 </p>
-                        </div> -->
-                        <div class="flex-1 flex flex-col items-center justify-between">
+                        <div class="flex-1 flex items-center justify-center">
+                            <p class="text-sm text-gray-500 font-semibold"> {{ (i - 1) }}:00 </p>
+                        </div>
+                        <!-- <div class="flex-1 flex flex-col items-center justify-between">
                             <p class="text-xs text-gray-500 font-semibold -translate-y-1/2"> {{ (i - 1) }}:00 </p>
                             <p v-if="i == 24" class="text-xs text-gray-500 font-semibold translate-y-1/5"> {{ i }}:00
                             </p>
-                        </div>
+                        </div> -->
                     </template>
                 </div>
                 <div ref="schedule-container" class="!h-full grid-stack flex-1 relative mx-0.5">

@@ -88,10 +88,10 @@ function saveSvgAsPng() {
         fileSaver.value.href = pngUrl;
         fileSaver.value.download = `doodle_${DateTime.now().toISODate()}`;
         fileSaver.value.click();
+        //TODO: snackbar... succefully downloaded and get path somehow 
         URL.revokeObjectURL(svgUrl);
     };
     doodleImage.src = svgUrl;
-    //TODO: snackbar... succefully downloaded and get path somehow 
 }
 
 function setColor(color: string) {

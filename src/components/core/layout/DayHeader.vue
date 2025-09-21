@@ -6,6 +6,8 @@ import { useCurrentTime } from "@/composables/useCurrentTime";
 import { computed } from "vue";
 import { CalendarDate, parseDate } from "@internationalized/date";
 import useDayState from "@/store/useDayState";
+import { LayoutDashboardIcon } from "lucide-vue-next";
+import { Button } from "@/components/ui/button";
 
 //TODO: ENHANCEMENT: animation when chaning the day and the popover keeps moving when you change hte day, either animate it, or make the anchor static and doesnt change, or redesign this part.. figure something out.
 //TODO: add a left and right arrow to go to next and previous day, should only appear when I hover over the header text "TODAY sunday 2010-10-29"
@@ -50,7 +52,10 @@ const calendarDate = computed<CalendarDate>({
                 </Popover>
             </div>
         </div>
-        <div class="flex justify-end items-center px-4">
+        <div class="flex justify-end items-center px-4 gap-4">
+            <!-- <Button variant="ghost" size="icon" class="text-gray-400">
+                <LayoutDashboardIcon />
+            </Button> -->
             <div class="text-xl font-bold text-gray-400 hover:text-primary transition-colors">
                 {{ formattedTime }}
             </div>
