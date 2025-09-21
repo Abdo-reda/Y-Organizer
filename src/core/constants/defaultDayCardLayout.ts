@@ -4,6 +4,7 @@ import NowCard from "@/components/core/cards/NowCard.vue";
 import DoodleCard from "@/components/core/cards/DoodleCard.vue";
 import FocusCard from "@/components/core/cards/FocusCard.vue";
 import GratitudeCard from "@/components/core/cards/GratitudeCard.vue";
+import HabitCard from "@/components/core/cards/HabitCard.vue";
 
 export const DEFAULT_DAY_CARD_LAYOUT: ICardStructure[] = [
 	{
@@ -21,19 +22,26 @@ export const DEFAULT_DAY_CARD_LAYOUT: ICardStructure[] = [
 		row: 1,
 	},
 	{
+		component: HabitCard,
+		height: 4,
+		width: 2,
+		col: 1,
+		row: 1,
+	},
+	{
 		component: GratitudeCard,
 		height: 6,
 		width: 4,
 		col: 1,
 		row: 1,
 	},
-    {
-        component: DoodleCard,
-        height: 6,
-        width: 4,
-        col: 1,
-        row: 1,
-    },
+	{
+		component: DoodleCard,
+		height: 6,
+		width: 4,
+		col: 1,
+		row: 1,
+	},
 	// {
 	// 	component: FocusCard,
 	// 	height: 6,

@@ -1,8 +1,10 @@
 <script setup lang="ts">
 import FunctionCard from '@/components/common/FunctionCard.vue';
-import { DateTime } from 'luxon';
+import useDayState from '@/store/useDayState';
+import { computed } from 'vue';
 
-const currentMonth = DateTime.now().monthLong; 
+const { selectedDay } = useDayState();
+const currentMonth = computed(() => selectedDay.value.monthLong);
 
 </script>
 

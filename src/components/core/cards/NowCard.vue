@@ -54,11 +54,11 @@ const currentTask: ITask | null = {
       <div class="h-full flex flex-col">
         <!-- HEADER INFO -->
         <div class="flex flex-col gap-0.5 items-center">
-          <p class="text-3xl font-bold capitalize">{{ currentSession.activity.name }}</p>
+          <p class="text-3xl font-bold capitalize text-center">{{ currentSession.activity.name }}</p>
           <p v-if="currentSession.title" class="text-base text-center text-gray-600 font-semibold capitalize">
             {{ currentSession.title }}
           </p>
-          <div class="text-xs text-gray-500">
+          <div class="text-xs text-center text-gray-500">
             <span> {{ currentSession.startTime }} - {{ currentSession.endTime }} </span>
             <span class="text-xs"> • 1h 23m remaining</span>
           </div>

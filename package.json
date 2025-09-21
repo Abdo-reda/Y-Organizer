@@ -19,6 +19,7 @@
 		"class-variance-authority": "^0.7.1",
 		"clsx": "^2.1.1",
 		"drauu": "^0.4.3",
+		"embla-carousel-vue": "^8.6.0",
 		"gridstack": "^12.3.3",
 		"lucide-vue-next": "^0.542.0",
 		"luxon": "^3.7.2",

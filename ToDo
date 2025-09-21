@@ -8,6 +8,11 @@
 - Basic Cards Functionality which are
 
 
+/----- Cards ideas
+- game of life card
+- snake card
+- breathing card
+
 //------ Tauri stuff
 - single instance https://tauri.app/plugin/single-instance/
 - sql interaction https://tauri.app/plugin/sql/

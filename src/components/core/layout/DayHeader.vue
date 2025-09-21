@@ -7,7 +7,9 @@ import { computed } from "vue";
 import { CalendarDate, parseDate } from "@internationalized/date";
 import useDayState from "@/store/useDayState";
 
-//TODO: ENHANCEMENT: the popover keeps moving when you change hte day, either animate it, or make the anchor static and doesnt change, or redesign this part.. figure something out.
+//TODO: ENHANCEMENT: animation when chaning the day and the popover keeps moving when you change hte day, either animate it, or make the anchor static and doesnt change, or redesign this part.. figure something out.
+//TODO: add a left and right arrow to go to next and previous day, should only appear when I hover over the header text "TODAY sunday 2010-10-29"
+
 
 const {selectedDay} = useDayState();
 const relativeDate = computed(() => selectedDay.value.toRelativeCalendar());
