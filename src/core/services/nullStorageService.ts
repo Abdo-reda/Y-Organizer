@@ -16,23 +16,23 @@ export class NullStroageService implements IStorageService {
 		return Promise.resolve('');
 	}
 
-	updateNotes(day: DateTime, notes: string): Promise<void> {
+	updateNotes(_day: DateTime, _notes: string): Promise<void> {
 		return Promise.resolve();
 	}
 
-	getGratitudes(day: DateTime): Promise<IGratitude[]> {
+	getGratitudes(_day: DateTime): Promise<IGratitude[]> {
 		return Promise.resolve([]);
 	}
 
-	createGratitude(gratitude: IGratitude): Promise<void> {
+	createGratitude(_gratitude: IGratitude): Promise<void> {
 		return Promise.resolve();
 	}
 
-	updateGratitude(gratitude: IGratitude): Promise<void> {
+	updateGratitude(_gratitude: IGratitude): Promise<void> {
 		return Promise.resolve();
 	}
 
-	deleteGratitude(id: number): Promise<void> {
+	deleteGratitude(_id: number): Promise<void> {
 		return Promise.resolve();
 	}
 	
@@ -40,15 +40,15 @@ export class NullStroageService implements IStorageService {
 		return Promise.resolve([]);
 	}
 
-	createRemember(remember: IRemember): Promise<void> {
+	createRemember(_remember: IRemember): Promise<number|undefined> {
+		return Promise.resolve(undefined);
+	}
+
+	updateRemember(_remember: IRemember): Promise<void> {
 		return Promise.resolve();
 	}
 
-	updateRemember(remember: IRemember): Promise<void> {
-		return Promise.resolve();
-	}
-
-	deleteRemember(id: number): Promise<void> {
+	deleteRemember(_id: number): Promise<void> {
 		return Promise.resolve();
 	}
 }

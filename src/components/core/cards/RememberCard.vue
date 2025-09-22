@@ -11,7 +11,6 @@ const { remembers, createRemember, updateRemember, deleteRemember } = useRemembe
 const currentRemember = ref("");
 
 async function handleCreate() {
-	console.log("---- temp");
 	if (!currentRemember.value) return;
 	await createRemember(currentRemember.value);
 	currentRemember.value = "";
@@ -85,7 +84,7 @@ async function toggleHighlight(rememberId: number | undefined, wordIndex: number
 						type="text"
 						v-model="currentRemember"
 						placeholder="Add a reminder..."
-						class="w-full h-full focus:ring-3 ring-gray-300 transition-shadow bg-gray-50 rounded-md p-1.5 resize-none border-none outline-none text-gray-500 placeholder-gray-300"
+						class="w-full h-full focus:ring-1 ring-gray-200 transition-shadow bg-gray-50 rounded-md p-1.5 resize-none border-none outline-none text-gray-500 placeholder-gray-300"
 					/>
 					<Button type="submit" variant="ghost" size="icon" class="text-gray-300"><PlusIcon /></Button>
 				</form>

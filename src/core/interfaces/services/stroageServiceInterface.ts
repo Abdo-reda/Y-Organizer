@@ -16,7 +16,7 @@ export interface IStorageService {
 	deleteGratitude(id: number): Promise<void>;
 
 	getRemembers(): Promise<IRemember[]>;
-	createRemember(remember: IRemember): Promise<void>;
+	createRemember(remember: IRemember): Promise<number|undefined>;
 	updateRemember(remember: IRemember): Promise<void>;
 	deleteRemember(id: number): Promise<void>;
 }

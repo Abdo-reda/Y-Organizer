@@ -34,25 +34,29 @@ export class SqliteStroageService implements IStorageService {
 	}
 
 	async getGratitudes(day: DateTime): Promise<IGratitude[]> {
-		const gratitudes = await this.database.select<IGratitude[]>("SELECT * FROM gratitudes WHERE day = $1;", [
-			day.toISODate(),
-		]);
+		const gratitudes = await this.database.select<IGratitude[]>("SELECT * FROM gratitudes WHERE day = $1;", [day.toISODate()]);
 		this.mapGratitudes(gratitudes);
 		return gratitudes;
 	}
 
 	async createGratitude(gratitude: IGratitude) {
-		await this.database.execute(
-			"INSERT into gratitudes (title, description, category, highlights, day) VALUES ($1, $2, $3, $4, $5);",
-			[gratitude.title, gratitude.description, gratitude.category, gratitude.highlights, gratitude.day]
-		);
+		await this.database.execute("INSERT into gratitudes (title, description, category, highlights, day) VALUES ($1, $2, $3, $4, $5);", [
+			gratitude.title,
+			gratitude.description,
+			gratitude.category,
+			gratitude.highlights,
+			gratitude.day,
+		]);
 	}
 
 	async updateGratitude(gratitude: IGratitude) {
-		await this.database.execute(
-			"UPDATE gratitudes SET title = $1, description = $2, category = $3, highlights = $4 WHERE day = $5;",
-			[gratitude.title, gratitude.description, gratitude.category, gratitude.highlights, gratitude.day]
-		);
+		await this.database.execute("UPDATE gratitudes SET title = $1, description = $2, category = $3, highlights = $4 WHERE day = $5;", [
+			gratitude.title,
+			gratitude.description,
+			gratitude.category,
+			gratitude.highlights,
+			gratitude.day,
+		]);
 	}
 
 	async deleteGratitude(id: number) {
@@ -65,19 +69,13 @@ export class SqliteStroageService implements IStorageService {
 		return remembers;
 	}
 
-	async createRemember(remember: IRemember): Promise<void> {
-		await this.database.execute("INSERT INTO remembers (title, highlights) VALUES ($1, $2);", [
-			remember.title,
-			remember.highlights,
-		]);
+	async createRemember(remember: IRemember): Promise<number|undefined> {
+		const result = await this.database.execute("INSERT INTO remembers (title, highlights) VALUES ($1, $2);", [remember.title, remember.highlights]);
+		return result.lastInsertId;
 	}
 
 	async updateRemember(remember: IRemember): Promise<void> {
-		await this.database.execute("UPDATE remembers SET title = $1, highlights = $2, WHERE id = $3;", [
-			remember.title,
-			remember.highlights,
-			remember.id,
-		]);
+		await this.database.execute("UPDATE remembers SET title = $1, highlights = $2 WHERE id = $3;", [remember.title, remember.highlights, remember.id]);
 	}
 
 	async deleteRemember(id: number): Promise<void> {
