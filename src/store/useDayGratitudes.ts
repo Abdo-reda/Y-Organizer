@@ -28,14 +28,11 @@ export default function useDayGratitudes() {
 	}
 
 	async function deleteGratitude(id: number) {
+		LoggingService.log("useDayGratitudes", "delete gratitudes", id);
 		const index = gratitudes.findIndex((g) => g.id === id);
 		if (index > -1) gratitudes.splice(index, 1);
 		await storageService.deleteGratitude(id);
 	}
-
-	// function updateGratitude(notes: string) {
-	// 	storageService.updateNotes(selectedDay.value, notes);
-	// }
 
 	watch(selectedDay, () => fetchGratitudes(), { immediate: true });
 

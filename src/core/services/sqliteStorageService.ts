@@ -4,6 +4,7 @@ import { IStorageService } from "../interfaces/services/stroageServiceInterface"
 import { IDay } from "../interfaces/entities/IDay";
 import { LoggingService } from "./loggingService";
 import { IGratitude } from "../interfaces/entities/IGratitude";
+import { IRemember } from "../interfaces/entities/IRemember";
 
 export class SqliteStroageService implements IStorageService {
 	readonly DATABASE_NAME = "y.db";
@@ -29,13 +30,58 @@ export class SqliteStroageService implements IStorageService {
 	}
 
 	async updateNotes(day: DateTime, notes: string) {
-		await this.database.execute("UPDATE days SET notes = $1 WHERE day = $2", [notes, day.toISODate()]);
+		await this.database.execute("UPDATE days SET notes = $1 WHERE day = $2;", [notes, day.toISODate()]);
 	}
 
 	async getGratitudes(day: DateTime): Promise<IGratitude[]> {
-		const gratitudes = await this.database.select<IGratitude[]>("SELECT * FROM gratitudes WHERE day = $1;", [day.toISODate()]);
+		const gratitudes = await this.database.select<IGratitude[]>("SELECT * FROM gratitudes WHERE day = $1;", [
+			day.toISODate(),
+		]);
 		this.mapGratitudes(gratitudes);
 		return gratitudes;
+	}
+
+	async createGratitude(gratitude: IGratitude) {
+		await this.database.execute(
+			"INSERT into gratitudes (title, description, category, highlights, day) VALUES ($1, $2, $3, $4, $5);",
+			[gratitude.title, gratitude.description, gratitude.category, gratitude.highlights, gratitude.day]
+		);
+	}
+
+	async updateGratitude(gratitude: IGratitude) {
+		await this.database.execute(
+			"UPDATE gratitudes SET title = $1, description = $2, category = $3, highlights = $4 WHERE day = $5;",
+			[gratitude.title, gratitude.description, gratitude.category, gratitude.highlights, gratitude.day]
+		);
+	}
+
+	async deleteGratitude(id: number) {
+		await this.database.execute("DELETE FROM gratitudes WHERE id = $1;", [id]);
+	}
+
+	async getRemembers(): Promise<IRemember[]> {
+		const remembers = await this.database.select<IRemember[]>("SELECT * FROM remembers;");
+		this.mapRemembers(remembers);
+		return remembers;
+	}
+
+	async createRemember(remember: IRemember): Promise<void> {
+		await this.database.execute("INSERT INTO remembers (title, highlights) VALUES ($1, $2);", [
+			remember.title,
+			remember.highlights,
+		]);
+	}
+
+	async updateRemember(remember: IRemember): Promise<void> {
+		await this.database.execute("UPDATE remembers SET title = $1, highlights = $2, WHERE id = $3;", [
+			remember.title,
+			remember.highlights,
+			remember.id,
+		]);
+	}
+
+	async deleteRemember(id: number): Promise<void> {
+		await this.database.execute("DELETE FROM remembers WHERE id = $1;", [id]);
 	}
 
 	private mapGratitudes(gratitudes: IGratitude[]) {
@@ -44,34 +90,23 @@ export class SqliteStroageService implements IStorageService {
 				try {
 					gratitude.highlights = JSON.parse(gratitude.highlights);
 				} catch (e) {
-					LoggingService.log("SqliteStroageService", "Failed to parse highlights", e);
+					LoggingService.log("SqliteStroageService", "Failed to parse gratitude highlights", e);
 					gratitude.highlights = [];
 				}
 			}
 		});
 	}
 
-	async createGratitude(gratitude: IGratitude) {
-		await this.database.execute("INSERT into gratitudes (title, description, category, highlights, day) VALUES ($1, $2, $3, $4, $5);", [
-			gratitude.title,
-			gratitude.description,
-			gratitude.category,
-			gratitude.highlights,
-			gratitude.day,
-		]);
-	}
-
-	async updateGratitude(gratitude: IGratitude) {
-		await this.database.execute("UPDATE gratitudes SET title = $1, description = $2, category = $3, highlights = $4 WHERE day = $5;", [
-			gratitude.title,
-			gratitude.description,
-			gratitude.category,
-			gratitude.highlights,
-			gratitude.day,
-		]);
-	}
-
-	async deleteGratitude(id: number) {
-		await this.database.execute("DELETE FROM gratitudes WHERE id = $1;", [id]);
+	private mapRemembers(remembers: IRemember[]) {
+		remembers.forEach((remember) => {
+			if (typeof remember.highlights === "string") {
+				try {
+					remember.highlights = JSON.parse(remember.highlights);
+				} catch (e) {
+					LoggingService.log("SqliteStroageService", "Failed to parse remember highlights", e);
+					remember.highlights = [];
+				}
+			}
+		});
 	}
 }

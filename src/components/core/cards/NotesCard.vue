@@ -33,7 +33,6 @@ function handleSaveNotes() {
 				<textarea
 					:spellcheck="false"
 					@focusout="handleSaveNotes"
-					ref="notesTextarea"
 					v-model="notes"
 					placeholder="Click here to add your thoughts, reflections, notes for today..."
 					class="w-full h-full resize-none border-none outline-none text-gray-700 placeholder-gray-400 bg-transparent scroll-hidden"

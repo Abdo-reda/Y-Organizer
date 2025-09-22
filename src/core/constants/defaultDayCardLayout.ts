@@ -6,6 +6,7 @@ import FocusCard from "@/components/core/cards/FocusCard.vue";
 import GratitudeCard from "@/components/core/cards/GratitudeCard.vue";
 import HabitCard from "@/components/core/cards/HabitCard.vue";
 import ScheduleCard from "@/components/core/cards/ScheduleCard.vue";
+import RememberCard from "@/components/core/cards/RememberCard.vue";
 
 export const DEFAULT_DAY_CARD_LAYOUT: ICardStructure[] = [
 	{
@@ -17,6 +18,13 @@ export const DEFAULT_DAY_CARD_LAYOUT: ICardStructure[] = [
 	},
 	{
 		component: NotesCard,
+		height: 6,
+		width: 3,
+		col: 1,
+		row: 1,
+	},
+	{
+		component: RememberCard,
 		height: 6,
 		width: 3,
 		col: 1,
