@@ -46,10 +46,10 @@ onMounted(() => {
             <div class="flex h-full select-none">
                 <div class="h-full flex flex-col">
                     <template v-for="i in 24" :key="i">
-                        <div class="flex-1 flex flex-col items-center justify-between">
+                        <div class="flex-1 relative flex flex-col items-center justify-between">
                             <p class="text-xs text-gray-500 font-semibold -translate-y-1/2"> {{ (i - 1) }}:00 </p>
-                            <p v-if="i == 24" class="text-xs text-gray-500 font-semibold translate-y-1/2"> {{ i }}:00
-                            </p>
+                             <p v-if="i == 24" class="text-xs text-gray-500 font-semibold absolute bottom-0 translate-y-1/2"> {{ i }}:00
+                            </p> 
                         </div>
                     </template>
                 </div>

@@ -1,5 +1,9 @@
 body {
-    @apply relative overflow-hidden bg-gradient-to-tl from-primary/25 to-transparent to-75% bg-no-repeat;
+    @apply relative overflow-hidden bg-transparent rounded-md p-0.5 h-screen;
+}
+
+#app {
+    @apply h-full bg-gradient-to-tl from-primary/25 to-transparent to-75% bg-no-repeat bg-card rounded-xl border shadow-sm;
     animation: slow-glow 8s infinite ease-in-out alternate;
 }
 

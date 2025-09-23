@@ -11,6 +11,7 @@ impl YMigrations {
             kind: MigrationKind::Up,
         };
 
+        //TODO: status --> active, completed, archived
         let activities_table_migration = Migration {
             version: 2,
             description: "Create Activities Table",

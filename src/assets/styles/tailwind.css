@@ -1,6 +1,14 @@
 @import "tailwindcss";
 @import "tw-animate-css";
 
+@utility app-drag {
+  app-region: drag;
+}
+
+@utility app-no-drag {
+  app-region: no-drag;
+}
+
 @custom-variant dark (&:is(.dark *));
 
 @theme inline {
