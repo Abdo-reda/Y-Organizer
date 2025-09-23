@@ -1,220 +1,196 @@
 <template>
-  <div class="bg-white rounded-xl shadow-sm border border-gray-100 p-6 max-w-md">
-    <!-- Header -->
-    <div class="text-center mb-6">
-      <h3 class="text-lg font-semibold text-gray-800">Remember</h3>
-      <p class="text-sm text-gray-500 mt-1">Insights & Reflections</p>
+  <div class="bg-white rounded-xl border border-gray-200 p-6 shadow-sm">
+    <div class="flex items-center justify-between mb-6">
+      <h2 class="text-lg font-semibold text-gray-900">Activity Summary</h2>
+      <button 
+        @click="openCreateModal"
+        class="p-2 text-gray-400 hover:text-gray-600 hover:bg-gray-100 rounded-lg transition-all"
+      >
+        <Plus class="w-5 h-5" />
+      </button>
     </div>
 
-    <!-- Remember Items -->
-    <div class="space-y-4 mb-4">
-      <div 
-        v-for="(item, index) in remembers" 
-        :key="index"
-        class="group relative"
-      >
-        <!-- Display Mode -->
-        <div 
-          v-if="editingIndex !== index"
-          class="text-gray-700 leading-relaxed cursor-pointer hover:bg-gray-50 rounded-lg p-2 -m-2 transition-colors"
-          @click="handleRememberClick($event, index)"
-          @click.ctrl.prevent="startEditing(index)"
-        >
-          <span 
-            v-for="(word, wordIndex) in item.words" 
-            :key="wordIndex"
-            :class="[
-              'transition-all duration-200 cursor-pointer hover:bg-blue-100 rounded px-1',
-              word.highlighted ? 'bg-blue-200 text-blue-800 underline decoration-2 underline-offset-2' : ''
-            ]"
-            @click.stop="toggleWordHighlight(index, wordIndex)"
-          >
-            {{ word.text }}{{ wordIndex < item.words.length - 1 ? ' ' : '' }}
-          </span>
-        </div>
-
-        <!-- Edit Mode -->
-        <div v-else class="relative">
-          <textarea
-            ref="editTextarea"
-            v-model="editingText"
-            class="w-full p-2 text-gray-700 bg-gray-50 border border-gray-200 rounded-lg resize-none focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-            rows="2"
-            @blur="saveEdit"
-            @keydown.enter.prevent="saveEdit"
-            @keydown.escape="cancelEdit"
+     Chart Container 
+    <div class="relative mb-6">
+      <div class="flex items-center justify-center">
+        <svg width="200" height="200" class="transform -rotate-90">
+           Background Circle 
+          <circle
+            cx="100"
+            cy="100"
+            r="80"
+            fill="none"
+            stroke="#f3f4f6"
+            stroke-width="12"
           />
-          <div class="flex justify-end mt-2 space-x-2">
-            <button 
-              @click="cancelEdit"
-              class="text-xs text-gray-500 hover:text-gray-700 px-2 py-1 rounded"
-            >
-              Cancel
-            </button>
-            <button 
-              @click="saveEdit"
-              class="text-xs text-blue-600 hover:text-blue-700 px-2 py-1 rounded"
-            >
-              Save
-            </button>
+          
+           Activity Segments 
+          <circle
+            v-for="(activity, index) in activitiesWithData"
+            :key="activity.id"
+            cx="100"
+            cy="100"
+            r="80"
+            fill="none"
+            :stroke="activity.color"
+            stroke-width="12"
+            :stroke-dasharray="`${activity.circumference} ${totalCircumference}`"
+            :stroke-dashoffset="activity.offset"
+            class="transition-all duration-500 hover:stroke-width-16 cursor-pointer"
+            @click="openEditModal(activity)"
+          />
+        </svg>
+        
+         Center Text 
+        <div class="absolute inset-0 flex items-center justify-center">
+          <div class="text-center">
+            <div class="text-2xl font-bold text-gray-900">{{ totalHours }}h</div>
+            <div class="text-sm text-gray-500">Total</div>
           </div>
         </div>
       </div>
     </div>
 
-    <!-- Add New Remember -->
-    <div class="relative">
-      <!-- Add Button (appears on hover or when adding) -->
+     Activity List 
+    <div class="space-y-3">
       <div 
-        v-if="!isAdding"
-        class="opacity-0 group-hover:opacity-100 hover:opacity-100 transition-opacity duration-200 text-center"
-        @mouseenter="showAddButton = true"
-        @mouseleave="showAddButton = false"
+        v-for="activity in activitiesWithData" 
+        :key="activity.id"
+        class="flex items-center justify-between p-3 rounded-lg hover:bg-gray-50 transition-colors cursor-pointer group"
+        @click="openEditModal(activity)"
       >
-        <button 
-          @click="startAdding"
-          class="text-gray-400 hover:text-gray-600 text-sm font-medium transition-colors duration-200 py-2 px-4 rounded-lg hover:bg-gray-50"
-        >
-          + Add Remember
-        </button>
-      </div>
-
-      <!-- Add Input -->
-      <div v-else class="mt-2">
-        <textarea
-          ref="addTextarea"
-          v-model="newRememberText"
-          placeholder="What do you want to remember?"
-          class="w-full p-3 text-gray-700 bg-gray-50 border border-gray-200 rounded-lg resize-none focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent placeholder-gray-400"
-          rows="2"
-          @keydown.enter.prevent="addRemember"
-          @keydown.escape="cancelAdding"
-        />
-        <div class="flex justify-end mt-2 space-x-2">
-          <button 
-            @click="cancelAdding"
-            class="text-xs text-gray-500 hover:text-gray-700 px-3 py-1 rounded"
-          >
-            Cancel
-          </button>
-          <button 
-            @click="addRemember"
-            class="text-xs text-blue-600 hover:text-blue-700 px-3 py-1 rounded"
-          >
-            Add
-          </button>
+        <div class="flex items-center space-x-3">
+          <div 
+            class="w-4 h-4 rounded-full"
+            :style="{ backgroundColor: activity.color }"
+          ></div>
+          <div>
+            <div class="font-medium text-gray-900">{{ activity.name }}</div>
+            <div class="text-sm text-gray-500">{{ activity.description }}</div>
+          </div>
+        </div>
+        <div class="text-right">
+          <div class="font-semibold text-gray-900">{{ activity.hours }}h</div>
+          <div class="text-sm text-gray-500">{{ activity.percentage }}%</div>
         </div>
       </div>
     </div>
+
+     <!-- Activity Modal 
+    <ActivityModal 
+      v-if="showModal"
+      :activity="selectedActivity"
+      :is-editing="isEditing"
+      @close="closeModal"
+      @save="saveActivity"
+    /> -->
   </div>
 </template>
 
 <script setup>
-import { ref, nextTick } from 'vue'
+import { ref, computed } from 'vue'
+import { Plus } from 'lucide-vue-next'
+// import ActivityModal from './activity-modal.vue'
 
-// State
-const remembers = ref([
-  {
-    words: [
-      { text: 'Focus', highlighted: false },
-      { text: 'on', highlighted: false },
-      { text: 'progress,', highlighted: true },
-      { text: 'not', highlighted: false },
-      { text: 'perfection', highlighted: true }
-    ]
+// Sample activities with mock data
+const activities = ref([
+  { 
+    id: 1, 
+    name: 'Work', 
+    description: 'Professional tasks and meetings',
+    color: '#3B82F6', 
+    categories: ['productivity'],
+    hours: 32 
   },
-  {
-    words: [
-      { text: 'Small', highlighted: true },
-      { text: 'consistent', highlighted: true },
-      { text: 'actions', highlighted: false },
-      { text: 'create', highlighted: false },
-      { text: 'lasting', highlighted: false },
-      { text: 'change', highlighted: false }
-    ]
+  { 
+    id: 2, 
+    name: 'Exercise', 
+    description: 'Physical fitness and health',
+    color: '#10B981', 
+    categories: ['health'],
+    hours: 8 
   },
-  {
-    words: [
-      { text: 'Every', highlighted: false },
-      { text: 'challenge', highlighted: true },
-      { text: 'is', highlighted: false },
-      { text: 'an', highlighted: false },
-      { text: 'opportunity', highlighted: true },
-      { text: 'to', highlighted: false },
-      { text: 'grow', highlighted: false }
-    ]
+  { 
+    id: 3, 
+    name: 'Study', 
+    description: 'Learning and skill development',
+    color: '#8B5CF6', 
+    categories: ['education'],
+    hours: 12 
+  },
+  { 
+    id: 4, 
+    name: 'Personal', 
+    description: 'Personal projects and hobbies',
+    color: '#F59E0B', 
+    categories: ['personal'],
+    hours: 6 
   }
 ])
 
-const editingIndex = ref(-1)
-const editingText = ref('')
-const isAdding = ref(false)
-const newRememberText = ref('')
-const showAddButton = ref(false)
+// Modal state
+const showModal = ref(false)
+const selectedActivity = ref(null)
+const isEditing = ref(false)
 
-// Refs
-const editTextarea = ref(null)
-const addTextarea = ref(null)
+// Computed properties
+const totalHours = computed(() => {
+  return activities.value.reduce((sum, activity) => sum + activity.hours, 0)
+})
 
-// Methods
-const toggleWordHighlight = (rememberIndex, wordIndex) => {
-  remembers.value[rememberIndex].words[wordIndex].highlighted = 
-    !remembers.value[rememberIndex].words[wordIndex].highlighted
-}
+const totalCircumference = 2 * Math.PI * 80
 
-const handleRememberClick = (event, index) => {
-  // Only handle if not clicking on a word
-  if (event.target.tagName === 'SPAN') return
-}
-
-const startEditing = (index) => {
-  editingIndex.value = index
-  editingText.value = remembers.value[index].words.map(w => w.text).join(' ')
-  nextTick(() => {
-    if (editTextarea.value) {
-      editTextarea.value.focus()
+const activitiesWithData = computed(() => {
+  let cumulativeOffset = 0
+  
+  return activities.value.map(activity => {
+    const percentage = Math.round((activity.hours / totalHours.value) * 100)
+    const circumference = (activity.hours / totalHours.value) * totalCircumference
+    const offset = -cumulativeOffset
+    
+    cumulativeOffset += circumference
+    
+    return {
+      ...activity,
+      percentage,
+      circumference,
+      offset
     }
   })
+})
+
+// Modal functions
+const openCreateModal = () => {
+  selectedActivity.value = null
+  isEditing.value = false
+  showModal.value = true
 }
 
-const saveEdit = () => {
-  if (editingText.value.trim()) {
-    const words = editingText.value.trim().split(' ').map(text => ({
-      text,
-      highlighted: false
-    }))
-    remembers.value[editingIndex.value] = { words }
-  }
-  cancelEdit()
+const openEditModal = (activity) => {
+  selectedActivity.value = { ...activity }
+  isEditing.value = true
+  showModal.value = true
 }
 
-const cancelEdit = () => {
-  editingIndex.value = -1
-  editingText.value = ''
+const closeModal = () => {
+  showModal.value = false
+  selectedActivity.value = null
 }
 
-const startAdding = () => {
-  isAdding.value = true
-  nextTick(() => {
-    if (addTextarea.value) {
-      addTextarea.value.focus()
+const saveActivity = (activityData) => {
+  if (isEditing.value) {
+    const index = activities.value.findIndex(a => a.id === activityData.id)
+    if (index !== -1) {
+      activities.value[index] = { ...activityData }
     }
-  })
-}
-
-const addRemember = () => {
-  if (newRememberText.value.trim() && remembers.value.length < 3) {
-    const words = newRememberText.value.trim().split(' ').map(text => ({
-      text,
-      highlighted: false
-    }))
-    remembers.value.push({ words })
+  } else {
+    const newActivity = {
+      ...activityData,
+      id: Date.now(),
+      hours: 0
+    }
+    activities.value.push(newActivity)
   }
-  cancelAdding()
-}
-
-const cancelAdding = () => {
-  isAdding.value = false
-  newRememberText.value = ''
+  closeModal()
 }
 </script>

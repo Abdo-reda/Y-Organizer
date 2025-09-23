@@ -1,12 +1,10 @@
-import { IActivity } from "./IActivity";
-
 export interface ISession {
+    id?: number;
     title: string;
     notes: string;
-    // activityId: string;
-    activity: IActivity;
+    activity: string;
+    day: string;
     startTime: string;
     endTime: string;
-    // tasks?
-    // succeeded?
+    // status?
 }
