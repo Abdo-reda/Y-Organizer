@@ -29,11 +29,10 @@ function handleSaveNotes() {
 <template>
 	<FunctionCard title="Notes">
 		<template #default>
-			<div class="p-4 h-full rounded-lg hover:bg-accent/75 transition-colors duration-300 cursor-text focus-within:bg-accent/75">
+			<div class="p-4 h-full rounded-lg hover:bg-gray-100/75 transition-colors duration-300 cursor-text focus-within:bg-gray-100/75">
 				<textarea
 					:spellcheck="false"
 					@focusout="handleSaveNotes"
-					ref="notesTextarea"
 					v-model="notes"
 					placeholder="Click here to add your thoughts, reflections, notes for today..."
 					class="w-full h-full resize-none border-none outline-none text-gray-700 placeholder-gray-400 bg-transparent scroll-hidden"
