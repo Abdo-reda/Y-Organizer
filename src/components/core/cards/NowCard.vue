@@ -110,7 +110,7 @@ const currentTask: ITask | null = {
           <!-- NOTES -->
           <div class="w-1/3 h-full flex flex-col gap-2">
             <div
-              class="relative p-1.5 flex flex-col gap-0.5 h-full bg-gray-50 border border-gray-400 border-dashed rounded-sm text-gray-500 text-sm"
+              class="relative p-1.5 pb-0 flex flex-col gap-0.5 h-full bg-gray-50 border border-gray-400 border-dashed rounded-sm text-gray-500 text-sm"
             >
               <div class="flex items-center gap-1.5">
                 <NotepadTextIcon class="size-4" />

@@ -1,5 +1,6 @@
 import { StorageServiceKey } from "@/core/constants/injectionKeys";
 import { IRemember } from "@/core/interfaces/entities/IRemember";
+import { LoggingService } from "@/core/services/loggingService";
 import { inject, reactive } from "vue";
 
 
@@ -8,7 +9,7 @@ export default function useRemember() {
 	const remembers = reactive<IRemember[]>([]);
 
 	async function fetchRemembers() {
-		console.log("-- fetch remembers");
+		LoggingService.log("useRemember","fetching remembers...")
 		Object.assign(remembers, (await storageService.getRemembers()));
 	}
 
@@ -17,18 +18,20 @@ export default function useRemember() {
 			title: rememberTitle,
 			highlights: [],
 		}
-		//TODO: get id when I push...
+		LoggingService.log("useRemember","creating remembers...", remember)
+		remember.id = await storageService.createRemember(remember);
 		remembers.push(remember);
-		await storageService.createRemember(remember);
 	}
 
 	async function updateRemember(remember: IRemember) {
+		LoggingService.log("useRemember","updating remembers...", remember)
 		await storageService.updateRemember(remember);
 	}
 
 	async function deleteRemember(id: number) {
 		const index = remembers.findIndex((g) => g.id === id);
 		if (index > -1) remembers.splice(index, 1);
+		LoggingService.log("useRemember","deleting remembers...", id)
 		await storageService.deleteRemember(id);
 	}
 

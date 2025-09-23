@@ -3,7 +3,7 @@ import FunctionCard from "@/components/common/FunctionCard.vue";
 import { Button } from "@/components/ui/button";
 import { IRemember } from "@/core/interfaces/entities/IRemember";
 import useRemember from "@/store/useRemember";
-import { PlusIcon } from "lucide-vue-next";
+import { PlusIcon, XIcon } from "lucide-vue-next";
 import { ref } from "vue";
 
 const { remembers, createRemember, updateRemember, deleteRemember } = useRemember();
@@ -23,15 +23,8 @@ async function handleDelete(id: number | undefined) {
 
 async function handlePointer(event: PointerEvent, remember: IRemember) {
 	switch (event.button) {
-		case 0:
-			if (event.ctrlKey) {
-				// callbacks.onCtrlClick?.(event);
-			} else if (event.altKey) {
-				await handleDelete(remember.id);
-			}
-			break;
 		case 2:
-			// callbacks.onSecondaryClick?.(event);
+			await handleDelete(remember.id);
 			break;
 	}
 }
@@ -49,9 +42,14 @@ async function toggleHighlight(rememberId: number | undefined, wordIndex: number
 <template>
 	<FunctionCard title="Remember">
 		<template #default>
-			<div class="flex flex-col gap-2 h-full m-2">
-				<div v-auto-animate class="flex-1 flex flex-col gap-4 relative">
-					<div @pointerdown="handlePointer($event, remember)" v-for="remember in remembers" class="flex gap-4">
+			<div @contextmenu.prevent class="flex flex-col gap-2 h-full m-2">
+				<div v-auto-animate class="flex-1 flex flex-col gap-2 relative">
+					<div
+						@pointerdown="handlePointer($event, remember)"
+						v-for="remember in remembers"
+						:key="remember.id"
+						class="flex gap-4 hover:bg-gray-100/75 transition-colors group rounded-sm px-2 py-1"
+					>
 						<div class="flex items-center">
 							<div class="relative size-2.5 rounded-full" :style="{ backgroundColor: 'red' }">
 								<div
@@ -60,7 +58,7 @@ async function toggleHighlight(rememberId: number | undefined, wordIndex: number
 								></div>
 							</div>
 						</div>
-						<p class="flex-1 text-gray-900 text-2xl font-semibold capitalize leading-relaxed select-none">
+						<p class="flex-1 text-gray-900 text-xl font-semibold capitalize leading-relaxed select-none">
 							<template v-for="(word, index) in remember.title.trim().split(/\s+/)" :key="index">
 								<span
 									@click="toggleHighlight(remember.id, index)"
@@ -77,10 +75,14 @@ async function toggleHighlight(rememberId: number | undefined, wordIndex: number
 								<span> {{ index < remember.title.length - 1 ? " " : "" }} </span>
 							</template>
 						</p>
+						<div class="flex items-center">
+							<Button @click="handleDelete(remember.id)" variant="ghost" size="icon" class="text-gray-300 opacity-0 group-hover:opacity-100 bg-transparent"> <XIcon /> </Button>
+						</div>
 					</div>
 				</div>
 				<form @submit.prevent="handleCreate" class="flex gap-2 my-2 items-center">
 					<input
+						name="remember-input"
 						type="text"
 						v-model="currentRemember"
 						placeholder="Add a reminder..."

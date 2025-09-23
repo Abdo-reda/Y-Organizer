@@ -43,30 +43,25 @@ onMounted(() => {
 <template>
     <FunctionCard title="Schedule">
         <template #default>
-            <div class="flex h-full">
+            <div class="flex h-full select-none">
                 <div class="h-full flex flex-col">
                     <template v-for="i in 24" :key="i">
-                        <div class="flex-1 flex items-center justify-center">
-                            <p class="text-sm text-gray-500 font-semibold"> {{ (i - 1) }}:00 </p>
-                        </div>
-                        <!-- <div class="flex-1 flex flex-col items-center justify-between">
+                        <div class="flex-1 flex flex-col items-center justify-between">
                             <p class="text-xs text-gray-500 font-semibold -translate-y-1/2"> {{ (i - 1) }}:00 </p>
-                            <p v-if="i == 24" class="text-xs text-gray-500 font-semibold translate-y-1/5"> {{ i }}:00
+                            <p v-if="i == 24" class="text-xs text-gray-500 font-semibold translate-y-1/2"> {{ i }}:00
                             </p>
-                        </div> -->
+                        </div>
                     </template>
                 </div>
                 <div ref="schedule-container" class="!h-full grid-stack flex-1 relative mx-0.5">
                     <div class="absolute size-full z-10 pointer-events-none p-0.5">
-                        <div class="w-full bg-primary/20 rounded-t-sm" :style="{height: `${dayPercentage*100}%`}" />
-                        <div class="w-full border-t border-primary/50" />
+                        <div class="w-full bg-primary/5 rounded-t-sm" :style="{height: `${dayPercentage*100}%`}" />
+                        <div class="w-full border-primary/20 border-t-2" />
                     </div>
                     <div class="absolute h-full w-full flex flex-col p-0.5 gap-1.5">
-                        <template v-for="i in 24" :key="i">
-                            <div class="flex-1">
-                                <div class="rounded-sm bg-gray-50 p-1 border border-dashed h-full" />
-                            </div>
-                        </template>
+                        <div v-for="i in 24" :key="i" class="flex-1">
+                            <div class="rounded-sm bg-gray-50 p-1 border border-dashed h-full" />
+                        </div>
                     </div>
                     <template v-for="i in 2" :key="i">
                         <div class="grid-stack-item" :gs-h="1" :gs-no-resize="isStatic">
