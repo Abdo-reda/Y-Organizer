@@ -10,12 +10,12 @@ export default function useDayNotes() {
 	const notes = ref("");
 
 	async function fetchNotes() {
-        LoggingService.log("useDayNotes", "fetching notes...");
+        LoggingService.log("fetching notes...");
 		notes.value = await storageService.getNotes(selectedDay.value);
 	}
 
 	function updateNotes(notes: string) {
-        LoggingService.log("useDayNotes", "updating notes...");
+        LoggingService.log("updating notes...");
 		storageService.updateNotes(selectedDay.value, notes);
 	}
 

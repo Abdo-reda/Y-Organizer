@@ -11,24 +11,24 @@ export default function useDayGratitudes() {
 	const gratitudes = reactive<IGratitude[]>([]);
 
 	async function fetchGratitudes() {
-		LoggingService.log("useDayGratitudes", "fetch gratitudes");
+		LoggingService.log("fetch gratitudes");
         const dayGratitudes = await storageService.getGratitudes(selectedDay.value);
         Object.assign(gratitudes, dayGratitudes);
 	}
 
 	async function createGratitude(gratitude: IGratitude) {
-		LoggingService.log("useDayGratitudes", "create gratitudes", gratitude);
+		LoggingService.log("create gratitudes", gratitude);
 		gratitudes.push(gratitude);
 		await storageService.createGratitude(gratitude);
 	}
 
 	async function updateGratitude(gratitude: IGratitude) {
-		LoggingService.log("useDayGratitudes", "update gratitudes", gratitude);
+		LoggingService.log("update gratitudes", gratitude);
 		await storageService.updateGratitude(gratitude);
 	}
 
 	async function deleteGratitude(id: number) {
-		LoggingService.log("useDayGratitudes", "delete gratitudes", id);
+		LoggingService.log("delete gratitudes", id);
 		const index = gratitudes.findIndex((g) => g.id === id);
 		if (index > -1) gratitudes.splice(index, 1);
 		await storageService.deleteGratitude(id);

@@ -2,6 +2,7 @@ import { DateTime } from "luxon";
 import { IStorageService } from "../interfaces/services/stroageServiceInterface";
 import { IGratitude } from "../interfaces/entities/IGratitude";
 import { IRemember } from "../interfaces/entities/IRemember";
+import { IActivity } from "../interfaces/entities/IActivity";
 
 export class NullStroageService implements IStorageService {
 	readonly DATABASE_NAME = "";
@@ -51,4 +52,20 @@ export class NullStroageService implements IStorageService {
 	deleteRemember(_id: number): Promise<void> {
 		return Promise.resolve();
 	}
+
+    getActivities(): Promise<IActivity[]> {
+        return Promise.resolve([]);
+    }
+
+    createActivity(activity: IActivity): Promise<string | undefined> {
+        return Promise.resolve(undefined);
+    }
+
+    updateActivity(activity: IActivity): Promise<void> {
+        return Promise.resolve();
+    }
+
+    deleteActivity(id: string): Promise<void> {
+        return Promise.resolve();
+    }
 }

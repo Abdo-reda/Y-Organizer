@@ -9,7 +9,7 @@ export default function useRemember() {
 	const remembers = reactive<IRemember[]>([]);
 
 	async function fetchRemembers() {
-		LoggingService.log("useRemember","fetching remembers...")
+		LoggingService.log("fetching remembers...")
 		Object.assign(remembers, (await storageService.getRemembers()));
 	}
 
@@ -18,20 +18,20 @@ export default function useRemember() {
 			title: rememberTitle,
 			highlights: [],
 		}
-		LoggingService.log("useRemember","creating remembers...", remember)
+		LoggingService.log("creating remembers...", remember)
 		remember.id = await storageService.createRemember(remember);
 		remembers.push(remember);
 	}
 
 	async function updateRemember(remember: IRemember) {
-		LoggingService.log("useRemember","updating remembers...", remember)
+		LoggingService.log("updating remembers...", remember)
 		await storageService.updateRemember(remember);
 	}
 
 	async function deleteRemember(id: number) {
 		const index = remembers.findIndex((g) => g.id === id);
 		if (index > -1) remembers.splice(index, 1);
-		LoggingService.log("useRemember","deleting remembers...", id)
+		LoggingService.log("deleting remembers...", id)
 		await storageService.deleteRemember(id);
 	}
 

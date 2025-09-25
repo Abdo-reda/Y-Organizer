@@ -1,196 +1,229 @@
 <template>
-  <div class="bg-white rounded-xl border border-gray-200 p-6 shadow-sm">
-    <div class="flex items-center justify-between mb-6">
-      <h2 class="text-lg font-semibold text-gray-900">Activity Summary</h2>
-      <button 
-        @click="openCreateModal"
-        class="p-2 text-gray-400 hover:text-gray-600 hover:bg-gray-100 rounded-lg transition-all"
-      >
-        <Plus class="w-5 h-5" />
-      </button>
-    </div>
+  <div class="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4">
+    <div 
+      class="bg-white rounded-xl w-full max-w-sm transform transition-all duration-300 scale-100"
+      @click.stop
+    >
+      <!-- Made header more compact with smaller padding and text -->
+      <div class="flex items-center justify-between p-4 border-b border-gray-100">
+        <h3 class="text-lg font-semibold text-gray-900">
+          {{ isEditing ? 'Edit Activity' : 'Create Activity' }}
+        </h3>
+        <button 
+          @click="$emit('close')"
+          class="p-1 text-gray-400 hover:text-gray-600 hover:bg-gray-100 rounded-lg transition-all"
+        >
+          <X class="w-4 h-4" />
+        </button>
+      </div>
 
-     Chart Container 
-    <div class="relative mb-6">
-      <div class="flex items-center justify-center">
-        <svg width="200" height="200" class="transform -rotate-90">
-           Background Circle 
-          <circle
-            cx="100"
-            cy="100"
-            r="80"
-            fill="none"
-            stroke="#f3f4f6"
-            stroke-width="12"
+      <!-- Reduced padding and spacing throughout content area -->
+      <div class="p-4 space-y-4">
+        <!-- Activity Name -->
+        <div>
+          <label class="block text-xs font-medium text-gray-700 mb-1">
+            Activity Name
+          </label>
+          <input
+            v-model="formData.name"
+            type="text"
+            placeholder="Enter activity name..."
+            class="w-full px-3 py-2 text-sm border border-gray-200 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
           />
+        </div>
+
+        <!-- Description -->
+        <div>
+          <label class="block text-xs font-medium text-gray-700 mb-1">
+            Description
+          </label>
+          <textarea
+            v-model="formData.description"
+            placeholder="Describe this activity..."
+            rows="2"
+            class="w-full px-3 py-2 text-sm border border-gray-200 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all resize-none"
+          ></textarea>
+        </div>
+
+        <!-- Added status selection with compact design -->
+        <div>
+          <label class="block text-xs font-medium text-gray-700 mb-1">
+            Status
+          </label>
+          <div class="flex space-x-1">
+            <button
+              v-for="status in statusOptions"
+              :key="status.value"
+              @click="formData.status = status.value"
+              :class="[
+                'flex-1 px-2 py-1 text-xs rounded-md border transition-all',
+                formData.status === status.value
+                  ? `${status.activeClass} border-transparent`
+                  : 'bg-gray-50 border-gray-200 text-gray-600 hover:bg-gray-100'
+              ]"
+            >
+              {{ status.label }}
+            </button>
+          </div>
+        </div>
+
+        <!-- Color Selection -->
+        <div>
+          <label class="block text-xs font-medium text-gray-700 mb-2">
+            Color
+          </label>
+          <div class="grid grid-cols-8 gap-1">
+            <button
+              v-for="color in colorOptions"
+              :key="color"
+              @click="formData.color = color"
+              :class="[
+                'w-6 h-6 rounded-full border-2 transition-all hover:scale-110',
+                formData.color === color ? 'border-gray-400 ring-1 ring-gray-200' : 'border-gray-200'
+              ]"
+              :style="{ backgroundColor: color }"
+            ></button>
+          </div>
           
-           Activity Segments 
-          <circle
-            v-for="(activity, index) in activitiesWithData"
-            :key="activity.id"
-            cx="100"
-            cy="100"
-            r="80"
-            fill="none"
-            :stroke="activity.color"
-            stroke-width="12"
-            :stroke-dasharray="`${activity.circumference} ${totalCircumference}`"
-            :stroke-dashoffset="activity.offset"
-            class="transition-all duration-500 hover:stroke-width-16 cursor-pointer"
-            @click="openEditModal(activity)"
-          />
-        </svg>
-        
-         Center Text 
-        <div class="absolute inset-0 flex items-center justify-center">
-          <div class="text-center">
-            <div class="text-2xl font-bold text-gray-900">{{ totalHours }}h</div>
-            <div class="text-sm text-gray-500">Total</div>
+          <!-- Custom Color Input -->
+          <div class="mt-2 flex items-center space-x-2">
+            <input
+              v-model="formData.color"
+              type="color"
+              class="w-6 h-6 border border-gray-200 rounded cursor-pointer"
+            />
+            <input
+              v-model="formData.color"
+              type="text"
+              placeholder="#000000"
+              class="flex-1 px-2 py-1 text-xs border border-gray-200 rounded-md focus:ring-1 focus:ring-blue-500 focus:border-transparent"
+            />
+          </div>
+        </div>
+
+        <!-- Categories -->
+        <div>
+          <label class="block text-xs font-medium text-gray-700 mb-2">
+            Categories
+          </label>
+          <div class="flex flex-wrap gap-1">
+            <button
+              v-for="category in categoryOptions"
+              :key="category"
+              @click="toggleCategory(category)"
+              :class="[
+                'px-2 py-1 text-xs rounded-md border transition-all',
+                formData.categories.includes(category)
+                  ? 'bg-blue-100 border-blue-300 text-blue-700'
+                  : 'bg-gray-50 border-gray-200 text-gray-600 hover:bg-gray-100'
+              ]"
+            >
+              {{ category }}
+            </button>
           </div>
         </div>
       </div>
-    </div>
 
-     Activity List 
-    <div class="space-y-3">
-      <div 
-        v-for="activity in activitiesWithData" 
-        :key="activity.id"
-        class="flex items-center justify-between p-3 rounded-lg hover:bg-gray-50 transition-colors cursor-pointer group"
-        @click="openEditModal(activity)"
-      >
-        <div class="flex items-center space-x-3">
-          <div 
-            class="w-4 h-4 rounded-full"
-            :style="{ backgroundColor: activity.color }"
-          ></div>
-          <div>
-            <div class="font-medium text-gray-900">{{ activity.name }}</div>
-            <div class="text-sm text-gray-500">{{ activity.description }}</div>
-          </div>
-        </div>
-        <div class="text-right">
-          <div class="font-semibold text-gray-900">{{ activity.hours }}h</div>
-          <div class="text-sm text-gray-500">{{ activity.percentage }}%</div>
-        </div>
+      <!-- Made footer more compact with smaller padding -->
+      <div class="flex items-center justify-end space-x-2 p-4 border-t border-gray-100">
+        <button
+          @click="$emit('close')"
+          class="px-3 py-1 text-sm text-gray-600 hover:text-gray-800 transition-colors"
+        >
+          Cancel
+        </button>
+        <button
+          @click="handleSave"
+          :disabled="!formData.name.trim()"
+          :class="[
+            'px-4 py-1 text-sm rounded-lg font-medium transition-all',
+            formData.name.trim()
+              ? 'bg-blue-600 text-white hover:bg-blue-700 hover:shadow-lg'
+              : 'bg-gray-200 text-gray-400 cursor-not-allowed'
+          ]"
+        >
+          {{ isEditing ? 'Update' : 'Create' }}
+        </button>
       </div>
     </div>
-
-     <!-- Activity Modal 
-    <ActivityModal 
-      v-if="showModal"
-      :activity="selectedActivity"
-      :is-editing="isEditing"
-      @close="closeModal"
-      @save="saveActivity"
-    /> -->
   </div>
 </template>
 
 <script setup>
-import { ref, computed } from 'vue'
-import { Plus } from 'lucide-vue-next'
-// import ActivityModal from './activity-modal.vue'
+import { ref, watch } from 'vue'
+import { X } from 'lucide-vue-next'
 
-// Sample activities with mock data
-const activities = ref([
-  { 
-    id: 1, 
-    name: 'Work', 
-    description: 'Professional tasks and meetings',
-    color: '#3B82F6', 
-    categories: ['productivity'],
-    hours: 32 
-  },
-  { 
-    id: 2, 
-    name: 'Exercise', 
-    description: 'Physical fitness and health',
-    color: '#10B981', 
-    categories: ['health'],
-    hours: 8 
-  },
-  { 
-    id: 3, 
-    name: 'Study', 
-    description: 'Learning and skill development',
-    color: '#8B5CF6', 
-    categories: ['education'],
-    hours: 12 
-  },
-  { 
-    id: 4, 
-    name: 'Personal', 
-    description: 'Personal projects and hobbies',
-    color: '#F59E0B', 
-    categories: ['personal'],
-    hours: 6 
-  }
-])
-
-// Modal state
-const showModal = ref(false)
-const selectedActivity = ref(null)
-const isEditing = ref(false)
-
-// Computed properties
-const totalHours = computed(() => {
-  return activities.value.reduce((sum, activity) => sum + activity.hours, 0)
+const props = defineProps({
+  activity: Object,
+  isEditing: Boolean
 })
 
-const totalCircumference = 2 * Math.PI * 80
+const emit = defineEmits(['close', 'save'])
 
-const activitiesWithData = computed(() => {
-  let cumulativeOffset = 0
-  
-  return activities.value.map(activity => {
-    const percentage = Math.round((activity.hours / totalHours.value) * 100)
-    const circumference = (activity.hours / totalHours.value) * totalCircumference
-    const offset = -cumulativeOffset
-    
-    cumulativeOffset += circumference
-    
-    return {
-      ...activity,
-      percentage,
-      circumference,
-      offset
-    }
-  })
+const formData = ref({
+  name: '',
+  description: '',
+  color: '#3B82F6',
+  categories: [],
+  status: 'active'
 })
 
-// Modal functions
-const openCreateModal = () => {
-  selectedActivity.value = null
-  isEditing.value = false
-  showModal.value = true
-}
+const statusOptions = [
+  { value: 'active', label: 'Active', activeClass: 'bg-green-100 text-green-700' },
+  { value: 'completed', label: 'Completed', activeClass: 'bg-blue-100 text-blue-700' },
+  { value: 'archived', label: 'Archived', activeClass: 'bg-gray-100 text-gray-700' }
+]
 
-const openEditModal = (activity) => {
-  selectedActivity.value = { ...activity }
-  isEditing.value = true
-  showModal.value = true
-}
+// Color options
+const colorOptions = [
+  '#3B82F6', '#10B981', '#8B5CF6', '#F59E0B',
+  '#EF4444', '#06B6D4', '#84CC16', '#F97316',
+  '#EC4899', '#6366F1', '#14B8A6', '#F59E0B',
+  '#8B5CF6', '#EF4444', '#10B981', '#6B7280'
+]
 
-const closeModal = () => {
-  showModal.value = false
-  selectedActivity.value = null
-}
+// Category options
+const categoryOptions = [
+  'productivity', 'health', 'education', 'personal',
+  'work', 'fitness', 'creative', 'social'
+]
 
-const saveActivity = (activityData) => {
-  if (isEditing.value) {
-    const index = activities.value.findIndex(a => a.id === activityData.id)
-    if (index !== -1) {
-      activities.value[index] = { ...activityData }
+// Initialize form data when activity prop changes
+watch(() => props.activity, (newActivity) => {
+  if (newActivity) {
+    formData.value = {
+      id: newActivity.id,
+      name: newActivity.name || '',
+      description: newActivity.description || '',
+      color: newActivity.color || '#3B82F6',
+      categories: [...(newActivity.categories || [])],
+      status: newActivity.status || 'active'
     }
   } else {
-    const newActivity = {
-      ...activityData,
-      id: Date.now(),
-      hours: 0
+    formData.value = {
+      name: '',
+      description: '',
+      color: '#3B82F6',
+      categories: [],
+      status: 'active'
     }
-    activities.value.push(newActivity)
   }
-  closeModal()
+}, { immediate: true })
+
+// Toggle category selection
+const toggleCategory = (category) => {
+  const index = formData.value.categories.indexOf(category)
+  if (index > -1) {
+    formData.value.categories.splice(index, 1)
+  } else {
+    formData.value.categories.push(category)
+  }
+}
+
+// Handle save
+const handleSave = () => {
+  if (formData.value.name.trim()) {
+    emit('save', { ...formData.value })
+  }
 }
 </script>

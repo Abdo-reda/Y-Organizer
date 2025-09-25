@@ -5,19 +5,21 @@ import { IDay } from "../interfaces/entities/IDay";
 import { LoggingService } from "./loggingService";
 import { IGratitude } from "../interfaces/entities/IGratitude";
 import { IRemember } from "../interfaces/entities/IRemember";
+import { IActivity } from "../interfaces/entities/IActivity";
 
 export class SqliteStroageService implements IStorageService {
 	readonly DATABASE_NAME = "y.db";
 	database!: Database;
 
 	async init() {
-		LoggingService.log("SqliteStroageService", "Init sqlite database...");
+		LoggingService.log("Init sqlite database...");
 		await this.initDB();
 		await this.initDay(DateTime.now());
 	}
 
 	async initDB() {
 		this.database = await Database.load(`sqlite:${this.DATABASE_NAME}`);
+        this.database.execute("PRAGMA foreign_keys = ON;"); //TODO: will I really need this?
 	}
 
 	async initDay(day: DateTime) {
@@ -82,13 +84,30 @@ export class SqliteStroageService implements IStorageService {
 		await this.database.execute("DELETE FROM remembers WHERE id = $1;", [id]);
 	}
 
+    async getActivities(): Promise<IActivity[]> {
+        throw new Error("Method not implemented.");
+    }
+
+    async createActivity(activity: IActivity): Promise<string | undefined> {
+        throw new Error("Method not implemented.");
+    }
+
+    async updateActivity(activity: IActivity): Promise<void> {
+        throw new Error("Method not implemented.");
+    }
+
+    async deleteActivity(id: string): Promise<void> {
+        throw new Error("Method not implemented.");
+    }
+
+
 	private mapGratitudes(gratitudes: IGratitude[]) {
 		gratitudes.forEach((gratitude) => {
 			if (typeof gratitude.highlights === "string") {
 				try {
 					gratitude.highlights = JSON.parse(gratitude.highlights);
 				} catch (e) {
-					LoggingService.log("SqliteStroageService", "Failed to parse gratitude highlights", e);
+					LoggingService.log("Failed to parse gratitude highlights", e);
 					gratitude.highlights = [];
 				}
 			}
@@ -101,7 +120,7 @@ export class SqliteStroageService implements IStorageService {
 				try {
 					remember.highlights = JSON.parse(remember.highlights);
 				} catch (e) {
-					LoggingService.log("SqliteStroageService", "Failed to parse remember highlights", e);
+					LoggingService.log("Failed to parse remember highlights", e);
 					remember.highlights = [];
 				}
 			}

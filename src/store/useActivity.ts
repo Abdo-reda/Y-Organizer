@@ -1,45 +1,42 @@
 import { StorageServiceKey } from "@/core/constants/injectionKeys";
-import { inject, ref, watch } from "vue";
+import { inject, reactive, ref, watch } from "vue";
 import { LoggingService } from "@/core/services/loggingService";
+import { IActivity } from "@/core/interfaces/entities/IActivity";
 
 
 export default function useActivity() {
 	const storageService = inject(StorageServiceKey)!;
-	// const remembers = reactive<IRemember[]>([]);
+	const activities = reactive<IActivity[]>([]);
 
-	// async function fetchRemembers() {
-	// 	LoggingService.log("useRemember","fetching remembers...")
-	// 	Object.assign(remembers, (await storageService.getRemembers()));
-	// }
+	async function fetchActivities() {
+		LoggingService.log("fetching activities...")
+		Object.assign(activities, (await storageService.getActivities()));
+	}
 
-	// async function createRemember(rememberTitle: string) {
-	// 	const remember: IRemember = {
-	// 		title: rememberTitle,
-	// 		highlights: [],
-	// 	}
-	// 	LoggingService.log("useRemember","creating remembers...", remember)
-	// 	remember.id = await storageService.createRemember(remember);
-	// 	remembers.push(remember);
-	// }
+	async function createActivity(activity: IActivity) {
+		LoggingService.log("creating activity...", activity)
+		activities.push(activity);
+		await storageService.createActivity(activity);
+	}
 
-	// async function updateRemember(remember: IRemember) {
-	// 	LoggingService.log("useRemember","updating remembers...", remember)
-	// 	await storageService.updateRemember(remember);
-	// }
+	async function updateActivity(activity: IActivity) {
+		LoggingService.log("updating remembers...", activity)
+		await storageService.updateActivity(activity);
+	}
 
-	// async function deleteRemember(id: number) {
-	// 	const index = remembers.findIndex((g) => g.id === id);
-	// 	if (index > -1) remembers.splice(index, 1);
-	// 	LoggingService.log("useRemember","deleting remembers...", id)
-	// 	await storageService.deleteRemember(id);
-	// }
+	async function deleteActivity(id: string) {
+		// const index = remembers.findIndex((g) => g.id === id);
+		// if (index > -1) remembers.splice(index, 1);
+		// LoggingService.log("useRemember","deleting remembers...", id)
+		// await storageService.deleteRemember(id);
+	}
 
-	// fetchRemembers();
+	fetchActivities();
 
 	return {
-		// remembers,
-		// createRemember,
-		// updateRemember,
-		// deleteRemember
+		activities,
+		createActivity,
+		updateActivity,
+		deleteActivity
 	};
 }

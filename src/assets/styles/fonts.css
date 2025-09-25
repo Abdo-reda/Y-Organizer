@@ -1,3 +1,7 @@
+html {
+    font-size: 80%;
+}
+
 @layer base {
 	@font-face {
 		font-family: "Montserrat";

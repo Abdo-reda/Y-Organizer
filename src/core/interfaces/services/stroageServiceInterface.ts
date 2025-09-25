@@ -1,6 +1,7 @@
 import { type DateTime } from "luxon";
 import { IGratitude } from "../entities/IGratitude";
 import { IRemember } from "../entities/IRemember";
+import { IActivity } from "../entities/IActivity";
 
 export interface IStorageService {
 	DATABASE_NAME: Readonly<String>;
@@ -19,4 +20,9 @@ export interface IStorageService {
 	createRemember(remember: IRemember): Promise<number|undefined>;
 	updateRemember(remember: IRemember): Promise<void>;
 	deleteRemember(id: number): Promise<void>;
+
+    getActivities(): Promise<IActivity[]>;
+	createActivity(activity: IActivity): Promise<string|undefined>;
+	updateActivity(activity: IActivity): Promise<void>;
+	deleteActivity(id: string): Promise<void>;
 }

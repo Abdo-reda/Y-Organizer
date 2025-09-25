@@ -4,7 +4,7 @@ body {
 
 #app {
     @apply h-full bg-gradient-to-tl from-primary/25 to-transparent to-75% bg-no-repeat bg-card rounded-xl border shadow-sm;
-    animation: slow-glow 8s infinite ease-in-out alternate;
+    /* animation: slow-glow 8s infinite ease-in-out alternate; TODO: uses like 12% gpu */
 }
 
 .dot-background {

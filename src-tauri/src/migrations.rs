@@ -15,7 +15,7 @@ impl YMigrations {
         let activities_table_migration = Migration {
             version: 2,
             description: "Create Activities Table",
-            sql: "CREATE TABLE activities (name TEXT PRIMARY KEY, description TEXT, categories TEXT, color TEXT);",
+            sql: "CREATE TABLE activities (name TEXT PRIMARY KEY, description TEXT, categories TEXT, color TEXT, status TEXT);",
             kind: MigrationKind::Up,
         };
 
@@ -32,7 +32,7 @@ impl YMigrations {
                     startTime TEXT,
                     endTime TEXT,
                     FOREIGN KEY(day) REFERENCES days(day),
-                    FOREIGN KEY(activity) REFERENCES activities(name)
+                    FOREIGN KEY(activity) REFERENCES activities(name) ON UPDATE CASCADE
                 );
                 CREATE INDEX idx_sessions_day ON sessions(day);
                 CREATE INDEX idx_sessions_activity ON sessions(activity);
