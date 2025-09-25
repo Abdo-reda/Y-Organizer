@@ -1,5 +1,5 @@
 body {
-    @apply relative overflow-hidden bg-transparent rounded-md p-0.5 h-screen;
+    @apply relative overflow-hidden bg-transparent p-0.5 h-screen;
 }
 
 #app {
