@@ -7,12 +7,14 @@ import { Button } from "@/components/ui/button";
 import { BrushCleaningIcon, BrushIcon, EraserIcon, SaveIcon } from "lucide-vue-next";
 import { DateTime } from "luxon";
 import { useResizeObserver } from "@vueuse/core";
+import useDayDoodle from "@/store/useDayDoodle";
+
+const { doodle, onDoodleFetched, updateDoodle} = useDayDoodle();
 
 //TODO:
 // - context menu? https://www.shadcn-vue.com/docs/components/context-menu?
 // - handle shortcuts? redo, undo, change color and so on...
 // - should colors or brush color depend on activity color/primary color
-// '--tw-ring-color': `color-mix(in oklab, ${color} 25%, transparent)`
 
 const canvasDrawer = useTemplateRef<HTMLCanvasElement>("canvas-drawer");
 const fileSaver = useTemplateRef<HTMLAnchorElement>("file-saver");
@@ -28,9 +30,9 @@ useResizeObserver(drawArea, (entries) => {
     drawAreaHeight.value = height;
 });
 
-const { undo, redo, canUndo, canRedo, brush, clear } = useDrauu(drawArea, {
+const { undo, redo, canUndo, canRedo, brush, clear, onCommitted, load } = useDrauu(drawArea, {
     brush: {
-        color: "var(--primary)",
+        color: "oklch(14.5% 0 0)",
         size: 3,
     },
 });
@@ -51,6 +53,15 @@ useMouseShortcuts(
     { capture: true }
 );
 
+onDoodleFetched(() => {
+    if (doodle.value) load(doodle.value);
+    else clear();
+});
+
+onCommitted(() => {
+    saveSvg();
+})
+
 function lineMode() {
     brush.value.mode = "line";
 }
@@ -64,12 +75,9 @@ function eraseMode() {
 }
 
 function saveSvg() {
-    if (!fileSaver.value) return;
-    const svgUrl = URL.createObjectURL(new Blob([drawArea.value?.outerHTML ?? ""], { type: "image/svg+xml" }));
-    fileSaver.value.href = svgUrl;
-    fileSaver.value.download = `doodle_${DateTime.now().toISODate()}`;
-    fileSaver.value.click();
-    URL.revokeObjectURL(svgUrl);
+    if (!drawArea.value) return;
+    doodle.value = drawArea.value.outerHTML;
+    updateDoodle(doodle.value);
 }
 
 function saveSvgAsPng() {

@@ -35,6 +35,15 @@ export class SqliteStroageService implements IStorageService {
 		await this.database.execute("UPDATE days SET notes = $1 WHERE day = $2;", [notes, day.toISODate()]);
 	}
 
+    async getDoodle(day: DateTime): Promise<string> {
+        const dayData = await this.database.select<IDay[]>("SELECT doodle FROM days WHERE day = $1;", [day.toISODate()]);
+		return dayData.length > 0 ? dayData[0].doodle : "";
+    }
+
+    async updateDoodle(day: DateTime, doodle: string): Promise<void> {
+       	await this.database.execute("UPDATE days SET doodle = $1 WHERE day = $2;", [doodle, day.toISODate()]);
+    }
+
 	async getGratitudes(day: DateTime): Promise<IGratitude[]> {
 		const gratitudes = await this.database.select<IGratitude[]>("SELECT * FROM gratitudes WHERE day = $1;", [day.toISODate()]);
 		this.mapGratitudes(gratitudes);

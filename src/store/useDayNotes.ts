@@ -8,10 +8,16 @@ export default function useDayNotes() {
 
 	const storageService = inject(StorageServiceKey)!;
 	const notes = ref("");
+    let fetchCallback: (() => void) | undefined;
+
+    function onNotesFetched(callback: () => void) {
+        fetchCallback = callback;
+    }
 
 	async function fetchNotes() {
 		LoggingService.log("fetching notes...");
 		notes.value = await storageService.getNotes(selectedDay.value);
+        fetchCallback?.();
 	}
 
 	function updateNotes(notes: string) {
@@ -23,6 +29,7 @@ export default function useDayNotes() {
 
 	return {
 		notes,
+        onNotesFetched,
 		updateNotes,
 	};
 }
