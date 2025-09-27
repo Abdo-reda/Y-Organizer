@@ -6,9 +6,7 @@ const { notes, updateNotes } = useDayNotes();
 
 //TODO:
 //- should we support markdown? rich text?
-//https://www.npmjs.com/package/marked
-//https://miaolz123.github.io/vue-markdown/
-//https://markdown-it.github.io/
+//https://github.com/nhn/tui.editor
 //- make a contenteditable div in this case... and add smooth caret animation...
 //- fix the colors? text color primary? bg primary? so on ..
 //- actions
