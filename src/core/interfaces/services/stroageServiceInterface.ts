@@ -8,8 +8,12 @@ export interface IStorageService {
 	init(): void;
 	initDB(): void;
 	initDay(day: DateTime): void;
+
 	getNotes(day: DateTime): Promise<string>;
 	updateNotes(day: DateTime, notes: string): Promise<void>;
+
+    getDoodle(day: DateTime): Promise<string>;
+	updateDoodle(day: DateTime, doodle: string): Promise<void>;
 
 	getGratitudes(day: DateTime): Promise<IGratitude[]>;
 	createGratitude(gratitude: IGratitude): Promise<void>;

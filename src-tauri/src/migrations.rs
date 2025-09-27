@@ -7,7 +7,7 @@ impl YMigrations {
         let days_table_migration = Migration {
             version: 1,
             description: "Create Days Table",
-            sql: "CREATE TABLE days (day TEXT PRIMARY KEY, notes TEXT);",
+            sql: "CREATE TABLE days (day TEXT PRIMARY KEY, notes TEXT, doodle TEXT);",
             kind: MigrationKind::Up,
         };
 

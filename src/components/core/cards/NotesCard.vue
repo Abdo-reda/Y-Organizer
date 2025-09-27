@@ -1,13 +1,15 @@
 <script setup lang="ts">
 import FunctionCard from "@/components/common/FunctionCard.vue";
 import useDayNotes from "@/store/useDayNotes";
+import { EditorContent, useEditor } from '@tiptap/vue-3'
+import StarterKit from '@tiptap/starter-kit'
+import { Placeholder } from '@tiptap/extensions/placeholder'
+import { onBeforeMount, watch } from "vue";
 
-const { notes, updateNotes } = useDayNotes();
+const { notes, onNotesFetched, updateNotes } = useDayNotes();
+//TODO: Fix placeholder
 
 //TODO:
-//- should we support markdown? rich text?
-//https://github.com/nhn/tui.editor
-//- make a contenteditable div in this case... and add smooth caret animation...
 //- fix the colors? text color primary? bg primary? so on ..
 //- actions
 //- copy action?
@@ -18,24 +20,44 @@ const { notes, updateNotes } = useDayNotes();
 
 //----> I want things to feel fun and smooth and clean to use... little haptic and small feedbacks and animations.
 
+const editor = useEditor({
+    extensions: [
+        StarterKit,
+        Placeholder.configure({
+            placeholder: "Click here to add your thoughts, reflections, notes for today...",
+        }), //https://github.com/ueberdosis/tiptap/issues/2659
+    ],
+    editorProps: {
+        attributes: {
+            class: "w-full h-full border-none outline-none text-gray-700 bg-transparent overflow-auto scroll-hidden focus:outline-none prose prose-sm prose-li:[&>p]:m-0",
+            // [&::placeholder]:select-none placeholder-gray-400
+        },
+    },
+    content: notes.value,
+    onUpdate: ({ editor }) => notes.value = editor.getHTML(),
+    onBlur: () => handleSaveNotes(),
+});
 
 function handleSaveNotes() {
-	updateNotes(notes.value);
+    updateNotes(notes.value);
 }
+
+onNotesFetched(() => {
+    if (editor.value) editor.value.commands.setContent(notes.value);
+});
+
+onBeforeMount(() => {
+    editor.value?.destroy();
+});
 </script>
 
 <template>
-	<FunctionCard title="Notes">
-		<template #default>
-			<div class="p-4 h-full rounded-lg hover:bg-gray-100/75 transition-colors duration-300 cursor-text focus-within:bg-gray-100/75">
-				<textarea
-					:spellcheck="false"
-					@focusout="handleSaveNotes"
-					v-model="notes"
-					placeholder="Click here to add your thoughts, reflections, notes for today..."
-					class="w-full h-full resize-none border-none outline-none [&::placeholder]:select-none text-gray-700 placeholder-gray-400 bg-transparent scroll-hidden"
-				></textarea>
-			</div>
-		</template>
-	</FunctionCard>
+    <FunctionCard title="Notes">
+        <template #default>
+            <div
+                class="p-4 h-full rounded-lg hover:bg-gray-100/75 transition-colors duration-300 cursor-text focus-within:bg-gray-100/75">
+                <EditorContent autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" :editor="editor" class="w-full h-full" />
+            </div>
+        </template>
+    </FunctionCard>
 </template>

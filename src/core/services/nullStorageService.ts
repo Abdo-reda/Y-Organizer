@@ -21,6 +21,14 @@ export class NullStroageService implements IStorageService {
 		return Promise.resolve();
 	}
 
+    getDoodle(_day: DateTime): Promise<string> {
+        return Promise.resolve('');
+    }
+
+    updateDoodle(_day: DateTime, _doodle: string): Promise<void> {
+        return Promise.resolve();
+    }
+
 	getGratitudes(_day: DateTime): Promise<IGratitude[]> {
 		return Promise.resolve([]);
 	}
