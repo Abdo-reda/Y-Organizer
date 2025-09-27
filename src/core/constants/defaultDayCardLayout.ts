@@ -25,13 +25,20 @@ export const DEFAULT_DAY_CARD_LAYOUT: ICardStructure[] = [
 		col: 1,
 		row: 1,
 	},
-    {
-        component: TestCard,
-        height: 6,
+	{
+		component: TestCard,
+		height: 6,
 		width: 3,
 		col: 1,
 		row: 1,
-    },
+	},
+	{
+		component: DoodleCard,
+		height: 6,
+		width: 4,
+		col: 1,
+		row: 1,
+	},
 	{
 		component: RememberCard,
 		height: 6,
@@ -46,20 +53,13 @@ export const DEFAULT_DAY_CARD_LAYOUT: ICardStructure[] = [
 		col: 1,
 		row: 1,
 	},
-    {
-		component: DoodleCard,
+	{
+		component: ActivityCard,
 		height: 6,
 		width: 3,
 		col: 1,
 		row: 1,
 	},
-    {
-        component: ActivityCard,
-		height: 6,
-		width: 3,
-		col: 1,
-		row: 1,
-    }
 	// {
 	// 	component: HabitCard,
 	// 	height: 4,
