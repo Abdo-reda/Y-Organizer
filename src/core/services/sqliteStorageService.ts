@@ -76,8 +76,8 @@ export class SqliteStroageService implements IStorageService {
 		return result.lastInsertId;
 	}
 
-	async updateRemember(remember: IRemember): Promise<void> {
-		await this.database.execute("UPDATE remembers SET title = $1, highlights = $2 WHERE id = $3;", [remember.title, remember.highlights, remember.id]);
+	async updateRemember(id: number, remember: IRemember): Promise<void> {
+		await this.database.execute("UPDATE remembers SET title = $1, highlights = $2 WHERE id = $3;", [remember.title, remember.highlights, id]);
 	}
 
 	async deleteRemember(id: number): Promise<void> {
@@ -85,21 +85,35 @@ export class SqliteStroageService implements IStorageService {
 	}
 
     async getActivities(): Promise<IActivity[]> {
-        throw new Error("Method not implemented.");
+        const activities = await this.database.select<IActivity[]>("SELECT * FROM activities;");   
+        this.mapActivities(activities);
+        return activities;     
     }
 
-    async createActivity(activity: IActivity): Promise<string | undefined> {
-        throw new Error("Method not implemented.");
+    async createActivity(activity: IActivity): Promise<void> {
+        await this.database.execute("INSERT INTO activities (name, description, categories, color, status) VALUES ($1, $2, $3, $4, $5);", [activity.name, activity.description, activity.categories, activity.color, activity.status]);
     }
 
-    async updateActivity(activity: IActivity): Promise<void> {
-        throw new Error("Method not implemented.");
+    async updateActivity(id: string, activity: IActivity): Promise<void> {
+        await this.database.execute("UPDATE activities SET name = $1, description = $2, categories = $3, color = $4, status = $5 WHERE name = $6;", [activity.name, activity.description, activity.categories, activity.color, activity.status, id]);
     }
 
     async deleteActivity(id: string): Promise<void> {
-        throw new Error("Method not implemented.");
+        await this.database.execute("DELETE FROM activities WHERE name = $1;", [id]);
     }
 
+    private mapActivities(activities: IActivity[]) {
+        activities.forEach((activity) => {
+            if (typeof activity.categories === "string") {
+                try {
+                    activity.categories = JSON.parse(activity.categories);
+                } catch (e) {
+                    LoggingService.log("Failed to parse activity categories", e);
+                    activity.categories = [];
+                }
+            }
+        });
+	}
 
 	private mapGratitudes(gratitudes: IGratitude[]) {
 		gratitudes.forEach((gratitude) => {

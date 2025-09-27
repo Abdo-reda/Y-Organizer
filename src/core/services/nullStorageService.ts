@@ -45,7 +45,7 @@ export class NullStroageService implements IStorageService {
 		return Promise.resolve(undefined);
 	}
 
-	updateRemember(_remember: IRemember): Promise<void> {
+	updateRemember(_id: number, _remember: IRemember): Promise<void> {
 		return Promise.resolve();
 	}
 
@@ -57,15 +57,15 @@ export class NullStroageService implements IStorageService {
         return Promise.resolve([]);
     }
 
-    createActivity(activity: IActivity): Promise<string | undefined> {
+    createActivity(_activity: IActivity): Promise<void> {
         return Promise.resolve(undefined);
     }
 
-    updateActivity(activity: IActivity): Promise<void> {
+    updateActivity(_id: string, _activity: IActivity): Promise<void> {
         return Promise.resolve();
     }
 
-    deleteActivity(id: string): Promise<void> {
+    deleteActivity(_id: string): Promise<void> {
         return Promise.resolve();
     }
 }

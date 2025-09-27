@@ -42,7 +42,7 @@ async function toggleHighlight(rememberId: number | undefined, wordIndex: number
 <template>
 	<FunctionCard title="Remember">
 		<template #default>
-			<div @contextmenu.prevent class="flex flex-col gap-2 h-full m-2">
+			<div @contextmenu.prevent class="flex flex-col gap-2 h-full mx-2">
 				<div v-auto-animate class="flex-1 flex flex-col gap-2 relative">
 					<div
 						@pointerdown="handlePointer($event, remember)"
@@ -80,13 +80,15 @@ async function toggleHighlight(rememberId: number | undefined, wordIndex: number
 						</div>
 					</div>
 				</div>
-				<form @submit.prevent="handleCreate" class="flex gap-2 my-2 items-center">
+				<form @submit.prevent="handleCreate" class="flex gap-2 p-2 items-center">
 					<input
 						name="remember-input"
 						type="text"
 						v-model="currentRemember"
-						placeholder="Add a reminder..."
-						class="w-full h-full focus:ring-1 ring-gray-200 transition-shadow bg-gray-50 rounded-md p-1.5 resize-none border-none outline-none text-gray-500 placeholder-gray-300"
+                        autocomplete="off"
+                        autocorrect="off"
+						placeholder="remember..."
+						class="w-full h-full focus:ring-1 [&::placeholder]:select-none ring-gray-200 transition-shadow bg-gray-50 rounded-md p-1.5 resize-none border-none outline-none text-gray-500 placeholder-gray-300"
 					/>
 					<Button type="submit" variant="ghost" size="icon" class="text-gray-300"><PlusIcon /></Button>
 				</form>
@@ -95,7 +97,9 @@ async function toggleHighlight(rememberId: number | undefined, wordIndex: number
 	</FunctionCard>
 </template>
 
+
 <style lang="css" scoped>
+
 .highlight-word:hover {
 	background-color: color-mix(in srgb, var(--hover-color) 10%, transparent);
 	padding: 0px 2px;

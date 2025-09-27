@@ -35,7 +35,7 @@ function handleSaveNotes() {
 					@focusout="handleSaveNotes"
 					v-model="notes"
 					placeholder="Click here to add your thoughts, reflections, notes for today..."
-					class="w-full h-full resize-none border-none outline-none text-gray-700 placeholder-gray-400 bg-transparent scroll-hidden"
+					class="w-full h-full resize-none border-none outline-none [&::placeholder]:select-none text-gray-700 placeholder-gray-400 bg-transparent scroll-hidden"
 				></textarea>
 			</div>
 		</template>

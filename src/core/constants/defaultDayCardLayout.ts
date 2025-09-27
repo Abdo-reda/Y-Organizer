@@ -8,6 +8,7 @@ import HabitCard from "@/components/core/cards/HabitCard.vue";
 import ScheduleCard from "@/components/core/cards/ScheduleCard.vue";
 import RememberCard from "@/components/core/cards/RememberCard.vue";
 import ActivityCard from "@/components/core/cards/ActivityCard.vue";
+import TestCard from "@/components/core/cards/TestCard.vue";
 
 export const DEFAULT_DAY_CARD_LAYOUT: ICardStructure[] = [
 	{
@@ -24,6 +25,13 @@ export const DEFAULT_DAY_CARD_LAYOUT: ICardStructure[] = [
 		col: 1,
 		row: 1,
 	},
+    {
+        component: TestCard,
+        height: 6,
+		width: 3,
+		col: 1,
+		row: 1,
+    },
 	{
 		component: RememberCard,
 		height: 6,

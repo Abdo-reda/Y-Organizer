@@ -6,7 +6,7 @@ import { Dialog, DialogTrigger } from '@/components/ui/dialog';
 import useActivity from '@/store/useActivity';
 import { PlusIcon } from 'lucide-vue-next';
 
-const { activities } = useActivity();
+const { activities, createActivity, updateActivity } = useActivity();
 
 </script>
 
@@ -14,9 +14,9 @@ const { activities } = useActivity();
     <FunctionCard title="Activities">
         <template #default>
             <div class="flex h-full select-none">
-                <div class="h-full relative flex items-center justify-center w-1/2">
-                    <svg viewBox="0 0 100 100">
-                        <circle cx="50" cy="50" r="45" fill="none" stroke="red" stroke-width="4" />
+                <div class="h-full relative flex items-center justify-center flex-1">
+                    <svg viewBox="0 0 100 100" class="w-full h-full">
+                        <circle cx="50" cy="50" r="45" fill="none" class="stroke-gray-300" stroke-width="4" />
 
                         <!-- <circle v-for="(activity, index) in activitiesWithData" :key="activity.id" cx="100" cy="100"
                             r="80" fill="none" :stroke="activity.color" stroke-width="12"
@@ -27,12 +27,12 @@ const { activities } = useActivity();
                     </svg>
                     <div class="absolute inset-0 flex items-center justify-center">
                         <div class="text-center">
-                            <div class="text-2xl font-bold text-gray-900">{{ 0 }}h</div>
+                            <div class="text-2xl font-bold">{{ 0 }}h</div>
                             <div class="text-sm text-gray-500">Total</div>
                         </div>
                     </div>
                 </div>
-                <div class="h-full flex flex-col gap-1 flex-1 my-4 mx-2">
+                <div v-if="activities.length" class="h-full flex flex-col gap-1 my-4 mx-2 max-w-1/2">
                     <div v-for="activity in activities" :key="activity.name"
                         class="flex items-center justify-between rounded-lg hover:bg-hover transition-colors"
                         :style="{ '--color-hover': activity.color }">
@@ -59,7 +59,7 @@ const { activities } = useActivity();
                             <PlusIcon />
                         </Button>
                     </DialogTrigger>
-                    <ActivityDialog />
+                    <ActivityDialog :existing-activity="null" @create="createActivity" @update="updateActivity" />
                 </Dialog>
             </div>
         </template>

@@ -4,16 +4,16 @@ import useDayState from "./useDayState";
 import { IGratitude } from "@/core/interfaces/entities/IGratitude";
 import { LoggingService } from "@/core/services/loggingService";
 
-const { selectedDay } = useDayState();
-
 export default function useDayGratitudes() {
+	const { selectedDay } = useDayState();
+
 	const storageService = inject(StorageServiceKey)!;
 	const gratitudes = reactive<IGratitude[]>([]);
 
 	async function fetchGratitudes() {
 		LoggingService.log("fetch gratitudes");
-        const dayGratitudes = await storageService.getGratitudes(selectedDay.value);
-        Object.assign(gratitudes, dayGratitudes);
+		const dayGratitudes = await storageService.getGratitudes(selectedDay.value);
+		Object.assign(gratitudes, dayGratitudes);
 	}
 
 	async function createGratitude(gratitude: IGratitude) {

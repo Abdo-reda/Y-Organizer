@@ -31,7 +31,7 @@ defineProps<IFunctionCardProps>();
                 <slot name="header-right-actions" />
             </div>
         </CardHeader>
-        <CardContent class="flex-1 px-4 pt-2">
+        <CardContent class="flex-1 px-4 pt-2 overflow-hidden">
             <slot />
         </CardContent>
     </Card>

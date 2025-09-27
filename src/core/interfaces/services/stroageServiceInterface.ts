@@ -18,11 +18,11 @@ export interface IStorageService {
 
 	getRemembers(): Promise<IRemember[]>;
 	createRemember(remember: IRemember): Promise<number|undefined>;
-	updateRemember(remember: IRemember): Promise<void>;
+	updateRemember(id: number, remember: IRemember): Promise<void>;
 	deleteRemember(id: number): Promise<void>;
 
     getActivities(): Promise<IActivity[]>;
-	createActivity(activity: IActivity): Promise<string|undefined>;
-	updateActivity(activity: IActivity): Promise<void>;
+	createActivity(activity: IActivity): Promise<void>;
+	updateActivity(id: string, activity: IActivity): Promise<void>;
 	deleteActivity(id: string): Promise<void>;
 }
