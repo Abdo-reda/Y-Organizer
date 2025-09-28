@@ -49,7 +49,7 @@ const habits: IHabit[] = [
                 <!-- TODO: fix this shit in firefox -->
                 <div class="flex-1">
                     <div class="grid grid-cols-7 auto-rows-fr gap-2 h-full">
-                        <div v-for="i in 30" class="rounded-xs aspect-square bg-gray-200 hover:transition-none transition-colors hover:bg-amber-400">
+                        <div v-for="_i in 30" class="rounded-xs aspect-square bg-gray-200 hover:transition-none transition-colors hover:bg-amber-400">
                         </div>
                     </div> 
                 </div>

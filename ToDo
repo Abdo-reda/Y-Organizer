@@ -14,12 +14,21 @@
 - snake card
 - breathing card
 - screen savers and windows screen saver card
+- Events & Reminder? integration with calendars? not sure... but we will need something like this.
+- Focusable cards? each card can be focused, and any shorcuts that are relevant to that card will be active... like a pomodoro card, or a doodle card... and so on... ctrl+d for example will always create a new entity depending on the card.
 
 /------ Settings
 - am, pm
 - show accessibility buttons
 - default font size level?
-- 
+- check for updates and update.
+-     ('theme', 'system'),
+                ('language', 'en'),
+                ('first_day_of_week', 'monday'),
+                ('default_view', 'week'),
+                ('notifications_enabled', 'true'),
+                ('auto_save', 'true'),
+                ('backup_interval', 'daily')
 
 //------ Tauri stuff
 - single instance https://tauri.app/plugin/single-instance/

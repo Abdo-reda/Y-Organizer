@@ -1,6 +1,6 @@
 import { createRouter, createWebHistory } from 'vue-router';
 import { RoutesEnum } from '@/core/enums/routesEnum';
-import WelcomeView from '@/views/WelcomeView.vue';
+// import WelcomeView from '@/views/WelcomeView.vue';
 import TestView from '@/views/TestView.vue';
 import DayView from '@/views/DayView.vue';
 

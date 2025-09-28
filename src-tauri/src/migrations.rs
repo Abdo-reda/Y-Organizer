@@ -10,17 +10,23 @@ impl YMigrations {
             sql: "CREATE TABLE days (day TEXT PRIMARY KEY, notes TEXT, doodle TEXT);",
             kind: MigrationKind::Up,
         };
-
-        //TODO: status --> active, completed, archived
-        let activities_table_migration = Migration {
+        
+        let settings_table_migration = Migration {
             version: 2,
+            description: "Create Settings Table",
+            sql: "CREATE TABLE settings (code TEXT PRIMARY KEY, value TEXT NOT NULL);",
+            kind: MigrationKind::Up,
+        };
+
+        let activities_table_migration = Migration {
+            version: 3,
             description: "Create Activities Table",
             sql: "CREATE TABLE activities (name TEXT PRIMARY KEY, description TEXT, categories TEXT, color TEXT, status TEXT);",
             kind: MigrationKind::Up,
         };
 
         let sessions_table_migration = Migration {
-            version: 3,
+            version: 4,
             description: "Create Sessions Table",
             sql: "
                 CREATE TABLE sessions (
@@ -63,6 +69,7 @@ impl YMigrations {
 
         vec![
             days_table_migration,
+            settings_table_migration,
             activities_table_migration,
             sessions_table_migration,
             remembers_table_migration,

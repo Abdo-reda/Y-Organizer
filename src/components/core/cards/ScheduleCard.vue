@@ -3,7 +3,7 @@ import FunctionCard from '@/components/common/FunctionCard.vue';
 import { useCurrentTime } from '@/composables/useCurrentTime';
 import { useResizeObserver } from '@vueuse/core'
 import { GridStack } from "gridstack";
-import { Scale } from 'lucide-vue-next';
+// import { Scale } from 'lucide-vue-next';
 import { onMounted, useTemplateRef } from "vue";
 
 const gridContainer = useTemplateRef('schedule-container')
@@ -11,10 +11,10 @@ let gridStack: GridStack | undefined;
 let isStatic = false;
 const {dayPercentage} = useCurrentTime();
 
-function toggleResizing() {
-    isStatic = !isStatic;
-    gridStack?.setStatic(isStatic);
-}
+// function toggleResizing() {
+//     isStatic = !isStatic;
+//     gridStack?.setStatic(isStatic);
+// }
 
 function initGrid() {
     if (!gridContainer.value) return;

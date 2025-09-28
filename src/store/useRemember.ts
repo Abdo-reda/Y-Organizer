@@ -23,9 +23,9 @@ export default function useRemember() {
 		remembers.push(remember);
 	}
 
-	async function updateRemember(remember: IRemember) {
+	async function updateRemember(rememberId: number, remember: IRemember) {
 		LoggingService.log("updating remembers...", remember)
-		await storageService.updateRemember(remember);
+		await storageService.updateRemember(rememberId, remember);
 	}
 
 	async function deleteRemember(id: number) {

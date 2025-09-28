@@ -1,11 +1,13 @@
 import Database from "@tauri-apps/plugin-sql";
 import { DateTime } from "luxon";
-import { IStorageService } from "../interfaces/services/stroageServiceInterface";
+import { IStorageService } from "../interfaces/services/IStroageService";
 import { IDay } from "../interfaces/entities/IDay";
 import { LoggingService } from "./loggingService";
 import { IGratitude } from "../interfaces/entities/IGratitude";
 import { IRemember } from "../interfaces/entities/IRemember";
 import { IActivity } from "../interfaces/entities/IActivity";
+import { SettingsCodeEnum, SettingsCodeValueMap } from "../enums/settingsCodeEnum";
+import { ISetting } from "../interfaces/entities/ISetting";
 
 export class SqliteStroageService implements IStorageService {
 	readonly DATABASE_NAME = "y.db";
@@ -25,6 +27,16 @@ export class SqliteStroageService implements IStorageService {
 	async initDay(day: DateTime) {
 		this.database.execute("INSERT OR IGNORE INTO days (day, notes) VALUES ($1, '');", [day.toISODate()]);
 	}
+
+    async getSetting<T extends SettingsCodeEnum>(code: T): Promise<SettingsCodeValueMap[T]|null> {
+        const results = await this.database.select<ISetting<T>[]>("SELECT value FROM settings WHERE code = $1;", [code]);
+        const first =  results.length > 0 ? results[0].value : null;
+        return typeof first === "string" ? JSON.parse(first) : first;
+    }
+
+    async updateSetting<T extends SettingsCodeEnum>(code: T, value: SettingsCodeValueMap[T]|null): Promise<void> {
+        await this.database.execute("INSERT INTO settings (code, value) VALUES ($1, $2) ON CONFLICT(code) DO UPDATE SET value = excluded.value;", [code, value]);
+    }
 
 	async getNotes(day: DateTime): Promise<string> {
 		const dayData = await this.database.select<IDay[]>("SELECT notes FROM days WHERE day = $1;", [day.toISODate()]);

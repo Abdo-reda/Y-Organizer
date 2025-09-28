@@ -6,7 +6,7 @@ import { useCurrentTime } from "@/composables/useCurrentTime";
 import { computed, ref } from "vue";
 import { CalendarDate, parseDate } from "@internationalized/date";
 import useDayState from "@/store/useDayState";
-import { LayoutDashboardIcon, XIcon } from "lucide-vue-next";
+import { XIcon } from "lucide-vue-next";
 import { Button } from "@/components/ui/button";
 import { getCurrentWindow } from '@tauri-apps/api/window';
 import { isTauri } from "@tauri-apps/api/core";
@@ -38,21 +38,14 @@ function handleClose() {
     appWindow?.close();
 }
 
-function handleToggleMaximize() {
-    appWindow?.toggleMaximize()
-}
-
-function handleMinimize() {
-    appWindow?.minimize();
-}
-
 </script>
 
 <template>
-    <header class="p-2 grid grid-cols-3 select-none draggable app-drag">
+    <header class="px-2 py-1 grid grid-cols-3 select-none draggable app-drag">
         <div class="flex items-center px-4">
-            <div @click="openAbout = true" class="px-2">
-                <p class="text-2xl font-extrabold">Y</p>
+            <div @click="openAbout = true" class="p-4 relative flex items-center justify-center group">
+                <img class="absolute brightness-85 opacity-25 group-hover:opacity-60 duration-500 transition-opacity" src="@/assets/images/sphere.png" /> 
+                <p class="text-2xl font-extrabold text-gray-600 transition-colors duration-500 group-hover:text-gray-800 z-10">Y</p>
             </div>
             <Dialog v-model:open="openAbout">
                 <AboutDialog />

@@ -4,7 +4,7 @@ import useDayNotes from "@/store/useDayNotes";
 import { EditorContent, useEditor } from '@tiptap/vue-3'
 import StarterKit from '@tiptap/starter-kit'
 import { Placeholder } from '@tiptap/extensions/placeholder'
-import { onBeforeMount, watch } from "vue";
+import { onBeforeMount } from "vue";
 
 const { notes, onNotesFetched, updateNotes } = useDayNotes();
 //TODO: Fix placeholder

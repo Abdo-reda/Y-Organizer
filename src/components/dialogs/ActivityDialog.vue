@@ -8,7 +8,7 @@ import {
     DialogTitle,
 } from "@/components/ui/dialog"
 import { ACTIVITY_COLORS } from "@/core/constants/activityColors";
-import { LifeCategoryEnum } from "@/core/enums/lifeCategoryEnum";
+import { LifeCategoryColorMapper, LifeCategoryEnum, LifeCategoryIconMapper } from "@/core/enums/lifeCategoryEnum";
 import { DEFAULT_ACTIVITY, IActivity } from "@/core/interfaces/entities/IActivity";
 import { reactiveComputed } from "@vueuse/core";
 import { PenIcon } from "lucide-vue-next";
@@ -18,7 +18,7 @@ const emits = defineEmits<{
     create: [activity: IActivity]
     update: [id: string, activity: IActivity]
 }>();
-const activityForm = reactiveComputed<IActivity>(() => props.existingActivity ? { ...props.existingActivity } : { ...DEFAULT_ACTIVITY })
+const activityForm = reactiveComputed<IActivity>(() => props.existingActivity ? { ...props.existingActivity } : DEFAULT_ACTIVITY());
 const categoryOptions = Object.values(LifeCategoryEnum);
 
 function toggleCategory(category: LifeCategoryEnum) {
@@ -28,10 +28,10 @@ function toggleCategory(category: LifeCategoryEnum) {
 }
 
 function handleSubmit() {
-    if (props.existingActivity) emits('update', props.existingActivity.name, activityForm);
-    else emits('create', activityForm);
+    if (props.existingActivity) emits('update', props.existingActivity.name, {...activityForm});
+    else emits('create', {...activityForm});
+    Object.assign(activityForm, DEFAULT_ACTIVITY());
 }
-
 </script>
 
 <template>
@@ -68,15 +68,15 @@ function handleSubmit() {
                     <div class="flex gap-2 items-start">
                         <div class="mt-2 flex items-center space-x-2">
                             <input v-model="activityForm.color" type="color"
-                                class="w-6 h-6 border border-gray-200 rounded cursor-pointer" />
+                                class="size-6 border border-gray-200 rounded cursor-pointer" />
                             <input v-model="activityForm.color" type="text" placeholder="#000000"
                                 class="flex-1 px-2 py-1 text-xs border border-gray-200 rounded-md focus:ring-1 focus:ring-blue-500 focus:border-transparent" />
                         </div>
 
                         <div class="grid grid-cols-8 gap-1">
-                            <button v-for="color in ACTIVITY_COLORS" :key="color" @click="activityForm.color = color"
+                            <button type="button" v-for="color in ACTIVITY_COLORS" :key="color" @click="activityForm.color = color"
                                 :class="[
-                                    'w-6 h-6 rounded-full border-2 transition-all hover:scale-110',
+                                    'size-6 rounded-full border-2 transition-all hover:scale-110',
                                     activityForm.color === color ? 'border-gray-400 ring-1 ring-gray-200' : 'border-gray-200'
                                 ]" :style="{ backgroundColor: color }"></button>
                         </div>
@@ -91,11 +91,15 @@ function handleSubmit() {
                     <div class="flex flex-wrap gap-1">
                         <button type="button" v-for="category in categoryOptions" :key="category" @click="toggleCategory(category)"
                             :class="[
-                                'px-2 py-1 text-xs rounded-md border transition-all',
+                                'px-2 py-1 text-xs rounded-md border transition-all flex items-center gap-1',
                                 activityForm.categories.includes(category)
-                                    ? 'bg-blue-100 border-blue-300 text-blue-700'
+                                    ? 'bg-white border-hover/75 text-hover font-semibold'
                                     : 'bg-gray-50 border-gray-200 text-gray-600 hover:bg-gray-100'
-                            ]">
+                            ]"
+                            :style="{ '--color-hover': LifeCategoryColorMapper[category] }"
+                            >
+                            
+                            <component :is="LifeCategoryIconMapper[category]" class="size-3" />
                             {{ category }}
                         </button>
                     </div>
@@ -104,7 +108,7 @@ function handleSubmit() {
         </form>
         <DialogFooter>
             <Button type="submit" variant="outline" form="activity-form">
-                <PenIcon /> Submit
+                <PenIcon /> {{ props.existingActivity ? 'Update' : 'Create' }}
             </Button>
         </DialogFooter>
     </DialogContent>

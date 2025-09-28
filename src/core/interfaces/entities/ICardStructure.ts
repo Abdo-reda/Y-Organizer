@@ -1,9 +1,9 @@
-import { Component } from "vue";
+import { type DayCardEnum } from "@/core/enums/dayCardEnum";
 
 export interface ICardStructure {
-	component: Component;
-	width: number;
-	height: number;
-	row: number;
-	col: number;
+    id: DayCardEnum;
+	w: number;
+	h: number;
+	y: number;
+	x: number;
 }

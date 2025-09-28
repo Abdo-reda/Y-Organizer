@@ -3,7 +3,7 @@ export const STONE = '#78716C'; // stone-500
 export const RED = '#EF4444'; // red-500
 export const ORANGE = '#F97316'; // orange-500
 export const AMBER = '#F59E0B'; // amber-500
-export const YELLOW = '#FACC15'; // yellow-400
+export const YELLOW = '#eab308' //'#FACC15'; // yellow-500
 
 export const LIME = '#84CC16'; // lime-500
 export const GREEN = '#22C55E'; // green-500

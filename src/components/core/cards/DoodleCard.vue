@@ -3,8 +3,8 @@ import FunctionCard from "@/components/common/FunctionCard.vue";
 import { useMouseShortcuts } from "@/composables/useMouseShortcuts";
 import { useDrauu } from "@vueuse/integrations/useDrauu";
 import { ref, useTemplateRef } from "vue";
-import { Button } from "@/components/ui/button";
-import { BrushCleaningIcon, BrushIcon, EraserIcon, SaveIcon } from "lucide-vue-next";
+// import { Button } from "@/components/ui/button";
+// import { BrushCleaningIcon, BrushIcon, EraserIcon, SaveIcon } from "lucide-vue-next";
 import { DateTime } from "luxon";
 import { useResizeObserver } from "@vueuse/core";
 import useDayDoodle from "@/store/useDayDoodle";
@@ -14,7 +14,7 @@ const { doodle, onDoodleFetched, updateDoodle} = useDayDoodle();
 //TODO:
 // - context menu? https://www.shadcn-vue.com/docs/components/context-menu?
 // - handle shortcuts? redo, undo, change color and so on...
-// - should colors or brush color depend on activity color/primary color
+// - transition when changing days?
 
 const canvasDrawer = useTemplateRef<HTMLCanvasElement>("canvas-drawer");
 const fileSaver = useTemplateRef<HTMLAnchorElement>("file-saver");
@@ -22,6 +22,7 @@ const drawContainer = useTemplateRef<HTMLElement>("draw-container");
 const drawArea = useTemplateRef<SVGSVGElement>("draw-area");
 const drawAreaWidth = ref(0);
 const drawAreaHeight = ref(0);
+const showSvg = ref(false);
 
 useResizeObserver(drawArea, (entries) => {
     const entry = entries[0];
@@ -30,7 +31,9 @@ useResizeObserver(drawArea, (entries) => {
     drawAreaHeight.value = height;
 });
 
-const { undo, redo, canUndo, canRedo, brush, clear, onCommitted, load } = useDrauu(drawArea, {
+//TODO: undo and redo?
+
+const { brush, clear, onCommitted, load } = useDrauu(drawArea, {
     brush: {
         color: "oklch(14.5% 0 0)",
         size: 3,
@@ -56,6 +59,7 @@ useMouseShortcuts(
 onDoodleFetched(() => {
     if (doodle.value) load(doodle.value);
     else clear();
+    showSvg.value = true;
 });
 
 onCommitted(() => {
@@ -76,7 +80,7 @@ function eraseMode() {
 
 function saveSvg() {
     if (!drawArea.value) return;
-    doodle.value = drawArea.value.outerHTML;
+    doodle.value = drawArea.value.innerHTML;
     updateDoodle(doodle.value);
 }
 
@@ -111,16 +115,18 @@ function setColor(color: string) {
         <template #header-left-actions>
             <div class="flex gap-1 md:gap-2 mx-2">
                 <button @click="setColor(color)" v-for="color in colors" :key="color"
-                    class="rounded-full shadow-sm ring-0 ring-gray-200 w-1/6 max-w-6 min-w-3 aspect-square transition-shadow"
+                    class="rounded-full shadow-sm ring-0 ring-gray-200 w-1/6 max-w-6 min-w-3 aspect-square transition-all hover:scale-105"
                     :style="{ backgroundColor: color }" :class="{
-                        'ring-3': brush.color === color,
+                        'ring-3 scale-105': brush.color === color,
                     }"></button>
             </div>
         </template>
         <template #default>
             <div ref="draw-container" class="size-full p-1 rounded-lg dot-background relative">
-                <svg ref="draw-area" :viewBox="`0 0 ${drawAreaWidth} ${drawAreaHeight}`" @contextmenu.prevent
-                    class="size-full rounded-lg" xmlns="http://www.w3.org/2000/svg"></svg>
+                <Transition name="fade">
+                    <svg v-show="showSvg" ref="draw-area" :viewBox="`0 0 ${drawAreaWidth} ${drawAreaHeight}`" @contextmenu.prevent
+                        class="size-full rounded-lg" xmlns="http://www.w3.org/2000/svg"></svg>
+                </Transition>
                 <canvas ref="canvas-drawer" class="hidden absolute" />
             </div>
             <a ref="file-saver" class="hidden absolute" />

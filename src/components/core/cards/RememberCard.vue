@@ -31,11 +31,11 @@ async function handlePointer(event: PointerEvent, remember: IRemember) {
 
 async function toggleHighlight(rememberId: number | undefined, wordIndex: number) {
 	const remember = remembers.find((r) => r.id === rememberId);
-	if (!remember) return;
+	if (!remember || !rememberId) return;
 	const highlightIndex = remember.highlights.indexOf(wordIndex);
 	if (highlightIndex === -1) remember.highlights.push(wordIndex);
 	else remember.highlights.splice(highlightIndex, 1);
-	await updateRemember(remember);
+	await updateRemember(rememberId, remember);
 }
 </script>
 
@@ -62,7 +62,7 @@ async function toggleHighlight(rememberId: number | undefined, wordIndex: number
 							<template v-for="(word, index) in remember.title.trim().split(/\s+/)" :key="index">
 								<span
 									@click="toggleHighlight(remember.id, index)"
-									class="relative rounded-xs cursor-pointer transition-all duration-200 highlight-word"
+									class="relative rounded-xs cursor-pointer transition-all duration-200 hover:cursor-default highlight-word"
 									:style="{
 										'--hover-color': 'red',
 									}"

@@ -1,8 +1,9 @@
 import { DateTime } from "luxon";
-import { IStorageService } from "../interfaces/services/stroageServiceInterface";
+import { IStorageService } from "../interfaces/services/IStroageService";
 import { IGratitude } from "../interfaces/entities/IGratitude";
 import { IRemember } from "../interfaces/entities/IRemember";
 import { IActivity } from "../interfaces/entities/IActivity";
+import { SettingsCodeEnum, SettingsCodeValueMap } from "../enums/settingsCodeEnum";
 
 export class NullStroageService implements IStorageService {
 	readonly DATABASE_NAME = "";
@@ -12,6 +13,14 @@ export class NullStroageService implements IStorageService {
 	initDB() {}
 	
 	initDay(_day: DateTime) {}
+
+    getSetting<T extends SettingsCodeEnum>(_code: T): Promise<SettingsCodeValueMap[T]|null> {
+        return Promise.resolve(null);
+    }
+
+    updateSetting<T extends SettingsCodeEnum>(_code: T, _value: SettingsCodeValueMap[T] | null): Promise<void> {
+          return Promise.resolve();
+    }
 
 	getNotes(_day: DateTime): Promise<string> {
 		return Promise.resolve('');

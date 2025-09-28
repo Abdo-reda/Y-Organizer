@@ -26,16 +26,12 @@ interface INowCardProps {
 const cardData: INowCardProps = {
   currentSession: {
     title: "working on stuff related to stuff",
-    activity: {
-      categories: [],
-      color: "#11323",
-      description: "some description",
-      name: "playing",
-    },
+    activity: "coding",
     endTime: "2:00",
     notes:
       "some notes, i think  think think think think think think think think think think think think think think think think think think think think think think think think think think think think think think think think think think think think think think think think think",
     startTime: "1:00",
+    day: "2024-01-01",
   },
 };
 
@@ -54,7 +50,7 @@ const currentTask: ITask | null = {
       <div class="h-full flex flex-col">
         <!-- HEADER INFO -->
         <div class="flex flex-col gap-0.5 items-center">
-          <p class="text-3xl font-bold capitalize text-center">{{ currentSession.activity.name }}</p>
+          <p class="text-3xl font-bold capitalize text-center">{{ currentSession.activity }}</p>
           <p v-if="currentSession.title" class="text-base text-center text-gray-600 font-semibold capitalize">
             {{ currentSession.title }}
           </p>
@@ -83,13 +79,13 @@ const currentTask: ITask | null = {
         </div>
         <div class="border-t border-gray-200 m-2"></div>
         <!-- BODY -->
-        <div class="flex-1 flex justify-between gap-4 p-2">
+        <div class="flex-1 flex justify-between gap-4 p-2 overflow-hidden">
           <!-- TASKS -->
           <div class="flex-1 grid grid-rows-3 gap-2">
-            <div class="p-4 flex items-center justify-between bg-gray-50 border border-gray-200 rounded-sm">
-              <div class="flex-1">
-                <div class="font-medium text-gray-800">Finish this stupid project</div>
-                <div class="text-sm text-gray-600 mt-1">optional description</div>
+            <div class="p-4 flex items-center min-w-0 justify-between bg-gray-50 border border-gray-200 rounded-sm">
+              <div class="flex-1 min-w-0">
+                <div class="font-medium text-gray-800 truncate">Finish this stupid project</div>
+                <div class="text-sm text-gray-600 mt-1 truncate">optional description of stuff and things</div>
               </div>
               <div class="flex items-center gap-2">
                 <Button variant="ghost" size="icon" class="text-gray-400">
