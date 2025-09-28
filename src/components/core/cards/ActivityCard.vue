@@ -44,18 +44,6 @@ const { activities, createActivity, updateActivity } = useActivity();
                         </div>
                     </div>
                 </div>
-                <!-- <div v-if="activities.length" class="h-1/3 grid grid-cols-2 gap-1">
-                    <div v-for="activity in activities" :key="activity.name"
-                        class="flex items-center justify-between rounded-sm hover:bg-gray-50 transition-colors">
-                        <div class="flex items-center gap-3 min-w-0">
-                            <div class="size-3 rounded-full" :style="{ backgroundColor: activity.color }"></div>
-                            <div class="flex-1">
-                                <div class="font-medium text-gray-900">{{ activity.name }}</div>
-                                <div class="text-sm text-gray-500">{{ activity.description }}</div>
-                            </div>
-                        </div>
-                    </div>
-                </div> -->
             </div>
         </template>
         <!-- <circle v-for="(activity, index) in activitiesWithData" :key="activity.id" cx="100" cy="100"

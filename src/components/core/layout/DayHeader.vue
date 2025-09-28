@@ -3,19 +3,22 @@ import { Calendar } from "@/components/ui/calendar";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import { DateTime } from "luxon";
 import { useCurrentTime } from "@/composables/useCurrentTime";
-import { computed } from "vue";
+import { computed, ref } from "vue";
 import { CalendarDate, parseDate } from "@internationalized/date";
 import useDayState from "@/store/useDayState";
 import { LayoutDashboardIcon, XIcon } from "lucide-vue-next";
 import { Button } from "@/components/ui/button";
 import { getCurrentWindow } from '@tauri-apps/api/window';
 import { isTauri } from "@tauri-apps/api/core";
+import { Dialog } from "@/components/ui/dialog";
+import AboutDialog from "@/components/dialogs/AboutDialog.vue";
 
 //TODO: ENHANCEMENT: animation when chaning the day and the popover keeps moving when you change hte day, either animate it, or make the anchor static and doesnt change, or redesign this part.. figure something out.
 //TODO: add a left and right arrow to go to next and previous day, should only appear when I hover over the header text "TODAY sunday 2010-10-29"
 
 
 const { selectedDay } = useDayState();
+const openAbout = ref(false);
 const relativeDate = computed(() => selectedDay.value.toRelativeCalendar());
 const isoDate = computed(() => selectedDay.value.toISODate());
 const dateDayName = computed(() => selectedDay.value.weekdayLong);
@@ -48,9 +51,12 @@ function handleMinimize() {
 <template>
     <header class="p-2 grid grid-cols-3 select-none draggable app-drag">
         <div class="flex items-center px-4">
-            <div class="px-2">
+            <div @click="openAbout = true" class="px-2">
                 <p class="text-2xl font-extrabold">Y</p>
             </div>
+            <Dialog v-model:open="openAbout">
+                <AboutDialog />
+            </Dialog>
         </div>
         <div class="flex flex-1 items-center justify-center">
             <div class="flex items-end relative">

@@ -58,7 +58,7 @@ async function toggleHighlight(rememberId: number | undefined, wordIndex: number
 								></div>
 							</div>
 						</div>
-						<p class="flex-1 text-gray-900 text-xl font-semibold capitalize leading-relaxed select-none">
+						<p class="flex-1 text-xl font-semibold capitalize leading-relaxed select-none">
 							<template v-for="(word, index) in remember.title.trim().split(/\s+/)" :key="index">
 								<span
 									@click="toggleHighlight(remember.id, index)"
