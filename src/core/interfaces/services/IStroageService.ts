@@ -3,14 +3,15 @@ import { IGratitude } from "../entities/IGratitude";
 import { IRemember } from "../entities/IRemember";
 import { IActivity } from "../entities/IActivity";
 import { SettingsCodeEnum, SettingsCodeValueMap } from "@/core/enums/settingsCodeEnum";
+import { ISetting } from "../entities/ISetting";
 
 export interface IStorageService {
 	DATABASE_NAME: Readonly<String>;
-	init(): void;
-	initDB(): void;
-	initDay(day: DateTime): void;
+	init(): Promise<void>;
+	initDB(): Promise<void>;
+	initDay(day: DateTime): Promise<void>;
 
-    getSetting<T extends SettingsCodeEnum>(code: T): Promise<SettingsCodeValueMap[T]|null>;
+    getSettings(): Promise<ISetting<SettingsCodeEnum>[]>;
     updateSetting<T extends SettingsCodeEnum>(code: T, value: SettingsCodeValueMap[T]|null): Promise<void>;
 
 	getNotes(day: DateTime): Promise<string>;

@@ -1,22 +1,22 @@
 import { StorageServiceKey } from "@/core/constants/injectionKeys";
-import { inject } from "vue";
+import { inject, reactive } from "vue";
 import { LoggingService } from "@/core/services/loggingService";
 import { SettingsCodeEnum, SettingsCodeValueMap } from "@/core/enums/settingsCodeEnum";
-import { DEFAULT_DAY_CARD_LAYOUT } from "@/core/constants/defaultDayCardLayout";
-import { ICardStructure } from "@/core/interfaces/entities/ICardStructure";
+import { ISetting } from "@/core/interfaces/entities/ISetting";
+import { DEFAULT_SETTINGS } from "@/core/constants/defaultSettings";
+
+const settings = reactive<ISetting<SettingsCodeEnum>[]>([])
 
 export default function useSettings() {
     const storageService = inject(StorageServiceKey)!;
 
-    //TODO: handle fetching of settings better, I guess fetch all of them?
-
-    function fetchSettings(code: SettingsCodeEnum) {
-        LoggingService.log("fetching settings...", code);
-        return storageService.getSetting(code);
+    async function fetchSettings() {
+        LoggingService.log("fetching settings...");
+        Object.assign(settings, await storageService.getSettings());
     }
 
-    async function fetchCardLayout(): Promise<ICardStructure[]> {
-        return (await fetchSettings(SettingsCodeEnum.DAY_LAYOUT)) ?? DEFAULT_DAY_CARD_LAYOUT;
+    function fetchSettingValue<T extends SettingsCodeEnum>(code: T): SettingsCodeValueMap[T] {
+        return settings.find(s => s.code === code)?.value ?? DEFAULT_SETTINGS[code];
     }
 
     function updateSetting<T extends SettingsCodeEnum>(code: T, value: SettingsCodeValueMap[T]|null) {
@@ -25,7 +25,9 @@ export default function useSettings() {
     }
 
     return {
-        fetchCardLayout,
+        settings,
+        fetchSettings,
+        fetchSettingValue,
         updateSetting
     };
 }

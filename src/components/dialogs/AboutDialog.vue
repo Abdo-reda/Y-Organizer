@@ -1,39 +1,39 @@
 <script setup lang="ts">
-import {
-    DialogContent,
-    DialogDescription,
-    DialogFooter,
-    DialogHeader,
-    DialogTitle,
-} from "@/components/ui/dialog"
+import { DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle } from "@/components/ui/dialog";
+import { isTauri } from "@tauri-apps/api/core";
+import { openUrl } from "@tauri-apps/plugin-opener";
 
-const version = import.meta.env.VITE_APP_VERSION
+const version = import.meta.env.VITE_APP_VERSION;
 
+const profileUrl = "https://github.com/Abdo-reda";
+
+function openExternalUrl() {
+	if (isTauri()) openUrl(profileUrl);
+	else window.open(profileUrl, "_blank");
+}
 </script>
 
 <template>
-    <DialogContent class="bg-white/60 backdrop-blur-md select-none">
-        <DialogHeader>
-            <DialogTitle class="hidden"> Y-Organizer </DialogTitle>
-            <DialogDescription class="hidden"> About Y-Organizer </DialogDescription>
-        </DialogHeader>
-        <div class="flex flex-col items-center gap-4">
-            <div class="flex flex-col items-center gap-2">
-                <div class="rounded-full aspect-square p-2 flex items-center justify-center">
-                    <span class="text-4xl text-gray-700 font-bold">Y</span>
-                </div>
-            </div>
-            <div class="w-2/3 border-t border-t-gray-400/75" />
-            <div class="text-gray-600 text-sm leading-relaxed text-center">
-                <p>
-                    Made by <a href="https://github.com/Abdo-reda" target="_blank" class="cursor-default font-semibold relative highlight-word"> NoPoint  </a>
-                </p>
-            </div>
-        </div>
-        <DialogFooter>
-            <span class="text-gray-400 text-xs"> v{{ version }} </span>
-        </DialogFooter>
-    </DialogContent>
+	<DialogContent class="bg-white/60 backdrop-blur-md select-none">
+		<DialogHeader>
+			<DialogTitle class="hidden"> Y-Organizer </DialogTitle>
+			<DialogDescription class="hidden"> About Y-Organizer </DialogDescription>
+		</DialogHeader>
+		<div class="flex flex-col items-center gap-4">
+			<div class="flex flex-col items-center gap-2">
+				<div class="rounded-full aspect-square p-2 flex items-center justify-center">
+					<span class="text-4xl text-gray-700 font-bold">Y</span>
+				</div>
+			</div>
+			<div class="w-2/3 border-t border-t-gray-400/75" />
+			<div class="text-gray-600 text-sm leading-relaxed text-center">
+				<p>Made by <span @click="openExternalUrl" class="cursor-default font-semibold relative highlight-word"> NoPoint</span></p>
+			</div>
+		</div>
+		<DialogFooter>
+			<span class="text-gray-400 text-xs"> v{{ version }} </span>
+		</DialogFooter>
+	</DialogContent>
 </template>
 
 <style lang="css" scoped>

@@ -9,7 +9,7 @@ import { DateTime } from "luxon";
 import { useResizeObserver } from "@vueuse/core";
 import useDayDoodle from "@/store/useDayDoodle";
 
-const { doodle, onDoodleFetched, updateDoodle} = useDayDoodle();
+const { doodle, doodleLoading, onDoodleFetched, updateDoodle} = useDayDoodle();
 
 //TODO:
 // - context menu? https://www.shadcn-vue.com/docs/components/context-menu?
@@ -22,7 +22,6 @@ const drawContainer = useTemplateRef<HTMLElement>("draw-container");
 const drawArea = useTemplateRef<SVGSVGElement>("draw-area");
 const drawAreaWidth = ref(0);
 const drawAreaHeight = ref(0);
-const showSvg = ref(false);
 
 useResizeObserver(drawArea, (entries) => {
     const entry = entries[0];
@@ -59,7 +58,6 @@ useMouseShortcuts(
 onDoodleFetched(() => {
     if (doodle.value) load(doodle.value);
     else clear();
-    showSvg.value = true;
 });
 
 onCommitted(() => {
@@ -124,7 +122,7 @@ function setColor(color: string) {
         <template #default>
             <div ref="draw-container" class="size-full p-1 rounded-lg dot-background relative">
                 <Transition name="fade">
-                    <svg v-show="showSvg" ref="draw-area" :viewBox="`0 0 ${drawAreaWidth} ${drawAreaHeight}`" @contextmenu.prevent
+                    <svg v-show="!doodleLoading" ref="draw-area" :viewBox="`0 0 ${drawAreaWidth} ${drawAreaHeight}`" @contextmenu.prevent
                         class="size-full rounded-lg" xmlns="http://www.w3.org/2000/svg"></svg>
                 </Transition>
                 <canvas ref="canvas-drawer" class="hidden absolute" />

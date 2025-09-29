@@ -21,22 +21,25 @@ export class SqliteStroageService implements IStorageService {
 
 	async initDB() {
 		this.database = await Database.load(`sqlite:${this.DATABASE_NAME}`);
-        this.database.execute("PRAGMA foreign_keys = ON;"); //TODO: will I really need this?
+		await this.database.execute("PRAGMA foreign_keys = ON;"); //TODO: will I really need this?
 	}
 
 	async initDay(day: DateTime) {
-		this.database.execute("INSERT OR IGNORE INTO days (day, notes) VALUES ($1, '');", [day.toISODate()]);
+		await this.database.execute("INSERT OR IGNORE INTO days (day, notes) VALUES ($1, '');", [day.toISODate()]);
 	}
 
-    async getSetting<T extends SettingsCodeEnum>(code: T): Promise<SettingsCodeValueMap[T]|null> {
-        const results = await this.database.select<ISetting<T>[]>("SELECT value FROM settings WHERE code = $1;", [code]);
-        const first =  results.length > 0 ? results[0].value : null;
-        return typeof first === "string" ? JSON.parse(first) : first;
-    }
+	async getSettings(): Promise<ISetting<SettingsCodeEnum>[]> {
+		const settings = await this.database.select<ISetting<SettingsCodeEnum>[]>("SELECT * FROM settings;");
+		this.mapSettings(settings);
+		return settings;
+	}
 
-    async updateSetting<T extends SettingsCodeEnum>(code: T, value: SettingsCodeValueMap[T]|null): Promise<void> {
-        await this.database.execute("INSERT INTO settings (code, value) VALUES ($1, $2) ON CONFLICT(code) DO UPDATE SET value = excluded.value;", [code, value]);
-    }
+	async updateSetting<T extends SettingsCodeEnum>(code: T, value: SettingsCodeValueMap[T] | null): Promise<void> {
+		await this.database.execute(
+			"INSERT INTO settings (code, value) VALUES ($1, $2) ON CONFLICT(code) DO UPDATE SET value = excluded.value;",
+			[code, value]
+		);
+	}
 
 	async getNotes(day: DateTime): Promise<string> {
 		const dayData = await this.database.select<IDay[]>("SELECT notes FROM days WHERE day = $1;", [day.toISODate()]);
@@ -47,39 +50,35 @@ export class SqliteStroageService implements IStorageService {
 		await this.database.execute("UPDATE days SET notes = $1 WHERE day = $2;", [notes, day.toISODate()]);
 	}
 
-    async getDoodle(day: DateTime): Promise<string> {
-        const dayData = await this.database.select<IDay[]>("SELECT doodle FROM days WHERE day = $1;", [day.toISODate()]);
+	async getDoodle(day: DateTime): Promise<string> {
+		const dayData = await this.database.select<IDay[]>("SELECT doodle FROM days WHERE day = $1;", [day.toISODate()]);
 		return dayData.length > 0 ? dayData[0].doodle : "";
-    }
+	}
 
-    async updateDoodle(day: DateTime, doodle: string): Promise<void> {
-       	await this.database.execute("UPDATE days SET doodle = $1 WHERE day = $2;", [doodle, day.toISODate()]);
-    }
+	async updateDoodle(day: DateTime, doodle: string): Promise<void> {
+		await this.database.execute("UPDATE days SET doodle = $1 WHERE day = $2;", [doodle, day.toISODate()]);
+	}
 
 	async getGratitudes(day: DateTime): Promise<IGratitude[]> {
-		const gratitudes = await this.database.select<IGratitude[]>("SELECT * FROM gratitudes WHERE day = $1;", [day.toISODate()]);
+		const gratitudes = await this.database.select<IGratitude[]>("SELECT * FROM gratitudes WHERE day = $1;", [
+			day.toISODate(),
+		]);
 		this.mapGratitudes(gratitudes);
 		return gratitudes;
 	}
 
 	async createGratitude(gratitude: IGratitude) {
-		await this.database.execute("INSERT into gratitudes (title, description, category, highlights, day) VALUES ($1, $2, $3, $4, $5);", [
-			gratitude.title,
-			gratitude.description,
-			gratitude.category,
-			gratitude.highlights,
-			gratitude.day,
-		]);
+		await this.database.execute(
+			"INSERT into gratitudes (title, description, category, highlights, day) VALUES ($1, $2, $3, $4, $5);",
+			[gratitude.title, gratitude.description, gratitude.category, gratitude.highlights, gratitude.day]
+		);
 	}
 
 	async updateGratitude(gratitude: IGratitude) {
-		await this.database.execute("UPDATE gratitudes SET title = $1, description = $2, category = $3, highlights = $4 WHERE day = $5;", [
-			gratitude.title,
-			gratitude.description,
-			gratitude.category,
-			gratitude.highlights,
-			gratitude.day,
-		]);
+		await this.database.execute(
+			"UPDATE gratitudes SET title = $1, description = $2, category = $3, highlights = $4 WHERE day = $5;",
+			[gratitude.title, gratitude.description, gratitude.category, gratitude.highlights, gratitude.day]
+		);
 	}
 
 	async deleteGratitude(id: number) {
@@ -92,48 +91,73 @@ export class SqliteStroageService implements IStorageService {
 		return remembers;
 	}
 
-	async createRemember(remember: IRemember): Promise<number|undefined> {
-		const result = await this.database.execute("INSERT INTO remembers (title, highlights) VALUES ($1, $2);", [remember.title, remember.highlights]);
+	async createRemember(remember: IRemember): Promise<number | undefined> {
+		const result = await this.database.execute("INSERT INTO remembers (title, highlights) VALUES ($1, $2);", [
+			remember.title,
+			remember.highlights,
+		]);
 		return result.lastInsertId;
 	}
 
 	async updateRemember(id: number, remember: IRemember): Promise<void> {
-		await this.database.execute("UPDATE remembers SET title = $1, highlights = $2 WHERE id = $3;", [remember.title, remember.highlights, id]);
+		await this.database.execute("UPDATE remembers SET title = $1, highlights = $2 WHERE id = $3;", [
+			remember.title,
+			remember.highlights,
+			id,
+		]);
 	}
 
 	async deleteRemember(id: number): Promise<void> {
 		await this.database.execute("DELETE FROM remembers WHERE id = $1;", [id]);
 	}
 
-    async getActivities(): Promise<IActivity[]> {
-        const activities = await this.database.select<IActivity[]>("SELECT * FROM activities;");   
-        this.mapActivities(activities);
-        return activities;     
-    }
+	async getActivities(): Promise<IActivity[]> {
+		const activities = await this.database.select<IActivity[]>("SELECT * FROM activities;");
+		this.mapActivities(activities);
+		return activities;
+	}
 
-    async createActivity(activity: IActivity): Promise<void> {
-        await this.database.execute("INSERT INTO activities (name, description, categories, color, status) VALUES ($1, $2, $3, $4, $5);", [activity.name, activity.description, activity.categories, activity.color, activity.status]);
-    }
+	async createActivity(activity: IActivity): Promise<void> {
+		await this.database.execute(
+			"INSERT INTO activities (name, description, categories, color, status) VALUES ($1, $2, $3, $4, $5);",
+			[activity.name, activity.description, activity.categories, activity.color, activity.status]
+		);
+	}
 
-    async updateActivity(id: string, activity: IActivity): Promise<void> {
-        await this.database.execute("UPDATE activities SET name = $1, description = $2, categories = $3, color = $4, status = $5 WHERE name = $6;", [activity.name, activity.description, activity.categories, activity.color, activity.status, id]);
-    }
+	async updateActivity(id: string, activity: IActivity): Promise<void> {
+		await this.database.execute(
+			"UPDATE activities SET name = $1, description = $2, categories = $3, color = $4, status = $5 WHERE name = $6;",
+			[activity.name, activity.description, activity.categories, activity.color, activity.status, id]
+		);
+	}
 
-    async deleteActivity(id: string): Promise<void> {
-        await this.database.execute("DELETE FROM activities WHERE name = $1;", [id]);
-    }
+	async deleteActivity(id: string): Promise<void> {
+		await this.database.execute("DELETE FROM activities WHERE name = $1;", [id]);
+	}
 
-    private mapActivities(activities: IActivity[]) {
-        activities.forEach((activity) => {
-            if (typeof activity.categories === "string") {
-                try {
-                    activity.categories = JSON.parse(activity.categories);
-                } catch (e) {
-                    LoggingService.log("Failed to parse activity categories", e);
-                    activity.categories = [];
-                }
-            }
-        });
+	private mapSettings(settings: ISetting<SettingsCodeEnum>[]) {
+		settings.forEach((setting) => {
+			if (typeof setting.value === "string") {
+				try {
+					setting.value = JSON.parse(setting.value);
+				} catch (e) {
+					LoggingService.log("Failed to parse activity categories", e);
+				}
+			}
+		});
+	}
+
+	private mapActivities(activities: IActivity[]) {
+		activities.forEach((activity) => {
+			if (typeof activity.categories === "string") {
+				try {
+					activity.categories = JSON.parse(activity.categories);
+				} catch (e) {
+					LoggingService.log("Failed to parse activity categories", e);
+					activity.categories = [];
+				}
+			}
+		});
 	}
 
 	private mapGratitudes(gratitudes: IGratitude[]) {

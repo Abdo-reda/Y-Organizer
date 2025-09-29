@@ -1,6 +1,9 @@
 html {
     font-size: 80%;
 }
+::selection {
+  background: color-mix(in srgb, var(--primary) 8%, transparent); 
+}
 
 @layer base {
 	@font-face {

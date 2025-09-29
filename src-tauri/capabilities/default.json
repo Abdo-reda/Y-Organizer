@@ -6,10 +6,19 @@
     "main"
   ],
   "permissions": [
-    "core:window:default", 
+    "core:window:default",
     "core:window:allow-start-dragging",
     "core:window:allow-close",
     "sql:default",
-    "sql:allow-execute"
+    "sql:allow-execute",
+    {
+      "identifier": "opener:allow-open-url",
+      "allow": [
+        {
+          "url": "https://github.com/Abdo-reda"
+        }
+      ]
+    },
+    "opener:default"
   ]
 }

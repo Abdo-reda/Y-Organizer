@@ -8,6 +8,7 @@ export default function useDayDoodle() {
 
 	const storageService = inject(StorageServiceKey)!;
 	const doodle = ref("");
+	const doodleLoading = ref(false);
     let fetchCallback: (() => void) | undefined;
 
     function onDoodleFetched(callback: () => void) {
@@ -15,9 +16,11 @@ export default function useDayDoodle() {
     }
 
 	async function fetchDoodle() {
+		doodleLoading.value = true;
 		LoggingService.log("fetching doodle...");
 		doodle.value = await storageService.getDoodle(selectedDay.value);
         fetchCallback?.();
+		doodleLoading.value = false;
 	}
 
 	function updateDoodle(doodle: string) {
@@ -29,6 +32,7 @@ export default function useDayDoodle() {
 
 	return {
 		doodle,
+		doodleLoading,
         onDoodleFetched,
 		updateDoodle,
 	};

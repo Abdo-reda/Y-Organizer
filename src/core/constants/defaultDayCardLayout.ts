@@ -42,6 +42,13 @@ export const DEFAULT_DAY_CARD_LAYOUT: ICardStructure[] = [
 		y: 6,
 	},
 	// {
+	// 	id: DayCardEnum.HABIT_CARD,
+	// 	h: 4,
+	// 	w: 2,
+	// 	x: 7,
+	// 	y: 6,
+	// },
+	// {
 	// 	component: GratitudeCard,
 	// 	height: 6,
 	// 	width: 3,
@@ -55,13 +62,6 @@ export const DEFAULT_DAY_CARD_LAYOUT: ICardStructure[] = [
 		x: 10,
 		y: 0,
 	},
-	// {
-	// 	component: HabitCard,
-	// 	height: 4,
-	// 	width: 2,
-	// 	col: 1,
-	// 	row: 1,
-	// },
 	// {
 	// 	component: FocusCard,
 	// 	height: 6,

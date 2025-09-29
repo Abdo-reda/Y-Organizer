@@ -4,18 +4,25 @@ import { IGratitude } from "../interfaces/entities/IGratitude";
 import { IRemember } from "../interfaces/entities/IRemember";
 import { IActivity } from "../interfaces/entities/IActivity";
 import { SettingsCodeEnum, SettingsCodeValueMap } from "../enums/settingsCodeEnum";
+import { ISetting } from "../interfaces/entities/ISetting";
 
 export class NullStroageService implements IStorageService {
 	readonly DATABASE_NAME = "";
 	
-	init() {}
+	init() {
+		return Promise.resolve();
+	}
 	
-	initDB() {}
+	initDB() {
+		return Promise.resolve();
+	}
 	
-	initDay(_day: DateTime) {}
+	initDay(_day: DateTime) {
+		return Promise.resolve();
+	}
 
-    getSetting<T extends SettingsCodeEnum>(_code: T): Promise<SettingsCodeValueMap[T]|null> {
-        return Promise.resolve(null);
+    getSettings(): Promise<ISetting<SettingsCodeEnum>[]> {
+        return Promise.resolve([]);
     }
 
     updateSetting<T extends SettingsCodeEnum>(_code: T, _value: SettingsCodeValueMap[T] | null): Promise<void> {

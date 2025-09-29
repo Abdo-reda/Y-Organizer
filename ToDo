@@ -1,5 +1,9 @@
-//------ Thinking... & now
-- Gratitude card
+//---- Plan
+- Fix action dialog ui and add switch
+- Add accordion in the bottom or another view to show list of actions.
+- Allow editing of list, and marking of stuff.
+- Finish editing and creations of actions.
+- Finish remembers, add a simple slider
 
 //---- MVP
 - Dynamic Themes --> depend on activity
@@ -7,6 +11,13 @@
 - AutoUpdates & Version number
 - Basic Cards Functionality which are
 
+
+
+//------ Thinking... & now
+- Gratitude card
+
+//------ Enhancements
+- Add a smooth transition when changing the day
 
 /----- Cards ideas
 - reflections/learnings card

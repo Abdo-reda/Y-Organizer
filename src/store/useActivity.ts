@@ -3,10 +3,10 @@ import { inject, reactive } from "vue";
 import { LoggingService } from "@/core/services/loggingService";
 import { IActivity } from "@/core/interfaces/entities/IActivity";
 
+const activities = reactive<IActivity[]>([]);
 
 export default function useActivity() {
 	const storageService = inject(StorageServiceKey)!;
-	const activities = reactive<IActivity[]>([]);
 
 	async function fetchActivities() {
 		LoggingService.log("fetching activities...")
@@ -31,10 +31,9 @@ export default function useActivity() {
 		await storageService.deleteActivity(id);
 	}
 
-	fetchActivities();
-
 	return {
 		activities,
+		fetchActivities,
 		createActivity,
 		updateActivity,
 		deleteActivity

@@ -7,12 +7,12 @@ export enum LifeCategoryEnum {
 	PARTNERSHIP = "Partnership",
 	PARENTING = "Parenting",
 	CAREER = "Career",
+	FITNESS = "Fitness",
 	PERSONAL_GROWTH = "Personal Growth",
 	RECREATION = "Recreation",
 	SPIRITUALITY = "Spirituality",
 	SOCIAL = "Social",
 	COMMUNITY = "Community",
-	FITNESS = "Fitness",
 }
 
 //TODO: maybe later add icons for each category & color

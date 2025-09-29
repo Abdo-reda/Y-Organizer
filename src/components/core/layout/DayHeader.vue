@@ -6,17 +6,19 @@ import { useCurrentTime } from "@/composables/useCurrentTime";
 import { computed, ref } from "vue";
 import { CalendarDate, parseDate } from "@internationalized/date";
 import useDayState from "@/store/useDayState";
-import { XIcon } from "lucide-vue-next";
+import { LockIcon, UnlockIcon, XIcon } from "lucide-vue-next";
 import { Button } from "@/components/ui/button";
 import { getCurrentWindow } from '@tauri-apps/api/window';
 import { isTauri } from "@tauri-apps/api/core";
 import { Dialog } from "@/components/ui/dialog";
 import AboutDialog from "@/components/dialogs/AboutDialog.vue";
+import useDayGrid from "@/store/useDayGrid";
 
 //TODO: ENHANCEMENT: animation when chaning the day and the popover keeps moving when you change hte day, either animate it, or make the anchor static and doesnt change, or redesign this part.. figure something out.
 //TODO: add a left and right arrow to go to next and previous day, should only appear when I hover over the header text "TODAY sunday 2010-10-29"
 
 
+const {isGridLocked} = useDayGrid();
 const { selectedDay } = useDayState();
 const openAbout = ref(false);
 const relativeDate = computed(() => selectedDay.value.toRelativeCalendar());
@@ -44,8 +46,8 @@ function handleClose() {
     <header class="px-2 py-1 grid grid-cols-3 select-none draggable app-drag">
         <div class="flex items-center px-4">
             <div @click="openAbout = true" class="p-4 relative flex items-center justify-center group">
-                <img class="absolute brightness-85 opacity-25 group-hover:opacity-60 duration-500 transition-opacity" src="@/assets/images/sphere.png" /> 
-                <p class="text-2xl font-extrabold text-gray-600 transition-colors duration-500 group-hover:text-gray-800 z-10">Y</p>
+                <img class="absolute brightness-85 opacity-20 group-hover:opacity-60 duration-500 transition-opacity" src="@/assets/images/sphere.png" /> 
+                <p class="text-2xl font-extrabold text-gray-500 transition-colors duration-500 group-hover:text-gray-800 z-10">Y</p>
             </div>
             <Dialog v-model:open="openAbout">
                 <AboutDialog />
@@ -67,15 +69,20 @@ function handleClose() {
                 </Popover>
             </div>
         </div>
-        <div class="flex justify-end items-center px-4 gap-4">
-            <!-- <Button variant="ghost" size="icon" class="text-gray-400">
-                <LayoutDashboardIcon />
-            </Button> -->
-            <div class="text-xl font-bold text-gray-400 hover:text-primary transition-colors">
-                {{ formattedTime }}
+        <div class="flex justify-end items-center px-4 gap-6">
+            <div class="flex items-center">
+            <!-- TODO: remove this and put it in settings. -->
+                <Button @click="isGridLocked = !isGridLocked" variant="ghost" size="icon" class="text-gray-400 app-no-drag">
+                    <LockIcon v-if="isGridLocked" />
+                    <UnlockIcon v-else />
+                </Button>
             </div>
-            <div v-if="isTauri()" class="flex gap-1">
-                <Button @click="handleClose" variant="ghost" size="icon"
+            <div class="border-r border-gray-300 h-1/3" /> 
+            <div class="flex gap-2">
+                <div class="text-xl font-bold text-gray-400 hover:text-primary transition-colors">
+                    {{ formattedTime }}
+                </div>
+                <Button v-if="isTauri()" @click="handleClose" variant="ghost" size="icon"
                     class="text-gray-500 app-no-drag size-6 hover:bg-transparent">
                     <XIcon class="size-3" />
                 </Button>
