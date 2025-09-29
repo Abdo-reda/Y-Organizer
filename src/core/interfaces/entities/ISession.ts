@@ -6,5 +6,15 @@ export interface ISession {
     day: string;
     startTime: string;
     endTime: string;
-    // status?
+    // status: string;
 }
+
+export const DEFAULT_SESSION: ISession = {
+    title: "No Active Session",
+    notes: "",
+    activity: "FREE",
+    day: "",
+    startTime: "",
+    endTime: "",
+    // status: "pending",
+};

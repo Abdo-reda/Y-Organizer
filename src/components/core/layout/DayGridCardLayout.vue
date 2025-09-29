@@ -6,20 +6,9 @@ import { useResizeObserver } from "@vueuse/core";
 import { GridStack } from "gridstack";
 import { onMounted, useTemplateRef, watch } from "vue";
 
-//TODO: editable layout
-//- https://github.com/SortableJS/vue.draggable.next
-//- https://swapy.tahazsh.com/docs/framework-vue/ //========> The project is already under GPL license... so...
-//- https://github.com/haltu/muuri
-//- https://github.com/gridstack/gridstack.js/
-
 const { gridLayout, isGridLocked, updateGridLayout } = useDayGrid();
 const gridContainer = useTemplateRef("grid-container");
 let gridStack: GridStack | undefined;
-
-// function toggleResizing() {
-//     isStatic = !isStatic;
-//     gridStack?.setStatic(isStatic);
-// }
 
 function initGrid() {
 	if (!gridContainer.value) return;

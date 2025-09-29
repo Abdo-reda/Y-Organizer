@@ -4,6 +4,7 @@ import { IRemember } from "../entities/IRemember";
 import { IActivity } from "../entities/IActivity";
 import { SettingsCodeEnum, SettingsCodeValueMap } from "@/core/enums/settingsCodeEnum";
 import { ISetting } from "../entities/ISetting";
+import { ISession } from "../entities/ISession";
 
 export interface IStorageService {
 	DATABASE_NAME: Readonly<String>;
@@ -34,4 +35,9 @@ export interface IStorageService {
 	createActivity(activity: IActivity): Promise<void>;
 	updateActivity(id: string, activity: IActivity): Promise<void>;
 	deleteActivity(id: string): Promise<void>;
+
+    getSessions(day: DateTime): Promise<ISession[]>;
+	createSession(session: ISession): Promise<number|undefined>;
+	updateSession(id: string, session: ISession): Promise<void>;
+	deleteSession(id: string): Promise<void>;
 }

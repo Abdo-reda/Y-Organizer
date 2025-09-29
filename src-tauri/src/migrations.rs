@@ -34,9 +34,10 @@ impl YMigrations {
                     title TEXT NOT NULL,
                     notes TEXT,
                     activity TEXT,
-                    day TEXT,
                     startTime TEXT,
                     endTime TEXT,
+                    day TEXT,
+                    status TEXT,
                     FOREIGN KEY(day) REFERENCES days(day),
                     FOREIGN KEY(activity) REFERENCES activities(name) ON UPDATE CASCADE
                 );

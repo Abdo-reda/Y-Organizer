@@ -3,7 +3,10 @@ import FunctionCard from "@/components/common/FunctionCard.vue";
 import { Button } from "@/components/ui/button";
 import { ISession } from "@/core/interfaces/entities/ISession";
 import { ITask } from "@/core/interfaces/entities/ITask";
+import useDaySessions from "@/store/useDaySessions";
 import { CheckCheckIcon, CheckIcon, ListCheckIcon, NotepadTextIcon, PlusIcon, ZapIcon } from "lucide-vue-next";
+
+const { currentSession } = useDaySessions();
 
 //TODO: enhancements
 // <!-- TODO: fix notes section, remove the bg-gray-50 from icon, and add an absolute hidden element and get the height from that element... -->
@@ -19,24 +22,6 @@ import { CheckCheckIcon, CheckIcon, ListCheckIcon, NotepadTextIcon, PlusIcon, Za
 //- mark as done
 //- mark as active
 
-interface INowCardProps {
-  currentSession: ISession;
-}
-
-const cardData: INowCardProps = {
-  currentSession: {
-    title: "working on stuff related to stuff",
-    activity: "coding",
-    endTime: "2:00",
-    notes:
-      "some notes, i think  think think think think think think think think think think think think think think think think think think think think think think think think think think think think think think think think think think think think think think think think think",
-    startTime: "1:00",
-    day: "2024-01-01",
-  },
-};
-
-const currentSession = cardData.currentSession;
-
 const currentTask: ITask | null = {
   activity: "activity",
   description: "description",
@@ -51,10 +36,10 @@ const currentTask: ITask | null = {
         <!-- HEADER INFO -->
         <div class="flex flex-col gap-0.5 items-center">
           <p class="text-3xl font-bold capitalize text-center">{{ currentSession.activity }}</p>
-          <p v-if="currentSession.title" class="text-base text-center text-gray-600 font-semibold capitalize">
+          <p class="text-base text-center text-gray-600 font-semibold capitalize">
             {{ currentSession.title }}
           </p>
-          <div class="text-xs text-center text-gray-500">
+          <div v-if="currentSession.startTime" class="text-xs text-center text-gray-500">
             <span> {{ currentSession.startTime }} - {{ currentSession.endTime }} </span>
             <span class="text-xs"> • 1h 23m remaining</span>
           </div>
@@ -127,7 +112,7 @@ const currentTask: ITask | null = {
             <div class="relative p-1.5 h-full flex flex-col gap-0.5 border border-gray-400 border-dashed rounded-sm text-gray-500 text-sm">
               <div class="flex items-center gap-1.5">
                 <ListCheckIcon class="size-4" />
-                <p class="font-semibold">Completed Tasks</p>
+                <p class="font-semibold">Completed</p>
                 <span class="bg-gray-100 text-xs mx-1 flex items-center justify-center rounded-full size-5">
                   {{ 4 }}
                 </span>

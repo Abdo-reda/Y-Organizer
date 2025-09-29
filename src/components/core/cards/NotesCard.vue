@@ -3,7 +3,7 @@ import FunctionCard from "@/components/common/FunctionCard.vue";
 import useDayNotes from "@/store/useDayNotes";
 import { EditorContent, useEditor } from '@tiptap/vue-3'
 import StarterKit from '@tiptap/starter-kit'
-import { Placeholder } from '@tiptap/extensions/placeholder'
+import { Placeholder } from '@tiptap/extensions'
 import { onBeforeMount } from "vue";
 
 const { notes, onNotesFetched, updateNotes } = useDayNotes();
@@ -25,7 +25,7 @@ const editor = useEditor({
         StarterKit,
         Placeholder.configure({
             placeholder: "Click here to add your thoughts, reflections, notes for today...",
-        }), //https://github.com/ueberdosis/tiptap/issues/2659
+        }), 
     ],
     editorProps: {
         attributes: {
@@ -56,8 +56,19 @@ onBeforeMount(() => {
         <template #default>
             <div
                 class="p-4 h-full rounded-lg hover:bg-gray-100/75 transition-colors duration-300 cursor-text focus-within:bg-gray-100/75">
-                <EditorContent autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" :editor="editor" class="w-full h-full" />
+                <EditorContent autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"
+                    :editor="editor" class="w-full h-full" />
             </div>
         </template>
     </FunctionCard>
 </template>
+
+<style lang="css">
+.is-editor-empty:first-child::before {
+    color: var(--color-gray-400);
+    content: attr(data-placeholder);
+    float: left;
+    height: 0;
+    pointer-events: none;
+}
+</style>

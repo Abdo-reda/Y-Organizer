@@ -1,9 +1,10 @@
 //---- Plan
-- Fix action dialog ui and add switch
 - Add accordion in the bottom or another view to show list of actions.
-- Allow editing of list, and marking of stuff.
+//--- fix carousel height and shit and stuff in activites
+- Add interactivity to the activites list... edit, mark as archived, add icons and tags and stylings and so on..
 - Finish editing and creations of actions.
-- Finish remembers, add a simple slider
+- Make monthly card
+- Make tasks card
 
 //---- MVP
 - Dynamic Themes --> depend on activity
@@ -12,12 +13,14 @@
 - Basic Cards Functionality which are
 
 
-
 //------ Thinking... & now
 - Gratitude card
 
 //------ Enhancements
-- Add a smooth transition when changing the day
+- Add a smooth transition for cards when changing the day
+- Add a button to change the day in the header (left and right arrow)
+- Add toasts/sonnets
+
 
 /----- Cards ideas
 - reflections/learnings card
@@ -50,6 +53,8 @@
 - App icons https://tauri.app/develop/icons/
 - Window customization https://tauri.app/learn/window-customization/
 <!-- - autostart https://tauri.app/plugin/autostart/ -->
+
+//--> should activities have types? book? course? project? learning? ... hmm..
 
 
 //----- Tick animation

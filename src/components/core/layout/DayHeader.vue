@@ -72,7 +72,7 @@ function handleClose() {
         <div class="flex justify-end items-center px-4 gap-6">
             <div class="flex items-center">
             <!-- TODO: remove this and put it in settings. -->
-                <Button @click="isGridLocked = !isGridLocked" variant="ghost" size="icon" class="text-gray-400 app-no-drag">
+                <Button @click="isGridLocked = !isGridLocked" variant="ghost" size="icon" class="text-gray-400 app-no-drag hover:bg-transparent">
                     <LockIcon v-if="isGridLocked" />
                     <UnlockIcon v-else />
                 </Button>

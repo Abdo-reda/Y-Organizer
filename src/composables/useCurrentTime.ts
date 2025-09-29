@@ -1,13 +1,14 @@
-import { ref, onMounted, onUnmounted, computed } from "vue";
+import { ref, computed } from "vue";
 import { DateTime } from "luxon";
 
+const currentTime = ref(DateTime.now());
+const formattedTime = computed(() => currentTime.value.toFormat("hh:mm"));
+const dayPercentage = computed(() => (currentTime.value.hour + currentTime.value.minute / 60) / 24);
+
 export function useCurrentTime() {
-	const currentTime = ref(DateTime.now());
-	const formattedTime = computed(() => currentTime.value.toFormat("hh:mm"));
-	const dayPercentage = computed(() => (currentTime.value.hour + currentTime.value.minute / 60) / 24);
 	let intervalId: number | undefined;
 
-	onMounted(() => {
+    function init() {
 		const updateTime = () => {
 			currentTime.value = DateTime.now();
 		};
@@ -19,15 +20,17 @@ export function useCurrentTime() {
 			updateTime();
 			intervalId = setInterval(updateTime, 60000);
 		}, msUntilNextMinute);
-	});
+    }
 
-	onUnmounted(() => {
-		clearInterval(intervalId);
-	});
+    function clean() {
+        clearInterval(intervalId);
+    }
 
 	return {
 		currentTime,
 		formattedTime,
-        dayPercentage
+        dayPercentage,
+        init,
+        clean
 	};
 }
