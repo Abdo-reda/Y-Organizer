@@ -10,6 +10,8 @@ import { Switch } from "../ui/switch";
 import { Label } from "@/components/ui/label"
 import { ActivityStatusEnum } from "@/core/enums/activityStatusEnum";
 import { computed } from "vue";
+import { Input } from "../ui/input";
+import { Textarea } from "../ui/textarea";
 
 const props = defineProps<{ existingActivity: IActivity | null }>();
 const emits = defineEmits<{
@@ -57,31 +59,26 @@ function handleSubmit() {
             <DialogDescription class="hidden"> Create or edit an activity. </DialogDescription>
         </DialogHeader>
         <form id="activity-form" name="activity-form" @submit.prevent="handleSubmit">
-            <div class="flex flex-col gap-2">
+            <div class="flex flex-col gap-3">
                 <!-- Activity Name -->
-                <div>
-                    <label class="block text-xs font-medium text-gray-700 my-1"> Name </label>
-                    <div class="flex gap-6">
-                        <input v-model="activityForm.name" type="text" placeholder="Enter activity name..."
-                            class="w-full px-3 py-2 text-sm border border-gray-200 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all" />
-                    </div>
+                <div class="flex flex-col gap-1.5">
+                    <Label for="name"> Name </Label>
+                    <Input id="name" v-model="activityForm.name" type="text" placeholder="Enter activity name..." />
                 </div>
 
                 <!-- Description -->
-                <div>
-                    <label class="block text-xs font-medium text-gray-700 my-1"> Description </label>
-                    <textarea v-model="activityForm.description" placeholder="Describe this activity..." rows="2"
-                        class="w-full px-3 py-2 text-sm border border-gray-200 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all resize-none"></textarea>
+                <div class="flex flex-col gap-1.5">
+                    <Label for="description"> Description </Label>
+                    <Textarea id="description" v-model="activityForm.description" placeholder="Describe this activity..."  class="resize-none" />
                 </div>
 
                 <!-- Color Selection -->
-                <div>
-                    <label class="block text-xs font-medium text-gray-700 mb-2"> Color </label>
+                <div class="flex flex-col gap-1.5">
+                    <Label for="color"> Color </Label>
                     <div class="flex gap-4 items-start justify-between">
                         <div class="flex-1 flex items-center gap-2">
-                            <input v-model="activityForm.color" type="color" class="size-6" />
-                            <input v-model="activityForm.color" type="text" placeholder="#000000"
-                                class="flex-1 px-2 py-1 text-xs border border-gray-200 rounded-md focus:ring-1 focus:ring-blue-500 focus:border-transparent" />
+                            <Input v-model="activityForm.color" type="color" class="w-1/4 p-1"/>
+                            <Input v-model="activityForm.color" type="text" placeholder="#000000" />
                         </div>
                         <div class="grid grid-cols-8 gap-2">
                             <button type="button" v-for="color in ACTIVITY_COLORS" :key="color"
@@ -94,8 +91,8 @@ function handleSubmit() {
                 </div>
 
                 <!-- Categories -->
-                <div>
-                    <label class="block text-xs font-medium text-gray-700 mb-2"> Categories </label>
+                <div class="flex flex-col gap-2">
+                    <Label> Categories </Label>
                     <div class="flex flex-wrap gap-1">
                         <button type="button" v-for="category in categoryOptions" :key="category"
                             @click="toggleCategory(category)" :class="[

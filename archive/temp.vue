@@ -126,7 +126,72 @@
       </div>
 
       <!-- Enhanced Pomodoro Timer card with alt-click for break -->
+      <div class="bg-white rounded-xl shadow-sm p-6 relative">
+        <div class="text-center mb-6 relative">
+          <h2 class="text-2xl font-bold text-gray-900">Pomodoro Timer</h2>
+          <div class="absolute left-0 top-0 flex items-center gap-1 text-gray-400">
+            <span class="text-sm">{{ completedPomodoros }}</span>
+            <div class="flex">
+              <svg v-for="n in Math.min(completedPomodoros, 10)" :key="n" class="w-3 h-3" fill="currentColor" viewBox="0 0 20 20">
+                <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd" />
+              </svg>
+            </div>
+          </div>
+        </div>
 
+        <div class="flex justify-center">
+          <div 
+            @click="toggleTimer"
+            @click.ctrl="showEditTimer = true"
+            @click.alt="completePomodoro"
+            @contextmenu.prevent="resetTimer"
+            class="relative w-32 h-32 cursor-pointer"
+          >
+            <!-- Progress circle -->
+            <svg class="w-32 h-32 transform -rotate-90" viewBox="0 0 36 36">
+              <path
+                d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831"
+                fill="none"
+                stroke="rgba(0,0,0,0.1)"
+                stroke-width="3"
+              />
+              <path
+                v-if="isTimerActive || isBreakActive"
+                d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831"
+                fill="none"
+                :stroke="isBreakActive ? 'url(#breakGradient)' : 'url(#pomodoroGradient)'"
+                stroke-width="3"
+                :stroke-dasharray="`${(timeRemaining / (currentTimerDuration * 60)) * 100}, 100`"
+                stroke-linecap="round"
+              />
+            </svg>
+            
+            <!-- Timer display -->
+            <div class="absolute inset-0 flex items-center justify-center">
+              <div class="text-center">
+                <span class="text-2xl font-bold text-gray-700">
+                  {{ formatTime(timeRemaining) }}
+                </span>
+                <div v-if="isBreakActive" class="text-xs text-gray-500 mt-1">Break</div>
+              </div>
+            </div>
+
+            <!-- SVG gradient definitions -->
+            <svg width="0" height="0">
+              <defs>
+                <linearGradient id="pomodoroGradient" x1="0%" y1="0%" x2="100%" y2="0%">
+                  <stop offset="0%" style="stop-color:#667eea;stop-opacity:1" />
+                  <stop offset="100%" style="stop-color:#764ba2;stop-opacity:1" />
+                </linearGradient>
+                <linearGradient id="breakGradient" x1="0%" y1="0%" x2="100%" y2="0%">
+                  <stop offset="0%" style="stop-color:#10b981;stop-opacity:1" />
+                  <stop offset="100%" style="stop-color:#059669;stop-opacity:1" />
+                </linearGradient>
+              </defs>
+            </svg>
+          </div>
+        </div>
+      </div>
 
       <!-- Updated Notes card - removed dashed border and renamed to "Notes" -->
       <div class="bg-white rounded-xl shadow-sm p-6">

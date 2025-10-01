@@ -21,7 +21,7 @@ import { LifeCategoryIconMapper } from '@/core/enums/lifeCategoryEnum';
 //- use Transition instead of v-auto-aniamte and see if that fixes the problem.
 
 const { activities, createActivity, updateActivity } = useActivity();
-const curActivity = ref<IActivity | null>(null);
+const editActivity = ref<IActivity | null>(null);
 const dialogOpen = ref(false);
 // const todayActivites = computed(() => activities.filter(a => a.status === ActivityStatusEnum.ACTIVE));
 const sortedActivites = computed(() => activities.sort((a, b) => a.name.localeCompare(b.name)));
@@ -30,7 +30,7 @@ function handleActivity(event: PointerEvent, activity: IActivity) {
     switch (event.button) {
         case 0:
             if (event.ctrlKey) {
-                curActivity.value = activity;
+                editActivity.value = activity;
                 dialogOpen.value = true;
             } else if (event.altKey) {
                 activity.status = activity.status === ActivityStatusEnum.COMPLETED ? ActivityStatusEnum.ACTIVE : ActivityStatusEnum.COMPLETED;
@@ -48,14 +48,14 @@ function handleActivity(event: PointerEvent, activity: IActivity) {
 
 function handleCreate(activity: IActivity) {
     createActivity(activity);
-    curActivity.value = null;
+    editActivity.value = null;
     dialogOpen.value = false;
     //TODO: toast?
 }
 
 function handleUpdate(id: string, activity: IActivity) {
     updateActivity(id, activity);
-    curActivity.value = null;
+    editActivity.value = null;
     dialogOpen.value = false;
 }
 
@@ -82,7 +82,7 @@ function handleUpdate(id: string, activity: IActivity) {
                             </div>
                             <div v-if="activities.length" class="grid grid-cols-2 m-1 gap-2" v-auto-animate>
                                 <div v-for="activity in activities" :key="activity.name"
-                                    class="flex items-center justify-between p-1 px-2 group rounded-md hover:bg-gray-50 hover:ring-1 ring-muted-hover duration-300 transition-all group"
+                                    class="flex items-center justify-between p-1 px-2 group rounded-md hover:bg-gray-50 hover:ring-1 ring-hover/20 duration-300 transition-all group"
                                     :style="{ '--color-hover': activity.color }">
                                     <div class="flex items-center gap-3 min-w-0 flex-1">
                                         <div class="size-3 rounded-full" :style="{ backgroundColor: activity.color }">
@@ -154,7 +154,7 @@ function handleUpdate(id: string, activity: IActivity) {
                             <PlusIcon />
                         </Button>
                     </DialogTrigger>
-                    <ActivityDialog :existing-activity="curActivity" @create="handleCreate" @update="handleUpdate" />
+                    <ActivityDialog :existing-activity="editActivity" @create="handleCreate" @update="handleUpdate" />
                 </Dialog>
             </div>
         </template>

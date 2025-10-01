@@ -21,32 +21,31 @@ export default function useDaySessions() {
 		Object.assign(sessions, await storageService.getSessions(day));
 	}
 
-	// async function createActivity(activity: IActivity) {
-	// 	LoggingService.log("creating activity...", activity)
-	// 	activities.push(activity);
-	// 	await storageService.createActivity(activity);
-	// }
+	async function createSession(session: ISession) {
+		LoggingService.log("creating session...", session)
+		sessions.push(session);
+		await storageService.createSession(session);
+	}
 
-	// async function updateActivity(id: string, activity: IActivity) {
-	// 	LoggingService.log("updating remembers...", activity)
-	// 	await storageService.updateActivity(id, activity);
-	// }
+	async function updateSession(id: number, session: ISession) {
+		LoggingService.log("updating session...", session)
+		await storageService.updateSession(id, session);
+	}
 
-	// async function deleteActivity(id: string) {
-	// 	const index = activities.findIndex((a) => a.name === id);
-	// 	if (index > -1) activities.splice(index, 1);
-	// 	LoggingService.log("deleting activity...", id)
-	// 	await storageService.deleteActivity(id);
-	// }
+	async function deleteSession(id: number) {
+		const index = sessions.findIndex((s) => s.id === id);
+		if (index > -1) sessions.splice(index, 1);
+		LoggingService.log("deleting sessions...", id)
+		await storageService.deleteSession(id);
+	}
 
 	return {
 		sessions,
 		currentSession,
 		currentActivity,
         fetchSessions,
-		// fetchActivities,
-		// createActivity,
-		// updateActivity,
-		// deleteActivity,
+        createSession,
+        updateSession,
+        deleteSession
 	};
 }

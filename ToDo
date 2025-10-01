@@ -1,10 +1,5 @@
 //---- Now
-- Add arrows to change days left and right.
-- Date modal animation when it changes position
-- Add gardient in activites left and right
-- Fix carousel height issues when in card.
-- Enhance list of activites, show icons for categories, show status, and so on ...
-- Finish actions card...
+- highlight now card
 
 //--- Schedule card
 - Enhance Schedule slot looks.
@@ -31,6 +26,7 @@
 - Add a smooth transition for cards when changing the day
 - Add a button to change the day in the header (left and right arrow)
 - Add toasts/sonnets
+- Restructure header or add animation for the date popup when it changes position
 
 
 /----- Cards ideas

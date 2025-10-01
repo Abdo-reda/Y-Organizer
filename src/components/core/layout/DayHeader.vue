@@ -18,7 +18,7 @@ import useDayGrid from "@/store/useDayGrid";
 //TODO: add a left and right arrow to go to next and previous day, should only appear when I hover over the header text "TODAY sunday 2010-10-29"
 
 
-const {isGridLocked} = useDayGrid();
+const { isGridLocked } = useDayGrid();
 const { selectedDay } = useDayState();
 const openAbout = ref(false);
 const relativeDate = computed(() => selectedDay.value.toRelativeCalendar());
@@ -41,21 +41,24 @@ function handleClose() {
 }
 
 function prevDay() {
-    selectedDay.value = selectedDay.value.minus({day: 1})
+    selectedDay.value = selectedDay.value.minus({ day: 1 })
 }
 
 function nextDay() {
-    selectedDay.value = selectedDay.value.plus({day: 1})
+    selectedDay.value = selectedDay.value.plus({ day: 1 })
 }
 
 </script>
 
 <template>
     <header class="px-2 py-1 grid grid-cols-3 select-none draggable app-drag">
-        <div class="flex items-center px-4">
+        <div class="flex items-center px-2">
             <div @click="openAbout = true" class="p-4 relative flex items-center justify-center group">
-                <img class="absolute brightness-85 opacity-20 group-hover:opacity-60 duration-500 transition-opacity" src="@/assets/images/sphere.png" /> 
-                <p class="text-2xl font-extrabold text-gray-500 transition-colors duration-500 group-hover:text-gray-800 z-10">Y</p>
+                <img class="absolute brightness-85 opacity-20 group-hover:opacity-60 duration-500 transition-opacity"
+                    src="@/assets/images/sphere.png" />
+                <p
+                    class="text-2xl font-extrabold text-gray-500 transition-colors duration-500 group-hover:text-gray-800 z-10">
+                    Y</p>
             </div>
             <Dialog v-model:open="openAbout">
                 <AboutDialog />
@@ -64,9 +67,15 @@ function nextDay() {
         <div class="flex flex-1 items-center justify-center gap-2">
             <div class="flex items-end relative">
                 <div class="flex items-center gap-0 hover:gap-2 transition-all group">
-                    <Button @click="prevDay" variant="ghost" class="hover:bg-transparent app-no-drag !p-0 w-2 opacity-0 group-hover:opacity-100"> <ChevronLeftIcon /> </Button>
+                    <Button @click="prevDay" variant="ghost"
+                        class="hover:bg-transparent app-no-drag !p-0 w-2 opacity-0 group-hover:opacity-100">
+                        <ChevronLeftIcon />
+                    </Button>
                     <h1 class="text-4xl font-bold text-primary capitalize">{{ relativeDate }}</h1>
-                    <Button @click="nextDay" variant="ghost" class="hover:bg-transparent app-no-drag !p-0 w-2 opacity-0 group-hover:opacity-100"> <ChevronRightIcon /> </Button>
+                    <Button @click="nextDay" variant="ghost"
+                        class="hover:bg-transparent app-no-drag !p-0 w-2 opacity-0 group-hover:opacity-100">
+                        <ChevronRightIcon />
+                    </Button>
                 </div>
                 <Popover>
                     <PopoverTrigger as-child>
@@ -81,21 +90,22 @@ function nextDay() {
                 </Popover>
             </div>
         </div>
-        <div class="flex justify-end items-center px-4 gap-6">
+        <div class="flex justify-end items-center px-2 gap-6">
             <div class="flex items-center">
-            <!-- TODO: remove this and put it in settings. -->
-                <Button @click="isGridLocked = !isGridLocked" variant="ghost" size="icon" class="text-gray-400 app-no-drag hover:bg-transparent">
+                <!-- TODO: remove this and put it in settings. -->
+                <Button @click="isGridLocked = !isGridLocked" variant="ghost" size="icon"
+                    class="text-gray-400 app-no-drag hover:bg-transparent">
                     <LockIcon v-if="isGridLocked" />
                     <UnlockIcon v-else />
                 </Button>
             </div>
-            <div class="border-r border-gray-300 h-1/3" /> 
-            <div class="flex gap-2">
+            <div class="border-r border-gray-300 h-1/3" />
+            <div class="flex hover:gap-2 gap-0 transition-all group">
                 <div class="text-xl font-bold text-gray-400 hover:text-primary transition-colors">
                     {{ formattedTime }}
                 </div>
                 <Button v-if="isTauri()" @click="handleClose" variant="ghost" size="icon"
-                    class="text-gray-500 app-no-drag size-6 hover:bg-transparent">
+                    class="text-transparent app-no-drag size-6 hover:bg-transparent group-hover:text-gray-400">
                     <XIcon class="size-3" />
                 </Button>
             </div>
