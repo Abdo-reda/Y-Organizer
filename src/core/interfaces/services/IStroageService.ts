@@ -38,6 +38,6 @@ export interface IStorageService {
 
     getSessions(day: DateTime): Promise<ISession[]>;
 	createSession(session: ISession): Promise<number|undefined>;
-	updateSession(id: string, session: ISession): Promise<void>;
-	deleteSession(id: string): Promise<void>;
+	updateSession(id: number, session: ISession): Promise<void>;
+	deleteSession(id: number): Promise<void>;
 }

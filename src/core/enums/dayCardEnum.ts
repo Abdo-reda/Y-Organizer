@@ -28,6 +28,6 @@ export const DayCardComponentMapper: Record<DayCardEnum, Component> = {
     [DayCardEnum.REMEMBER_CARD]: RememberCard,
     [DayCardEnum.SCHEDULE_CARD]: ScheduleCard,
     [DayCardEnum.HABIT_CARD]: HabitCard,
-    // [DayCardEnum.GRATITUDE_CARD]: () => import('@/components/core/cards/GratitudeCard.vue'),
+    // [DayCardEnum.GRATITUDE_CARD]: () => ,
     [DayCardEnum.TEST_CARD]: TestCard,
 };

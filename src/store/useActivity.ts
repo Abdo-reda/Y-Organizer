@@ -21,6 +21,9 @@ export default function useActivity() {
 
 	async function updateActivity(id: string, activity: IActivity) {
 		LoggingService.log("updating remembers...", activity)
+        const oldActivity = activities.find((a) => a.name === id);
+        if (!oldActivity) return;
+        Object.assign(oldActivity, activity)
 		await storageService.updateActivity(id, activity);
 	}
 

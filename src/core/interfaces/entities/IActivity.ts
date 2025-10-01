@@ -10,6 +10,13 @@ export interface IActivity {
 	status: ActivityStatusEnum;
 }
 
-export function DEFAULT_ACTIVITY(): Readonly<IActivity> {
+export function generateDefaultActivity(): Readonly<IActivity> {
 	return { name: "", description: "", color: SKY, categories: [], status: ActivityStatusEnum.ACTIVE };
+}
+
+export function cloneActivity(activity: IActivity): IActivity {
+    return {
+        ...activity,
+        categories: [...activity.categories]
+    };
 }

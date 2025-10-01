@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { computed, onMounted, onUnmounted } from 'vue';
-import { useCurrentTime } from './composables/useCurrentTime';
+import { useCurrentTime } from './store/useCurrentTime';
 import useDaySessions from './store/useDaySessions';
 
 const { init, clean } = useCurrentTime();

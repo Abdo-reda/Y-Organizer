@@ -10,6 +10,27 @@
     app-region: no-drag;
 }
 
+@utility scroll-drag {
+    /* hide scrollbar */
+    ::-webkit-scrollbar {
+        display: none;
+    }
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+
+    /* make scrolling smooth */
+    /* scroll-behavior: smooth; */
+    
+    /* add overflow */
+    overflow: auto;
+    
+    /* selection disabled */
+    -webkit-user-select: none;
+    user-select: none;
+    
+    scroll-snap-type: both mandatory;
+}
+
 @utility scroll-hidden {
     ::-webkit-scrollbar {
         display: none;

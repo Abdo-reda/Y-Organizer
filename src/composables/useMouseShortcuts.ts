@@ -29,9 +29,7 @@ export function useMouseShortcuts(
 	useEventListener(
 		targetEl,
 		"contextmenu",
-		(event) => {
-			event.preventDefault();
-		},
+		(event) => event.preventDefault(),
 		options
 	);
 
@@ -39,9 +37,9 @@ export function useMouseShortcuts(
 		targetEl,
 		"pointerdown",
 		(event) => {
-			if (event.button === 2) {
-				event.preventDefault();
-			}
+			// if (event.button === 2) {
+			// 	event.preventDefault();
+			// }
 
 			switch (event.button) {
 				case 0:

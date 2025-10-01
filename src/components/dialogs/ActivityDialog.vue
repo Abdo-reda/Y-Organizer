@@ -3,7 +3,7 @@ import { Button } from "@/components/ui/button";
 import { DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { ACTIVITY_COLORS } from "@/core/constants/activityColors";
 import { LifeCategoryColorMapper, LifeCategoryEnum, LifeCategoryIconMapper } from "@/core/enums/lifeCategoryEnum";
-import { DEFAULT_ACTIVITY, IActivity } from "@/core/interfaces/entities/IActivity";
+import { cloneActivity, generateDefaultActivity, IActivity } from "@/core/interfaces/entities/IActivity";
 import { reactiveComputed } from "@vueuse/core";
 import { PenIcon } from "lucide-vue-next";
 import { Switch } from "../ui/switch";
@@ -17,12 +17,12 @@ const emits = defineEmits<{
     update: [id: string, activity: IActivity];
 }>();
 const activityForm = reactiveComputed<IActivity>(() =>
-    props.existingActivity ? { ...props.existingActivity } : DEFAULT_ACTIVITY()
+    props.existingActivity ? cloneActivity(props.existingActivity) : generateDefaultActivity()
 );
 const isActive = computed({
     get: () => activityForm.status === ActivityStatusEnum.ACTIVE,
     set: (value: boolean) => {
-        activityForm.status = value ? ActivityStatusEnum.ACTIVE : ActivityStatusEnum.ARCHIVED;
+        activityForm.status = value ? ActivityStatusEnum.ACTIVE : ActivityStatusEnum.DISABLED;
     },
 });
 
@@ -35,9 +35,10 @@ function toggleCategory(category: LifeCategoryEnum) {
 }
 
 function handleSubmit() {
-    if (props.existingActivity) emits("update", props.existingActivity.name, { ...activityForm });
-    else emits("create", { ...activityForm });
-    Object.assign(activityForm, DEFAULT_ACTIVITY());
+    const updatedActivity = cloneActivity(activityForm);
+    if (props.existingActivity) emits("update", props.existingActivity.name, updatedActivity);
+    else emits("create", updatedActivity);
+    Object.assign(activityForm, generateDefaultActivity());
 }
 </script>
 

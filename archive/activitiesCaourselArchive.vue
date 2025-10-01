@@ -1,0 +1,47 @@
+
+const carouselSetup = ref(false);
+const carouselSettled = ref(false);
+
+function setCarouselApi(api: CarouselApi) {
+    console.log("--- hmm")
+    if (!api || carouselSetup.value) return;
+    carouselSetup.value = true;
+    api.on("settle", () => {
+        console.log("--- settle")
+    })
+    api.on("select", () => {
+        console.log("--- select")
+    })
+}
+
+
+// const activitiesContainer = useTemplateRef('activities-container');
+// useMouseScroll(activitiesContainer);
+
+                      <!-- <div ref="activities-container" class="flex flex-col h-full gap-2 p-2 scroll-drag"  v-auto-animate>
+                            <div v-for="activity in sortedActivites" :key="activity.name" @pointerdown="handleActivity($event, activity)"
+                                class="flex items-center justify-between p-1 px-2 group rounded-md hover:bg-gray-50 hover:ring-1 ring-hover duration-300 transition-all group"
+                                :class="{ 'opacity-60 ': activity.status === ActivityStatusEnum.DISABLED }"
+                                :style="{ '--color-hover': activity.color }">
+                                <div class="flex items-center gap-3 min-w-0 flex-1">
+                                    <div :style="{ color: activity.color }">
+                                        <CircleIcon v-if="activity.status === ActivityStatusEnum.ACTIVE" class="size-4"
+                                            stroke-width="0" :fill="activity.color" />
+                                        <CheckCheckIcon v-else-if="activity.status === ActivityStatusEnum.COMPLETED"
+                                            class="size-4" />
+                                        <ArchiveIcon v-else class="size-4" />
+                                    </div>
+                                    <div class="min-w-0 flex-1">
+                                        <p class="font-medium text-gray-900 truncate w-fit" :class="{
+                                            'line-through': activity.status === ActivityStatusEnum.COMPLETED,
+                                        }">{{ activity.name }}
+                                        </p>
+                                        <p class="text-sm text-gray-500 truncate">{{ activity.description }}</p>
+                                    </div>
+                                </div>
+                                <div class="flex gap-1">
+                                    <component v-for="category in activity.categories"
+                                        :is="LifeCategoryIconMapper[category]" class="size-3.5 text-hover" />
+                                </div>
+                            </div>
+                        </div> -->

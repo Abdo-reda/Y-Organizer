@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import FunctionCard from '@/components/common/FunctionCard.vue';
-import { useCurrentTime } from '@/composables/useCurrentTime';
+import { useCurrentTime } from '@/store/useCurrentTime';
 import useDaySessions from '@/store/useDaySessions';
 import useDayState from '@/store/useDayState';
 import { useResizeObserver } from '@vueuse/core'

@@ -2,11 +2,11 @@
 import { Calendar } from "@/components/ui/calendar";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import { DateTime } from "luxon";
-import { useCurrentTime } from "@/composables/useCurrentTime";
+import { useCurrentTime } from "@/store/useCurrentTime";
 import { computed, ref } from "vue";
 import { CalendarDate, parseDate } from "@internationalized/date";
 import useDayState from "@/store/useDayState";
-import { LockIcon, UnlockIcon, XIcon } from "lucide-vue-next";
+import { ChevronLeftIcon, ChevronRightIcon, LockIcon, UnlockIcon, XIcon } from "lucide-vue-next";
 import { Button } from "@/components/ui/button";
 import { getCurrentWindow } from '@tauri-apps/api/window';
 import { isTauri } from "@tauri-apps/api/core";
@@ -40,6 +40,14 @@ function handleClose() {
     appWindow?.close();
 }
 
+function prevDay() {
+    selectedDay.value = selectedDay.value.minus({day: 1})
+}
+
+function nextDay() {
+    selectedDay.value = selectedDay.value.plus({day: 1})
+}
+
 </script>
 
 <template>
@@ -53,9 +61,13 @@ function handleClose() {
                 <AboutDialog />
             </Dialog>
         </div>
-        <div class="flex flex-1 items-center justify-center">
+        <div class="flex flex-1 items-center justify-center gap-2">
             <div class="flex items-end relative">
-                <h1 class="text-4xl font-bold text-primary capitalize">{{ relativeDate }}</h1>
+                <div class="flex items-center gap-0 hover:gap-2 transition-all group">
+                    <Button @click="prevDay" variant="ghost" class="hover:bg-transparent app-no-drag !p-0 w-2 opacity-0 group-hover:opacity-100"> <ChevronLeftIcon /> </Button>
+                    <h1 class="text-4xl font-bold text-primary capitalize">{{ relativeDate }}</h1>
+                    <Button @click="nextDay" variant="ghost" class="hover:bg-transparent app-no-drag !p-0 w-2 opacity-0 group-hover:opacity-100"> <ChevronRightIcon /> </Button>
+                </div>
                 <Popover>
                     <PopoverTrigger as-child>
                         <button

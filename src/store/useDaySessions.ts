@@ -1,22 +1,20 @@
 import { StorageServiceKey } from "@/core/constants/injectionKeys";
 import { computed, inject, reactive } from "vue";
 import { LoggingService } from "@/core/services/loggingService";
-import { IActivity } from "@/core/interfaces/entities/IActivity";
-import { DEFAULT_SESSION, ISession } from "@/core/interfaces/entities/ISession";
-import { useCurrentTime } from "@/composables/useCurrentTime";
+import { ISession } from "@/core/interfaces/entities/ISession";
+import { useCurrentTime } from "@/store/useCurrentTime";
 import useActivity from "./useActivity";
-import useDayState from "./useDayState";
 import { DateTime } from "luxon";
 
-const { formattedTime } = useCurrentTime();
+const { currentTime } = useCurrentTime();
 const sessions = reactive<ISession[]>([]);
 
 export default function useDaySessions() {
 	const storageService = inject(StorageServiceKey)!;
 	const { activities } = useActivity();
     
-	const currentSession = computed(() => sessions.find((s) => formattedTime.value >= s.startTime && formattedTime.value <= s.endTime) ?? DEFAULT_SESSION);
-	const currentActivity = computed(() => activities.find((a) => a.name === currentSession.value.activity));
+	const currentSession = computed(() => sessions.find((s) => currentTime.value >= s.startTime && currentTime.value <= s.endTime));
+	const currentActivity = computed(() => activities.find((a) => a.name === currentSession?.value?.activity));
 
 	async function fetchSessions(day: DateTime) {
 		LoggingService.log("fetching sessions...");

@@ -8,6 +8,12 @@ const dayPercentage = computed(() => (currentTime.value.hour + currentTime.value
 export function useCurrentTime() {
 	let intervalId: number | undefined;
 
+    const temp = DateTime.now().plus({day: 2, hour: 2, minutes: 4});
+
+    // const blah = temp.toISOTime({includeOffset: false, precision: 'minute'});
+    // const after = DateTime.fromISO("19:14");
+    // console.log("---- temp", blah , after.toISOTime(), temp.)
+
     function init() {
 		const updateTime = () => {
 			currentTime.value = DateTime.now();

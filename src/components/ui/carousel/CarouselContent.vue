@@ -16,12 +16,12 @@ const { carouselRef, orientation } = useCarousel()
   <div
     ref="carouselRef"
     data-slot="carousel-content"
-    class="overflow-hidden"
+    class="overflow-hidden h-full"
   >
     <div
       :class="
         cn(
-          'flex',
+          'flex h-full',
           orientation === 'horizontal' ? '-ml-4' : '-mt-4 flex-col',
           props.class,
         )"

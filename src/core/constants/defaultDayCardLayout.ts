@@ -1,9 +1,5 @@
 import { ICardStructure } from "../interfaces/entities/ICardStructure";
-// import FocusCard from "@/components/core/cards/FocusCard.vue";
-// import GratitudeCard from "@/components/core/cards/GratitudeCard.vue";
-// import HabitCard from "@/components/core/cards/HabitCard.vue";
 import { DayCardEnum } from "../enums/dayCardEnum";
-// import TestCard from "@/components/core/cards/TestCard.vue";
 
 export const DEFAULT_DAY_CARD_LAYOUT: ICardStructure[] = [
 	{
@@ -41,6 +37,13 @@ export const DEFAULT_DAY_CARD_LAYOUT: ICardStructure[] = [
 		x: 4,
 		y: 6,
 	},
+    {
+        id: DayCardEnum.TEST_CARD,
+        h: 4,
+		w: 3,
+		x: 7,
+		y: 6, 
+    },
 	// {
 	// 	id: DayCardEnum.HABIT_CARD,
 	// 	h: 4,
