@@ -2,8 +2,6 @@
 import { ISession } from '@/core/interfaces/entities/ISession';
 import { computed } from 'vue';
 import { reactiveComputed } from '@vueuse/core';
-import { DateTime } from 'luxon';
-import { SessionStatusEnum } from '@/core/enums/sessionStatusEnum';
 import useActivity from '@/store/useActivity';
 import { Select, SelectContent, SelectGroup, SelectItem, SelectTrigger, SelectValue } from '../ui/select';
 import { Button } from '../ui/button';
@@ -14,30 +12,14 @@ import { PopoverContent } from '../ui/popover';
 
 const { activities } = useActivity();
 
-const props = defineProps<{ existingSession: ISession | null }>();
+const props = defineProps<{ existingSession: ISession }>();
 const emits = defineEmits<{
     create: [session: ISession];
     update: [id: number, session: ISession];
 }>();
 
-function generateDefaultSession(): ISession {
-    const startTime = DateTime.now();
-    const endTime = startTime.plus({ hour: 1 });
 
-    return {
-        title: "",
-        notes: "",
-        activity: "",
-        day: startTime.toISO(),
-        status: SessionStatusEnum.PENDING,
-        startTime,
-        endTime,
-    };
-}
-
-const sessionForm = reactiveComputed<ISession>(() =>
-    props.existingSession ? { ...props.existingSession } : generateDefaultSession()
-);
+const sessionForm = reactiveComputed<ISession>(() => ({ ...props.existingSession }));
 
 const selectedActivity = computed({
     get: () => activities.find(a => a.name === sessionForm.activity),
@@ -53,13 +35,12 @@ function handleSubmit() {
     } else {
         emits("create", updatedSession);
     }
-    Object.assign(sessionForm, generateDefaultSession());
 }
 
 </script>
 
 <template>
-    <PopoverContent side="right">
+    <PopoverContent side="right" align="start">
         <form id="session-form" name="session-form" @submit.prevent="handleSubmit">
             <div class="flex flex-col gap-2">
                 <Input v-model="sessionForm.title" type="text" placeholder="Title" />
@@ -68,8 +49,9 @@ function handleSubmit() {
                 <Select v-model="selectedActivity">
                     <SelectTrigger class="w-full">
                         <SelectValue>
-                            <p v-if="selectedActivity">
-                                <span class="rounded-full w-3" :style="{ backgroundColor: selectedActivity.color }">
+                            <p class="flex gap-2 items-center" v-if="selectedActivity">
+                                <span class="rounded-full block size-3"
+                                    :style="{ backgroundColor: selectedActivity.color }">
                                 </span>
                                 {{ selectedActivity.name }}
                             </p>
@@ -91,8 +73,9 @@ function handleSubmit() {
 
                 <Textarea id="description" v-model="sessionForm.notes" placeholder="Notes..." class="resize-none" />
 
-                <Button type="submit" variant="outline" form="session-form">
-                    <PenIcon /> {{ props.existingSession ? "Update" : "Create" }}
+                <Button :class="{ 'text-white/85 hover:text-white': selectedActivity }" type="submit" variant="outline"
+                    form="session-form" :style="{ backgroundColor: selectedActivity?.color }">
+                    <PenIcon /> {{ props.existingSession.id ? "Update" : "Create" }}
                 </Button>
             </div>
         </form>

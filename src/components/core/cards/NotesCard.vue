@@ -55,7 +55,7 @@ onBeforeMount(() => {
     <FunctionCard title="Notes">
         <template #default>
             <div
-                class="p-4 h-full rounded-lg hover:bg-gray-100/75 transition-colors duration-300 cursor-text focus-within:bg-gray-100/75">
+                class="p-4 h-full rounded-lg hover:bg-primary/8 transition-colors duration-300 cursor-text focus-within:bg-primary/8">
                 <EditorContent autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"
                     :editor="editor" class="w-full h-full" />
             </div>

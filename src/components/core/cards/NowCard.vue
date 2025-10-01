@@ -1,10 +1,10 @@
 <script setup lang="ts">
 import FunctionCard from "@/components/common/FunctionCard.vue";
 import { Button } from "@/components/ui/button";
-import { ISession } from "@/core/interfaces/entities/ISession";
 import { ITask } from "@/core/interfaces/entities/ITask";
 import useDaySessions from "@/store/useDaySessions";
 import { CheckCheckIcon, CheckIcon, ListCheckIcon, NotepadTextIcon, PlusIcon, ZapIcon } from "lucide-vue-next";
+import { computed } from "vue";
 
 const { currentSession } = useDaySessions();
 
@@ -22,6 +22,8 @@ const { currentSession } = useDaySessions();
 //- mark as done
 //- mark as active
 
+const remainingTime = computed(() => Math.floor(currentSession.value?.endTime.diffNow('minutes', { conversionAccuracy: 'casual' }).minutes ?? 0))
+
 const currentTask: ITask | null = {
     activity: "activity",
     description: "description",
@@ -35,22 +37,27 @@ const currentTask: ITask | null = {
             <div class="h-full flex flex-col">
                 <!-- HEADER INFO -->
                 <div class="flex flex-col gap-0.5 items-center">
-                    <p class="text-3xl font-bold capitalize text-">{{ currentSession ? currentSession.activity : 'FREE SLOT' }}
+                    <p class="text-3xl font-bold capitalize text-primary">
+                        {{ currentSession ? currentSession.activity : "FREE SLOT" }}
                     </p>
-                    <p class="text-base text-center text-gray-600 font-semibold capitalize">
+                    <p class="text-base text-center text-primary/75 font-semibold capitalize">
                         {{ currentSession ? currentSession.title : 'No Active Session' }}
                     </p>
                     <div v-if="currentSession" class="text-xs text-center text-gray-500">
-                        <span> {{ currentSession.startTime }} - {{ currentSession.endTime }} </span>
-                        <span class="text-xs"> • 1h 23m remaining</span>
+                        <span> {{ currentSession.startTime.toFormat('HH:mm') }} - {{
+                            currentSession.endTime.toFormat('HH:mm') }} </span>
+                        <span v-if="remainingTime" class="text-xs"> • {{ Math.floor(remainingTime/60) }}h {{remainingTime%60}}m
+                            remaining</span>
                     </div>
                     <div v-auto-animate class="m-2 w-2/3">
                         <div v-if="currentTask" class="flex items-center justify-between gap-4">
                             <div>
                                 <div class="flex items-center gap-2">
                                     <div class="relative mt-1">
-                                        <div class="absolute bg-primary/50 size-2.5 rounded-full animate-ping" />
-                                        <ZapIcon class="fill-primary size-3" />
+                                        <ZapIcon class="fill-primary stroke-transparent size-3">
+                                        </ZapIcon>
+                                        <div class="absolute top-0 bg-primary/50 size-3 rounded-full animate-ping">
+                                        </div>
                                     </div>
                                     <div class="font-bold text-gray-800">{{ currentTask.title }}</div>
                                 </div>
@@ -70,18 +77,18 @@ const currentTask: ITask | null = {
                     <!-- TASKS -->
                     <div class="flex-1 grid grid-rows-3 gap-2">
                         <div
-                            class="p-4 flex items-center min-w-0 justify-between bg-gray-50 border border-gray-200 rounded-sm">
+                            class="p-2 flex items-center min-w-0 justify-between bg-gray-50 border border-gray-200 rounded-sm">
                             <div class="flex-1 min-w-0">
-                                <div class="font-medium text-gray-800 truncate">Finish this stupid project</div>
-                                <div class="text-sm text-gray-600 mt-1 truncate">optional description of stuff and
+                                <div class="font-medium text-sm text-gray-800 truncate">Finish this stupid project</div>
+                                <div class="text-xs text-gray-600 mt-1 truncate">optional description of stuff and
                                     things</div>
                             </div>
-                            <div class="flex items-center gap-2">
-                                <Button variant="ghost" size="icon" class="text-gray-400">
-                                    <ZapIcon />
+                            <div class="flex items-center gap-1">
+                                <Button variant="ghost" size="icon" class="text-gray-400 size-6">
+                                    <ZapIcon class="size-3.5" />
                                 </Button>
-                                <Button variant="ghost" size="icon" class="text-gray-400">
-                                    <CheckIcon />
+                                <Button variant="ghost" size="icon" class="text-gray-400 size-6">
+                                    <CheckIcon class="size-3.5" />
                                 </Button>
                             </div>
                         </div>

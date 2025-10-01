@@ -144,7 +144,7 @@ export class SqliteStroageService implements IStorageService {
 	}
 
 	async createSession(session: ISession): Promise<number | undefined> {
-		const result = await this.database.execute("INSERT INTO sessions (title, notes, activity, day, startTime, endTime, status) VALUES ($1, $2, $3, $4, $5);", [
+		const result = await this.database.execute("INSERT INTO sessions (title, notes, activity, day, startTime, endTime, status) VALUES ($1, $2, $3, $4, $5, $6, $7);", [
 			session.title,
 			session.notes,
 			session.activity,

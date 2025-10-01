@@ -57,7 +57,7 @@ function nextDay() {
                 <img class="absolute brightness-85 opacity-20 group-hover:opacity-60 duration-500 transition-opacity"
                     src="@/assets/images/sphere.png" />
                 <p
-                    class="text-2xl font-extrabold text-gray-500 transition-colors duration-500 group-hover:text-gray-800 z-10">
+                    class="text-2xl font-extrabold text-primary/50 transition-colors duration-500 group-hover:text-primary z-10">
                     Y</p>
             </div>
             <Dialog v-model:open="openAbout">
@@ -100,7 +100,7 @@ function nextDay() {
                 </Button>
             </div>
             <div class="border-r border-gray-300 h-1/3" />
-            <div class="flex hover:gap-2 gap-0 transition-all group">
+            <div class="flex hover:gap-2 gap-0 transition-all group items-center">
                 <div class="text-xl font-bold text-gray-400 hover:text-primary transition-colors">
                     {{ formattedTime }}
                 </div>

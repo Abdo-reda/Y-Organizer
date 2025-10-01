@@ -21,10 +21,11 @@ export default function useDaySessions() {
 		Object.assign(sessions, await storageService.getSessions(day));
 	}
 
-	async function createSession(session: ISession) {
+	async function createSession(session: ISession): Promise<number|undefined> {
 		LoggingService.log("creating session...", session)
+        session.id = await storageService.createSession(session);
 		sessions.push(session);
-		await storageService.createSession(session);
+        return session.id;
 	}
 
 	async function updateSession(id: number, session: ISession) {

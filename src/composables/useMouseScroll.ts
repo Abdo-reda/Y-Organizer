@@ -1,7 +1,7 @@
 import { useEventListener } from "@vueuse/core";
 import { ref, ShallowRef } from "vue";
 
-export function useMouseScroll(targetEl: Readonly<ShallowRef<HTMLElement | null>>, orientation: 'horizontal' | 'vertical' | 'all' = 'vertical') {
+export function useMouseScroll(targetEl: Readonly<ShallowRef<HTMLElement | null>>) {
 	const isDragging = ref(false);
 	const startY = ref(0);
 	const scrollTop = ref(0);

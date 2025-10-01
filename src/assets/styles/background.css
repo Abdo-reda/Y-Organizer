@@ -2,8 +2,12 @@ body {
     @apply relative overflow-hidden bg-transparent p-0.5 h-screen;
 }
 
+.gradient-background {
+    @apply bg-gradient-to-tl from-primary/25 to-transparent to-75% bg-no-repeat;
+}
+
 #app {
-    @apply h-full bg-gradient-to-tl from-primary/25 to-transparent to-75% bg-no-repeat bg-card rounded-xl border shadow-sm;
+    @apply h-full bg-card rounded-xl border shadow-sm;
     /* animation: slow-glow 8s infinite ease-in-out alternate; TODO: uses like 12% gpu */
 }
 
