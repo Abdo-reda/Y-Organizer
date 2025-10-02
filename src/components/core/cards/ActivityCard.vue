@@ -20,7 +20,7 @@ import { LifeCategoryIconMapper } from '@/core/enums/lifeCategoryEnum';
 //- handleActivity should return if the transition is still going.
 //- use Transition instead of v-auto-aniamte and see if that fixes the problem.
 
-const { activities, createActivity, updateActivity } = useActivity();
+const { activities, createActivity, updateActivity, deleteActivity } = useActivity();
 const editActivity = ref<IActivity | null>(null);
 const dialogOpen = ref(false);
 // const todayActivites = computed(() => activities.filter(a => a.status === ActivityStatusEnum.ACTIVE));
@@ -39,7 +39,12 @@ function handleActivity(event: PointerEvent, activity: IActivity) {
             }
             break;
         case 2:
-            activity.status = activity.status === ActivityStatusEnum.DISABLED ? ActivityStatusEnum.ACTIVE : ActivityStatusEnum.DISABLED;
+            if (event.altKey) {
+                deleteActivity(activity.name);
+                return;
+            } else {
+                activity.status = activity.status === ActivityStatusEnum.DISABLED ? ActivityStatusEnum.ACTIVE : ActivityStatusEnum.DISABLED;
+            }
             break;
     }
 
@@ -102,7 +107,8 @@ function handleUpdate(id: string, activity: IActivity) {
                         </div>
                     </CarouselItem>
                     <CarouselItem @contextmenu.prevent>
-                        <Carousel orientation="vertical" class="w-full" :opts="{ align: 'start' }">
+                        <Carousel v-if="sortedActivites.length" orientation="vertical" class="w-full"
+                            :opts="{ align: 'start' }">
                             <CarouselContent class="-mt-1 p-2 select-none">
                                 <CarouselItem v-for="activity in sortedActivites" :key="activity.name"
                                     class="pt-1 md:basis-1/5">
@@ -136,6 +142,15 @@ function handleUpdate(id: string, activity: IActivity) {
                                 </CarouselItem>
                             </CarouselContent>
                         </Carousel>
+                        <div v-else
+                            class="h-full flex items-center w-full">
+                            <div
+                                @click="dialogOpen = true"
+                                class="w-full h-full p-4 m-2 border-2 border-dashed border-gray-300 rounded-sm text-gray-500 hover:border-primary hover:text-primary transition-colors flex items-center justify-center gap-2 text-sm duration-300 select-none">
+                                <PlusIcon class="size-4" />
+                                <p> Create Your First Activity </p>
+                            </div>
+                        </div>
                     </CarouselItem>
                 </CarouselContent>
             </Carousel>

@@ -1,12 +1,14 @@
 import { ref, computed } from "vue";
 import { DateTime } from "luxon";
+import useSettings from "./useSettings";
 
 const currentTime = ref(DateTime.now());
-const formattedTime = computed(() => currentTime.value.toFormat("hh:mm"));
 const dayPercentage = computed(() => (currentTime.value.hour + currentTime.value.minute / 60) / 24);
 
 export function useCurrentTime() {
-	let intervalId: number | undefined;
+    let intervalId: number | undefined;
+    const { settings } = useSettings();
+    const formattedTime = computed(() => currentTime.value.toFormat(settings.DATE_FORMAT));
 
     function init() {
 		const updateTime = () => {

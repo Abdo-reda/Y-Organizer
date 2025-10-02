@@ -6,10 +6,10 @@ import { useCurrentTime } from "@/store/useCurrentTime";
 import useActivity from "./useActivity";
 import { DateTime } from "luxon";
 
-const { currentTime } = useCurrentTime();
 const sessions = reactive<ISession[]>([]);
 
 export default function useDaySessions() {
+    const { currentTime } = useCurrentTime();
 	const storageService = inject(StorageServiceKey)!;
 	const { activities } = useActivity();
     

@@ -39,6 +39,11 @@
     scrollbar-width: none;
 }
 
+@utility text-stroke {
+    -webkit-text-stroke: 1px var(--primary);
+    text-stroke: 1px var(--primary);
+}
+
 @custom-variant dark (&:is(.dark *));
 
 @theme inline {

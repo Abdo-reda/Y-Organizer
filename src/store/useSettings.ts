@@ -1,33 +1,39 @@
 import { StorageServiceKey } from "@/core/constants/injectionKeys";
-import { inject, reactive } from "vue";
+import { inject, reactive, ref } from "vue";
 import { LoggingService } from "@/core/services/loggingService";
 import { SettingsCodeEnum, SettingsCodeValueMap } from "@/core/enums/settingsCodeEnum";
-import { ISetting } from "@/core/interfaces/entities/ISetting";
+import { type ISetting } from "@/core/interfaces/entities/ISetting";
 import { DEFAULT_SETTINGS } from "@/core/constants/defaultSettings";
+import { TAppSettings } from "@/core/types/TAppSettings";
 
-const settings = reactive<ISetting<SettingsCodeEnum>[]>([])
+const isGridLocked = ref(true);
+const settings = reactive<TAppSettings>(DEFAULT_SETTINGS);
 
 export default function useSettings() {
-    const storageService = inject(StorageServiceKey)!;
+	const storageService = inject(StorageServiceKey)!;
 
-    async function fetchSettings() {
-        LoggingService.log("fetching settings...");
-        Object.assign(settings, await storageService.getSettings());
-    }
+	async function fetchSettings() {
+		LoggingService.log("fetching settings...");
+		mapToAppSettings(await storageService.getSettings());
+	}
 
-    function fetchSettingValue<T extends SettingsCodeEnum>(code: T): SettingsCodeValueMap[T] {
-        return settings.find(s => s.code === code)?.value ?? DEFAULT_SETTINGS[code];
-    }
+	function updateSetting<T extends SettingsCodeEnum>(code: T, value: SettingsCodeValueMap[T] | null) {
+		LoggingService.log("updating settings...", code, value);
+		storageService.updateSetting(code, value);
+	}
 
-    function updateSetting<T extends SettingsCodeEnum>(code: T, value: SettingsCodeValueMap[T]|null) {
-        LoggingService.log("updating settings...", code, value);
-        storageService.updateSetting(code, value);
-    }
+	return {
+		settings,
+		isGridLocked,
+		fetchSettings,
+		updateSetting,
+	};
+}
 
-    return {
-        settings,
-        fetchSettings,
-        fetchSettingValue,
-        updateSetting
-    };
+function mapToAppSettings(existingSettings: ISetting<SettingsCodeEnum>[]) {
+	existingSettings.forEach((s) => setSetting(s));
+}
+
+function setSetting<T extends SettingsCodeEnum>(s: ISetting<T>): void {
+	if (s.value) settings[s.code] = s.value;
 }

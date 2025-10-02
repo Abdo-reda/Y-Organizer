@@ -1,4 +1,4 @@
-import { SKY } from "@/core/constants/activityColors";
+import { STONE } from "@/core/constants/activityColors";
 import { ActivityStatusEnum } from "@/core/enums/activityStatusEnum";
 import { LifeCategoryEnum } from "@/core/enums/lifeCategoryEnum";
 
@@ -11,7 +11,7 @@ export interface IActivity {
 }
 
 export function generateDefaultActivity(): Readonly<IActivity> {
-	return { name: "", description: "", color: SKY, categories: [], status: ActivityStatusEnum.ACTIVE };
+	return { name: "", description: "", color: STONE, categories: [], status: ActivityStatusEnum.ACTIVE };
 }
 
 export function cloneActivity(activity: IActivity): IActivity {

@@ -51,7 +51,7 @@ async function toggleHighlight(rememberId: number | undefined, wordIndex: number
                                 <div class="size-2.5 rounded-full absolute animate-ping bg-primary duration-1000"></div>
                             </div>
                         </div>
-                        <p class="flex-1 text-lg font-semibold capitalize leading-relaxed select-none">
+                        <p class="flex-1 text-base font-semibold capitalize select-none">
                             <template v-for="(word, index) in remember.title.trim().split(/\s+/)" :key="index">
                                 <span @click="toggleHighlight(remember.id, index)"
                                     class="relative rounded-xs cursor-pointer transition-all duration-200 hover:cursor-default highlight-word"
@@ -65,7 +65,7 @@ async function toggleHighlight(rememberId: number | undefined, wordIndex: number
                         </p>
                         <div class="flex items-center">
                             <Button @click="handleDelete(remember.id)" variant="ghost" size="icon"
-                                class="text-gray-300 opacity-0 group-hover:opacity-100 duration-700 bg-transparent">
+                                class="text-gray-300 size-6 opacity-0 group-hover:opacity-100 duration-700 bg-transparent">
                                 <XIcon />
                             </Button>
                         </div>

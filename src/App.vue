@@ -23,7 +23,7 @@ onUnmounted(() => {
     <RouterView v-slot="{ Component, route }" :style="dynamicStyles">
         <!-- <Transition name="fade" mode="out-in"> -->
         <Suspense>
-            <component :key="route.name" class="flex-1 max-h-full overflow-hidden gradient-background" :is="Component" />
+            <component id="view-container" :key="route.name" class="flex-1 max-h-full overflow-hidden gradient-background" :is="Component" />
         </Suspense>
         <!-- </Transition> -->
     </RouterView>

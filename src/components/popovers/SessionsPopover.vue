@@ -9,8 +9,10 @@ import { PenIcon } from 'lucide-vue-next';
 import { Input } from '../ui/input';
 import { Textarea } from '../ui/textarea';
 import { PopoverContent } from '../ui/popover';
+import { ActivityStatusEnum } from '@/core/enums/activityStatusEnum';
 
 const { activities } = useActivity();
+const activeActivities = computed(() => activities.filter((a) => a.status === ActivityStatusEnum.ACTIVE));
 
 const props = defineProps<{ existingSession: ISession }>();
 const emits = defineEmits<{
@@ -62,7 +64,7 @@ function handleSubmit() {
                     </SelectTrigger>
                     <SelectContent>
                         <SelectGroup>
-                            <SelectItem v-for="activity in activities" :value="activity" class="focus:bg-hover/10"
+                            <SelectItem v-for="activity in activeActivities" :value="activity" class="focus:bg-hover/10"
                                 :style="{ '--color-hover': activity.color }">
                                 <span class="rounded-full size-3" :style="{ backgroundColor: activity.color }">
                                 </span> {{ activity.name }}

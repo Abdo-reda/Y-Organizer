@@ -13,7 +13,12 @@ function setCarouselApi(api: CarouselApi) {
         console.log("--- select")
     })
 }
-
+    <div v-else
+                            @click="dialogOpen = true"
+                            class="p-2 m-2 border-2 border-dashed border-gray-300 rounded-sm text-gray-500 hover:border-primary hover:text-primary transition-colors flex items-center justify-center gap-2 text-sm duration-300 select-none">
+                            <PlusIcon class="size-4" />
+                            <p> Create Activity </p>
+                        </div>
 
 // const activitiesContainer = useTemplateRef('activities-container');
 // useMouseScroll(activitiesContainer);

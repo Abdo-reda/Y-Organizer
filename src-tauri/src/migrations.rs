@@ -39,7 +39,7 @@ impl YMigrations {
                     day TEXT,
                     status TEXT,
                     FOREIGN KEY(day) REFERENCES days(day),
-                    FOREIGN KEY(activity) REFERENCES activities(name) ON UPDATE CASCADE
+                    FOREIGN KEY(activity) REFERENCES activities(name) ON UPDATE CASCADE ON DELETE SET NULL
                 );
                 CREATE INDEX idx_sessions_day ON sessions(day);
                 CREATE INDEX idx_sessions_activity ON sessions(activity);

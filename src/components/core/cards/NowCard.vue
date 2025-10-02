@@ -2,11 +2,15 @@
 import FunctionCard from "@/components/common/FunctionCard.vue";
 import { Button } from "@/components/ui/button";
 import { ITask } from "@/core/interfaces/entities/ITask";
+import { useCurrentTime } from "@/store/useCurrentTime";
 import useDaySessions from "@/store/useDaySessions";
+import useSettings from "@/store/useSettings";
 import { CheckCheckIcon, CheckIcon, ListCheckIcon, NotepadTextIcon, PlusIcon, ZapIcon } from "lucide-vue-next";
 import { computed } from "vue";
 
+const { currentTime} = useCurrentTime();
 const { currentSession } = useDaySessions();
+const { settings } = useSettings();
 
 //TODO: enhancements
 // <!-- TODO: fix notes section, remove the bg-gray-50 from icon, and add an absolute hidden element and get the height from that element... -->
@@ -22,7 +26,9 @@ const { currentSession } = useDaySessions();
 //- mark as done
 //- mark as active
 
-const remainingTime = computed(() => Math.floor(currentSession.value?.endTime.diffNow('minutes', { conversionAccuracy: 'casual' }).minutes ?? 0))
+// currentSession.value?.endTime.diffNow('minutes', { conversionAccuracy: 'casual' }).minutes ?? 0)
+
+const remainingTime = computed(() => currentSession.value ? Math.ceil(currentSession.value.endTime.diff(currentTime.value, 'minutes', { conversionAccuracy: 'casual' }).minutes) : 0)
 
 const currentTask: ITask | null = {
     activity: "activity",
@@ -32,71 +38,79 @@ const currentTask: ITask | null = {
 </script>
 
 <template>
-    <FunctionCard title="Now">
+    <FunctionCard title="Now" :highlight="!!currentSession">
         <template #default>
-            <div class="h-full flex flex-col">
+            <div class="h-full flex flex-col items-center">
                 <!-- HEADER INFO -->
                 <div class="flex flex-col gap-0.5 items-center">
-                    <p class="text-3xl font-bold capitalize text-primary">
+                    <p class="text-3xl font-bold capitalize text-primary" :class="{
+                        'text-stroke text-transparent': !currentSession
+                    }">
                         {{ currentSession ? currentSession.activity : "FREE SLOT" }}
                     </p>
                     <p class="text-base text-center text-primary/75 font-semibold capitalize">
                         {{ currentSession ? currentSession.title : 'No Active Session' }}
                     </p>
                     <div v-if="currentSession" class="text-xs text-center text-gray-500">
-                        <span> {{ currentSession.startTime.toFormat('HH:mm') }} - {{
-                            currentSession.endTime.toFormat('HH:mm') }} </span>
-                        <span v-if="remainingTime" class="text-xs"> • {{ Math.floor(remainingTime/60) }}h {{remainingTime%60}}m
+                        <span> {{ currentSession.startTime.toFormat(settings.DATE_FORMAT) }} - {{
+                            currentSession.endTime.toFormat(settings.DATE_FORMAT) }} </span>
+                        <span v-if="remainingTime" class="text-xs"> •  <span v-if="remainingTime > 60"> {{ Math.floor(remainingTime / 60) }}h </span>
+                            {{ remainingTime % 60 }}m
                             remaining</span>
                     </div>
-                    <div v-auto-animate class="m-2 w-2/3">
-                        <div v-if="currentTask" class="flex items-center justify-between gap-4">
-                            <div>
-                                <div class="flex items-center gap-2">
-                                    <div class="relative mt-1">
-                                        <ZapIcon class="fill-primary stroke-transparent size-3">
-                                        </ZapIcon>
-                                        <div class="absolute top-0 bg-primary/50 size-3 rounded-full animate-ping">
-                                        </div>
-                                    </div>
-                                    <div class="font-bold text-gray-800">{{ currentTask.title }}</div>
-                                </div>
-                                <div v-if="currentTask.description" class="text-xs text-gray-600">{{
-                                    currentTask.description }}</div>
-                            </div>
-                            <Button variant="ghost" size="icon" class="text-gray-400">
-                                <CheckIcon />
-                            </Button>
-                        </div>
-                        <p v-else class="text-center text-gray-400">-------- No Active Task --------</p>
-                    </div>
                 </div>
-                <div class="border-t border-gray-200 m-2"></div>
+                <div class="border-t border-primary/25 m-2 w-4/5"></div>
                 <!-- BODY -->
                 <div class="flex-1 flex justify-between gap-4 p-2 overflow-hidden">
+
                     <!-- TASKS -->
-                    <div class="flex-1 grid grid-rows-3 gap-2">
-                        <div
-                            class="p-2 flex items-center min-w-0 justify-between bg-gray-50 border border-gray-200 rounded-sm">
-                            <div class="flex-1 min-w-0">
-                                <div class="font-medium text-sm text-gray-800 truncate">Finish this stupid project</div>
-                                <div class="text-xs text-gray-600 mt-1 truncate">optional description of stuff and
-                                    things</div>
-                            </div>
-                            <div class="flex items-center gap-1">
-                                <Button variant="ghost" size="icon" class="text-gray-400 size-6">
-                                    <ZapIcon class="size-3.5" />
+                    <div>
+                        <div v-auto-animate class="m-2 w-full">
+                            <div v-if="currentTask" class="flex items-center justify-between gap-4">
+                                <div>
+                                    <div class="flex items-center gap-2">
+                                        <div class="relative mt-1">
+                                            <ZapIcon class="fill-primary stroke-transparent size-3">
+                                            </ZapIcon>
+                                            <div class="absolute top-0 bg-primary/50 size-3 rounded-full animate-ping">
+                                            </div>
+                                        </div>
+                                        <div class="font-bold text-gray-800">{{ currentTask.title }}</div>
+                                    </div>
+                                    <div v-if="currentTask.description" class="text-xs text-gray-600">{{
+                                        currentTask.description }}</div>
+                                </div>
+                                <Button variant="ghost" size="icon" class="text-gray-400">
+                                    <CheckIcon />
                                 </Button>
-                                <Button variant="ghost" size="icon" class="text-gray-400 size-6">
-                                    <CheckIcon class="size-3.5" />
-                                </Button>
                             </div>
+                            <p v-else class="text-center text-gray-400">-------- No Active Task --------</p>
                         </div>
-                        <button
-                            class="w-full p-2 border-2 border-dashed border-gray-300 rounded-sm text-gray-600 hover:border-primary hover:text-primary transition-all flex items-center justify-center gap-2">
-                            <PlusIcon class="size-5" />
-                            Add Task
-                        </button>
+                        <!-- <div class="border-t border-gray-200 my-2"></div> -->
+                        <div class="flex-1 grid grid-rows-3 gap-2">
+                            <div
+                                class="p-2 flex items-center min-w-0 justify-between bg-gray-50 border border-gray-200 rounded-sm">
+                                <div class="flex-1 min-w-0">
+                                    <div class="font-medium text-sm text-gray-800 truncate">Finish this stupid project
+                                    </div>
+                                    <div class="text-xs text-gray-600 mt-1 truncate">optional description of stuff and
+                                        things</div>
+                                </div>
+                                <div class="flex items-center gap-1">
+                                    <Button variant="ghost" size="icon" class="text-gray-400 size-6">
+                                        <ZapIcon class="size-3.5" />
+                                    </Button>
+                                    <Button variant="ghost" size="icon" class="text-gray-400 size-6">
+                                        <CheckIcon class="size-3.5" />
+                                    </Button>
+                                </div>
+                            </div>
+                            <button
+                                class="w-full p-2 border-2 border-dashed border-gray-300 rounded-sm text-gray-600 hover:border-primary hover:text-primary transition-all flex items-center justify-center gap-2">
+                                <PlusIcon class="size-5" />
+                                Add Task
+                            </button>
+                        </div>
                     </div>
                     <!-- NOTES -->
                     <div class="w-1/3 h-full flex flex-col gap-2">

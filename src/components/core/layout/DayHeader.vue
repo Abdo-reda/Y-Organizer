@@ -12,13 +12,13 @@ import { getCurrentWindow } from '@tauri-apps/api/window';
 import { isTauri } from "@tauri-apps/api/core";
 import { Dialog } from "@/components/ui/dialog";
 import AboutDialog from "@/components/dialogs/AboutDialog.vue";
-import useDayGrid from "@/store/useDayGrid";
+import useSettings from "@/store/useSettings";
 
 //TODO: ENHANCEMENT: animation when chaning the day and the popover keeps moving when you change hte day, either animate it, or make the anchor static and doesnt change, or redesign this part.. figure something out.
 //TODO: add a left and right arrow to go to next and previous day, should only appear when I hover over the header text "TODAY sunday 2010-10-29"
 
 
-const { isGridLocked } = useDayGrid();
+const { isGridLocked } = useSettings();
 const { selectedDay } = useDayState();
 const openAbout = ref(false);
 const relativeDate = computed(() => selectedDay.value.toRelativeCalendar());

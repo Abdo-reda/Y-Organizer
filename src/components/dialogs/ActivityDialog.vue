@@ -69,7 +69,7 @@ function handleSubmit() {
                 <!-- Description -->
                 <div class="flex flex-col gap-1.5">
                     <Label for="description"> Description </Label>
-                    <Textarea id="description" v-model="activityForm.description" placeholder="Describe this activity..."  class="resize-none" />
+                    <Textarea id="description" v-model="activityForm.description" placeholder="Describe this activity..."  class="resize-none" /> 
                 </div>
 
                 <!-- Color Selection -->
