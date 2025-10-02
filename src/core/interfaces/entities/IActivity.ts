@@ -10,6 +10,12 @@ export interface IActivity {
 	status: ActivityStatusEnum;
 }
 
+export interface ISessionActivity extends IActivity {
+    duration: number;
+    ratio: number;
+    offset: number;
+}
+
 export function generateDefaultActivity(): Readonly<IActivity> {
 	return { name: "", description: "", color: STONE, categories: [], status: ActivityStatusEnum.ACTIVE };
 }

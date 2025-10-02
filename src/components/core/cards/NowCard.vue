@@ -43,9 +43,7 @@ const currentTask: ITask | null = {
             <div class="h-full flex flex-col items-center">
                 <!-- HEADER INFO -->
                 <div class="flex flex-col gap-0.5 items-center">
-                    <p class="text-3xl font-bold capitalize text-primary" :class="{
-                        'text-stroke text-transparent': !currentSession
-                    }">
+                    <p class="text-3xl font-extrabold capitalize text-primary">
                         {{ currentSession ? currentSession.activity : "FREE SLOT" }}
                     </p>
                     <p class="text-base text-center text-primary/75 font-semibold capitalize">

@@ -25,6 +25,7 @@ impl YMigrations {
             kind: MigrationKind::Up,
         };
 
+        //TODO: on delete set null, but also have archive of activity name or something.
         let sessions_table_migration = Migration {
             version: 4,
             description: "Create Sessions Table",
@@ -39,7 +40,7 @@ impl YMigrations {
                     day TEXT,
                     status TEXT,
                     FOREIGN KEY(day) REFERENCES days(day),
-                    FOREIGN KEY(activity) REFERENCES activities(name) ON UPDATE CASCADE ON DELETE SET NULL
+                    FOREIGN KEY(activity) REFERENCES activities(name) ON UPDATE CASCADE ON DELETE CASCADE
                 );
                 CREATE INDEX idx_sessions_day ON sessions(day);
                 CREATE INDEX idx_sessions_activity ON sessions(activity);

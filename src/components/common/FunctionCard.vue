@@ -19,7 +19,7 @@ defineProps<IFunctionCardProps>();
 
 <template>
     <Card class="gap-0 !overflow-hidden py-4" :class="{
-        'shadow-primary/75': highlight
+        'border border-primary': highlight
     }">
         <CardHeader class="flex gap-2 px-4 items-center">
             <div class="flex-1 relative">

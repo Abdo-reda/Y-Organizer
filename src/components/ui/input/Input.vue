@@ -21,6 +21,9 @@ const modelValue = useVModel(props, "modelValue", emits, {
 
 <template>
   <input
+    autocomplete="off"
+    autocorrect="off"
+    autocapitalize="off"
     v-model="modelValue"
     data-slot="input"
     :class="cn(
