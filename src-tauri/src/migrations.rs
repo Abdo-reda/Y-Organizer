@@ -25,7 +25,6 @@ impl YMigrations {
             kind: MigrationKind::Up,
         };
 
-        //TODO: on delete set null, but also have archive of activity name or something.
         let sessions_table_migration = Migration {
             version: 4,
             description: "Create Sessions Table",
@@ -48,12 +47,26 @@ impl YMigrations {
             kind: MigrationKind::Up,
         };
 
-        // let tasks_table_migration = Migration {
-        //     version: 4,
-        //     description: "Create Sessions Table",
-        //     sql: "CREATE TABLE sessions (id INTEGER PRIMARY KEY, title TEXT NOT NULL, highlights TEXT);",
-        //     kind: MigrationKind::Up,
-        // };
+        let tasks_table_migration = Migration {
+            version: 5,
+            description: "Create Tasks Table",
+            sql: "CREATE TABLE tasks (
+                id INTEGER PRIMARY KEY,
+                title TEXT NOT NULL,
+                description TEXT,
+                activity TEXT,
+                session INTEGER,
+                isToday INTEGER NOT NULL DEFAULT 0,
+                completedDay TEXT,
+                status TEXT NOT NULL,
+                FOREIGN KEY(session) REFERENCES sessions(id),
+                FOREIGN KEY(activity) REFERENCES activities(name) ON UPDATE CASCADE ON DELETE CASCADE
+            );
+            ",
+            // CREATE INDEX idx_tasks_activity ON tasks(activity);
+            // CREATE INDEX idx_tasks_session ON tasks(session);    
+            kind: MigrationKind::Up,
+        };
 
         // let gratitude_table_migration = Migration {
         //     version: 5,

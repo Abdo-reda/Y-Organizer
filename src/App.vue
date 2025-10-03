@@ -2,9 +2,13 @@
 import { computed, onMounted, onUnmounted } from 'vue';
 import { useCurrentTime } from './store/useCurrentTime';
 import useDaySessions from './store/useDaySessions';
+import useActivity from './store/useActivity';
 
 const { init, clean } = useCurrentTime();
-const { currentActivity } = useDaySessions();
+const { activities } = useActivity();
+const { currentSession } = useDaySessions();
+
+const currentActivity = computed(() => activities.find((a) => a.name === currentSession?.value?.activity));
 
 const dynamicStyles = computed(() => ({
     '--primary': currentActivity.value?.color || 'oklch(0.205 0 0)', 

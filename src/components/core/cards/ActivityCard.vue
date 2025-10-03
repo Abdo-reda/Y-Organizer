@@ -109,8 +109,8 @@ function handleUpdate(id: string, activity: IActivity) {
                         <div class="flex flex-col h-full select-none overflow-hidden gap-1" v-auto-animate>
                             <div class="relative flex items-center justify-center flex-1 overflow-hidden">
                                 <svg viewBox="0 0 100 100" class="w-full h-full">
-                                    <!-- <circle cx="50" cy="50" r="45" fill="none" class="stroke-gray-300"
-                                        stroke-width="4" /> -->
+                                    <circle v-if="!sessionActivities.length" cx="50" cy="50" r="45" fill="none" class="stroke-gray-300"
+                                        stroke-width="4" />
                                     <circle v-for="activity in sessionActivities" :key="activity.name" cx="50" cy="50" r="45" fill="none" :stroke="activity.color" stroke-width="4" stroke-linecap="round" 
                                     :stroke-dasharray="`${(activity.ratio / 100) * CIRCUMFERENCE} ${CIRCUMFERENCE}`" 
                                     :stroke-dashoffset="-(CIRCUMFERENCE * activity.offset / 100)" 
@@ -123,7 +123,7 @@ function handleUpdate(id: string, activity: IActivity) {
                                     </div>
                                 </div>
                             </div>
-                            <div v-if="sessionActivities.length" class="grid grid-cols-2 m-1 gap-2" v-auto-animate>
+                            <div v-if="sessionActivities.length" class="grid grid-cols-2 m-1 gap-1" v-auto-animate>
                                 <div v-for="activity in sessionActivities" :key="activity.name"
                                     class="flex items-center justify-between p-1 px-2 group rounded-md hover:bg-gray-50 hover:ring-1 ring-hover/20 duration-300 transition-all group"
                                     :style="{ '--color-hover': activity.color }">
@@ -134,9 +134,7 @@ function handleUpdate(id: string, activity: IActivity) {
                                             <p class="font-medium text-gray-900 truncate">{{ activity.name }}</p>
                                             <p class="flex items-center gap-1 text-sm">
                                                 <span class="transition-colors duration-300 group-hover:text-hover"> {{
-                                                    activity.duration / 60 }}h </span> •
-                                                <span class="transition-colors duration-300 group-hover:text-hover"> {{
-                                                    activity.ratio }}% </span>
+                                                    activity.duration / 60 }}h </span> 
                                             </p>
                                         </div>
                                     </div>
@@ -191,12 +189,6 @@ function handleUpdate(id: string, activity: IActivity) {
                 </CarouselContent>
             </Carousel>
         </template>
-        <!-- <circle v-for="(activity, index) in activitiesWithData" :key="activity.id" cx="100" cy="100"
-                            r="80" fill="none" :stroke="activity.color" stroke-width="12"
-                            :stroke-dasharray="`${activity.circumference} ${totalCircumference}`"
-                            :stroke-dashoffset="activity.offset"
-                            class="transition-all duration-500 hover:stroke-width-16 cursor-pointer"
-                            @click="openEditModal(activity)" /> -->
         <template #header-right-actions>
             <div class="flex justify-end gap-1">
                 <Dialog v-model:open="dialogOpen">

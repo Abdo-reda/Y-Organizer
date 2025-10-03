@@ -1,19 +1,31 @@
+//--- Everything is breaking.
+- Removing sessions is not animated.
+- Moving or chanign the size of a session opens the preview popup... need to prevent events from bubbeling up...
+
+
+
 //---- Now
+- Tasks in Now Card
 - loading behaviour?
+- autostartup
 
 //---- Plan
 - Make monthly card
 - Make tasks card
+- Gratitude card
 
 //---- MVP
-- Dynamic Themes --> depend on activity
-- Window Customization, title bar and so on...
 - AutoUpdates & Version number
 - Basic Cards Functionality which are
 
+//--- Prelude Optimizations 
+** BEFORE YOU DO ANY OF THE BELOW, YOU SHOULD PROFILE FIRST**
+- get sessions with join activities
+- seperate setters and getters of stores and handle dependencies better
+- make more global states, like currentSession and so on ...
+
 
 //------ Thinking... & now
-- Gratitude card
 
 //------ Enhancements
 - All stores, will wait for the other stores as dependencies and will not import their own...
@@ -21,6 +33,7 @@
 - Add a button to change the day in the header (left and right arrow)
 - Add toasts/sonnets
 - Restructure header or add animation for the date popup when it changes position
+- Add ability to zoom in schedule and control things up to 10+ minutes
 
 
 /----- Cards ideas
@@ -31,6 +44,7 @@
 - screen savers and windows screen saver card
 - Events & Reminder? integration with calendars? not sure... but we will need something like this.
 - Focusable cards? each card can be focused, and any shorcuts that are relevant to that card will be active... like a pomodoro card, or a doodle card... and so on... ctrl+d for example will always create a new entity depending on the card.
+- What if gratitude card was a growing your own plant card, the more you add gratitudes the more it grows, and then you can compare every day "plant", sometimes you can grow a tree if you have enough gratitudes..., every plant color depends on the category of gratitude
 
 /------ Settings
 - am, pm

@@ -13,12 +13,13 @@ import { isTauri } from "@tauri-apps/api/core";
 import { Dialog } from "@/components/ui/dialog";
 import AboutDialog from "@/components/dialogs/AboutDialog.vue";
 import useSettings from "@/store/useSettings";
+import { SettingsCodeEnum } from "@/core/enums/settingsCodeEnum";
 
 //TODO: ENHANCEMENT: animation when chaning the day and the popover keeps moving when you change hte day, either animate it, or make the anchor static and doesnt change, or redesign this part.. figure something out.
 //TODO: add a left and right arrow to go to next and previous day, should only appear when I hover over the header text "TODAY sunday 2010-10-29"
 
 
-const { isGridLocked } = useSettings();
+const { isGridLocked, updateSetting, settings } = useSettings();
 const { selectedDay } = useDayState();
 const openAbout = ref(false);
 const relativeDate = computed(() => selectedDay.value.toRelativeCalendar());
@@ -35,6 +36,10 @@ const calendarDate = computed<CalendarDate>({
 })
 
 const appWindow = isTauri() ? getCurrentWindow() : undefined;
+
+function toggleFormat() {
+    updateSetting(SettingsCodeEnum.DATE_FORMAT, settings.DATE_FORMAT === 'HH:mm' ? 'hh:mm' : 'HH:mm')
+}
 
 function handleClose() {
     appWindow?.close();
@@ -57,7 +62,7 @@ function nextDay() {
                 <img class="absolute brightness-85 opacity-20 group-hover:opacity-60 duration-500 transition-opacity"
                     src="@/assets/images/sphere.png" />
                 <p
-                    class="text-2xl font-extrabold text-primary/50 transition-colors duration-500 group-hover:text-primary z-10">
+                    class="text-2xl font-extrabold text-primary/75 transition-colors duration-500 group-hover:text-primary z-10">
                     Y</p>
             </div>
             <Dialog v-model:open="openAbout">
@@ -101,7 +106,7 @@ function nextDay() {
             </div>
             <div class="border-r border-gray-300 h-1/3" />
             <div class="flex hover:gap-2 gap-0 transition-all group items-center">
-                <div class="text-xl font-bold text-gray-400 hover:text-primary transition-colors">
+                <div @click="toggleFormat" class="text-xl font-bold text-gray-400 hover:text-primary transition-colors">
                     {{ formattedTime }}
                 </div>
                 <Button v-if="isTauri()" @click="handleClose" variant="ghost" size="icon"

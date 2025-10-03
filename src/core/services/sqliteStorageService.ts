@@ -170,7 +170,7 @@ export class SqliteStroageService implements IStorageService {
 	}
 
 	async deleteSession(id: number): Promise<void> {
-        await this.database.execute("DELETE FROM sessions WHERE name = $1;", [id]);
+        await this.database.execute("DELETE FROM sessions WHERE id = $1;", [id]);
 	}
 
     private mapSessions(sesions: ISession[]) {
@@ -194,13 +194,15 @@ export class SqliteStroageService implements IStorageService {
 
 	private mapSettings(settings: ISetting<SettingsCodeEnum>[]) {
 		settings.forEach((setting) => {
-			if (typeof setting.value === "string") {
-				try {
-					setting.value = JSON.parse(setting.value);
-				} catch (e) {
-					LoggingService.log("Failed to parse setting value", e);
-				}
-			}
+			if (setting.code === SettingsCodeEnum.DAY_LAYOUT) {
+                if (typeof setting.value === 'string') {
+                    try {
+                        setting.value = JSON.parse(setting.value);
+                    } catch (e) {
+                        LoggingService.log("Failed to parse setting value", e);
+                    }
+                }
+            }
 		});
 	}
 

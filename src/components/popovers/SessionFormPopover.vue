@@ -45,8 +45,6 @@ function handleSubmit() {
     <PopoverContent side="right" align="start">
         <form id="session-form" name="session-form" @submit.prevent="handleSubmit">
             <div class="flex flex-col gap-2">
-                <Input v-model="sessionForm.title" type="text" placeholder="Title" />
-
                 <!-- Activity Selection -->
                 <Select v-model="selectedActivity">
                     <SelectTrigger class="w-full">
@@ -73,7 +71,9 @@ function handleSubmit() {
                     </SelectContent>
                 </Select>
 
-                <Textarea id="description" v-model="sessionForm.notes" placeholder="Notes..." class="resize-none" />
+                <Input v-model="sessionForm.title" type="text" placeholder="Session Goal" />
+
+                <Textarea id="description" v-model="sessionForm.notes" placeholder="Session Notes..." class="resize-none" />
 
                 <Button :class="{ 'text-white/85 hover:text-white': selectedActivity }" type="submit" variant="outline"
                     form="session-form" :style="{ backgroundColor: selectedActivity?.color }">

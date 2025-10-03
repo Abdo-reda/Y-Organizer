@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import FunctionCard from "@/components/common/FunctionCard.vue";
 import { Button } from "@/components/ui/button";
+import { TaskStatusEnum } from "@/core/enums/taskStatusEnum";
 import { ITask } from "@/core/interfaces/entities/ITask";
 import { useCurrentTime } from "@/store/useCurrentTime";
 import useDaySessions from "@/store/useDaySessions";
@@ -8,8 +9,8 @@ import useSettings from "@/store/useSettings";
 import { CheckCheckIcon, CheckIcon, ListCheckIcon, NotepadTextIcon, PlusIcon, ZapIcon } from "lucide-vue-next";
 import { computed } from "vue";
 
-const { currentTime} = useCurrentTime();
-const { currentSession } = useDaySessions();
+const { currentTime } = useCurrentTime();
+const { currentSession, updateSession } = useDaySessions();
 const { settings } = useSettings();
 
 //TODO: enhancements
@@ -34,7 +35,17 @@ const currentTask: ITask | null = {
     activity: "activity",
     description: "description",
     title: "title",
+    completedDay: "",
+    isToday: true,
+    session: null,
+    status: TaskStatusEnum.PENDING
 };
+
+function updateSessionNotes() {
+    if (!currentSession.value) return;
+    updateSession(currentSession.value?.id, currentSession.value);
+}
+
 </script>
 
 <template>
@@ -51,10 +62,14 @@ const currentTask: ITask | null = {
                     </p>
                     <div v-if="currentSession" class="text-xs text-center text-gray-500">
                         <span> {{ currentSession.startTime.toFormat(settings.DATE_FORMAT) }} - {{
-                            currentSession.endTime.toFormat(settings.DATE_FORMAT) }} </span>
-                        <span v-if="remainingTime" class="text-xs"> •  <span v-if="remainingTime > 60"> {{ Math.floor(remainingTime / 60) }}h </span>
-                            {{ remainingTime % 60 }}m
-                            remaining</span>
+                            currentSession.endTime.toFormat(settings.DATE_FORMAT) }} </span> •
+                        <span v-if="remainingTime">
+                            <span class="text-primary font-semibold"> 
+                                <span v-if="remainingTime >= 60"> {{ Math.floor(remainingTime / 60) }}h </span>
+                                {{ remainingTime % 60 }}m
+                            </span>
+                            remaining
+                        </span>
                     </div>
                 </div>
                 <div class="border-t border-primary/25 m-2 w-4/5"></div>
@@ -119,7 +134,7 @@ const currentTask: ITask | null = {
                                 <p class="font-semibold">Notes</p>
                             </div>
                             <div class="flex-1">
-                                <textarea v-if="currentSession" v-model="currentSession.notes" :spellcheck="false"
+                                <textarea @focusout="updateSessionNotes" v-if="currentSession" v-model="currentSession.notes" :spellcheck="false"
                                     class="w-full resize-none outline-none h-full scroll-hidden"
                                     placeholder="Session Notes..." />
                                 <p v-else> - No Session - </p>

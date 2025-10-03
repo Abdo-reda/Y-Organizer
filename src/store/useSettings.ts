@@ -17,9 +17,10 @@ export default function useSettings() {
 		mapToAppSettings(await storageService.getSettings());
 	}
 
-	function updateSetting<T extends SettingsCodeEnum>(code: T, value: SettingsCodeValueMap[T] | null) {
+	async function updateSetting<T extends SettingsCodeEnum>(code: T, value: SettingsCodeValueMap[T]) {
 		LoggingService.log("updating settings...", code, value);
-		storageService.updateSetting(code, value);
+		await storageService.updateSetting(code, value);
+		setSetting({code, value});
 	}
 
 	return {

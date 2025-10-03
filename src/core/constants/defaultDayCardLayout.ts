@@ -37,13 +37,13 @@ export const DEFAULT_DAY_CARD_LAYOUT: ICardStructure[] = [
 		x: 4,
 		y: 6,
 	},
-    {
-        id: DayCardEnum.TEST_CARD,
-        h: 4,
-		w: 3,
-		x: 7,
-		y: 6, 
-    },
+    // {
+    //     id: DayCardEnum.TEST_CARD,
+    //     h: 4,
+	// 	w: 3,
+	// 	x: 7,
+	// 	y: 6, 
+    // },
 	// {
 	// 	id: DayCardEnum.HABIT_CARD,
 	// 	h: 4,

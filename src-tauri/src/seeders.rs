@@ -1,4 +1,4 @@
-use tauri_plugin_sql::{Migration, MigrationKind};
+use tauri_plugin_sql::{Migration};
 
 pub struct YSeeders;
 
