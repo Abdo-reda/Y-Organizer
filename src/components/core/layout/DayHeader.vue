@@ -76,7 +76,7 @@ function nextDay() {
                         class="hover:bg-transparent app-no-drag !p-0 w-2 opacity-0 group-hover:opacity-100">
                         <ChevronLeftIcon />
                     </Button>
-                    <h1 class="text-4xl font-bold text-primary capitalize">{{ relativeDate }}</h1>
+                    <h1 class="text-4xl font-bold text-primary capitalize transition-colors">{{ relativeDate }}</h1>
                     <Button @click="nextDay" variant="ghost"
                         class="hover:bg-transparent app-no-drag !p-0 w-2 opacity-0 group-hover:opacity-100">
                         <ChevronRightIcon />

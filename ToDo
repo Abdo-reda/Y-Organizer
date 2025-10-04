@@ -24,7 +24,6 @@
 - seperate setters and getters of stores and handle dependencies better
 - make more global states, like currentSession and so on ...
 
-
 //------ Thinking... & now
 
 //------ Enhancements
@@ -34,7 +33,7 @@
 - Add toasts/sonnets
 - Restructure header or add animation for the date popup when it changes position
 - Add ability to zoom in schedule and control things up to 10+ minutes
-
+- Activites could have icons, you pick one of the many icons.... could be neat, but annoying
 
 /----- Cards ideas
 - reflections/learnings card

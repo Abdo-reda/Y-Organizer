@@ -9,6 +9,7 @@ import { IActivity } from "../interfaces/entities/IActivity";
 import { SettingsCodeEnum, SettingsCodeValueMap } from "../enums/settingsCodeEnum";
 import { ISetting } from "../interfaces/entities/ISetting";
 import { ISession } from "../interfaces/entities/ISession";
+import { ITask } from "../interfaces/entities/ITask";
 
 export class SqliteStroageService implements IStorageService {
 	readonly DATABASE_NAME = "y.db";
@@ -138,9 +139,9 @@ export class SqliteStroageService implements IStorageService {
 	}
 
 	async getSessions(day: DateTime): Promise<ISession[]> {
-        const sessions = await this.database.select<ISession[]>("SELECT * FROM sessions WHERE day = $1;", [day.toISODate()]);
-        this.mapSessions(sessions);
-        return sessions;
+		const sessions = await this.database.select<ISession[]>("SELECT * FROM sessions WHERE day = $1;", [day.toISODate()]);
+		this.mapSessions(sessions);
+		return sessions;
 	}
 
 	async createSession(session: ISession): Promise<number | undefined> {
@@ -149,42 +150,79 @@ export class SqliteStroageService implements IStorageService {
 			session.notes,
 			session.activity,
 			session.day,
-			session.startTime.toISOTime({includeOffset: false, precision: 'minute'}),
-			session.endTime.toISOTime({includeOffset: false, precision: 'minute'}),
+			session.startTime.toISOTime({ includeOffset: false, precision: "minute" }),
+			session.endTime.toISOTime({ includeOffset: false, precision: "minute" }),
 			session.status,
 		]);
-        return result.lastInsertId;
+		return result.lastInsertId;
 	}
 
 	async updateSession(id: number, session: ISession): Promise<void> {
-        await this.database.execute("UPDATE sessions SET title = $1, notes = $2, activity = $3, day = $4, startTime = $5, endTime = $6, status = $7 WHERE id = $8;", [
-            session.title,
+		await this.database.execute("UPDATE sessions SET title = $1, notes = $2, activity = $3, day = $4, startTime = $5, endTime = $6, status = $7 WHERE id = $8;", [
+			session.title,
 			session.notes,
 			session.activity,
 			session.day,
-			session.startTime.toISOTime({includeOffset: false, precision: 'minute'}),
-			session.endTime.toISOTime({includeOffset: false, precision: 'minute'}),
+			session.startTime.toISOTime({ includeOffset: false, precision: "minute" }),
+			session.endTime.toISOTime({ includeOffset: false, precision: "minute" }),
 			session.status,
 			id,
 		]);
 	}
 
 	async deleteSession(id: number): Promise<void> {
-        await this.database.execute("DELETE FROM sessions WHERE id = $1;", [id]);
+		await this.database.execute("DELETE FROM sessions WHERE id = $1;", [id]);
 	}
 
-    private mapSessions(sesions: ISession[]) {
+	async getTasks(day: DateTime): Promise<ITask[]> {
+		const tasks = await this.database.select<ITask[]>("SELECT * FROM tasks WHERE completedDay = $1 OR completedDay = '';", [day.toISODate()]);
+		// this.mapSessions(tasks); //might need to be map the boolean
+		return tasks;
+	}
+
+	async createTask(task: ITask): Promise<number | undefined> {
+		const result = await this.database.execute("INSERT INTO tasks (title, description, activity, session, isToday, completedDay, status) VALUES ($1, $2, $3, $4, $5, $6, $7);", [
+			task.title,
+			task.description,
+			task.activity,
+			task.session,
+			task.isToday,
+			task.completedDay,
+			task.status,
+		]);
+		return result.lastInsertId;
+	}
+
+	async updateTask(id: number, task: ITask): Promise<void> {
+		await this.database.execute("UPDATE tasks SET title = $1, description = $2, activity = $3, session = $4, isToday = $5, completedDay = $6, status = $7 WHERE id = $8;", [
+			task.title,
+			task.description,
+			task.activity,
+			task.session,
+			task.isToday,
+			task.completedDay,
+			task.status,
+			id,
+		]);
+	}
+
+	async deleteTask(id: number): Promise<void> {
+		await this.database.execute("DELETE FROM tasks WHERE id = $1;", [id]);
+	}
+
+	private mapSessions(sesions: ISession[]) {
 		sesions.forEach((session) => {
 			if (typeof session.startTime === "string") {
 				try {
-					session.startTime = DateTime.fromISO(`${session.day}T${session.startTime}`)
+					session.startTime = DateTime.fromISO(`${session.day}T${session.startTime}`);
 				} catch (e) {
 					LoggingService.log("Failed to parse session startTime", e);
 				}
 			}
-            if (typeof session.endTime === "string") {
+			if (typeof session.endTime === "string") {
 				try {
-					session.endTime = DateTime.fromISO(`${session.day}T${session.endTime}`)
+					session.endTime = DateTime.fromISO(`${session.day}T${session.endTime}`);
+					if (session.endTime.hour === 0) session.endTime = session.endTime.plus({ day: 1 });
 				} catch (e) {
 					LoggingService.log("Failed to parse session endTime", e);
 				}
@@ -195,14 +233,14 @@ export class SqliteStroageService implements IStorageService {
 	private mapSettings(settings: ISetting<SettingsCodeEnum>[]) {
 		settings.forEach((setting) => {
 			if (setting.code === SettingsCodeEnum.DAY_LAYOUT) {
-                if (typeof setting.value === 'string') {
-                    try {
-                        setting.value = JSON.parse(setting.value);
-                    } catch (e) {
-                        LoggingService.log("Failed to parse setting value", e);
-                    }
-                }
-            }
+				if (typeof setting.value === "string") {
+					try {
+						setting.value = JSON.parse(setting.value);
+					} catch (e) {
+						LoggingService.log("Failed to parse setting value", e);
+					}
+				}
+			}
 		});
 	}
 

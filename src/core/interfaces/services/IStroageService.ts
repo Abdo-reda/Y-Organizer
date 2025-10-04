@@ -5,6 +5,7 @@ import { IActivity } from "../entities/IActivity";
 import { SettingsCodeEnum, SettingsCodeValueMap } from "@/core/enums/settingsCodeEnum";
 import { ISetting } from "../entities/ISetting";
 import { ISession } from "../entities/ISession";
+import { ITask } from "../entities/ITask";
 
 export interface IStorageService {
 	DATABASE_NAME: Readonly<String>;
@@ -40,4 +41,9 @@ export interface IStorageService {
 	createSession(session: ISession): Promise<number|undefined>;
 	updateSession(id: number, session: ISession): Promise<void>;
 	deleteSession(id: number): Promise<void>;
+
+    getTasks(day: DateTime): Promise<ITask[]>;
+	createTask(task: ITask): Promise<number|undefined>;
+	updateTask(id: number, task: ITask): Promise<void>;
+	deleteTask(id: number): Promise<void>;
 }

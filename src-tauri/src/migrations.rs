@@ -55,25 +55,17 @@ impl YMigrations {
                 title TEXT NOT NULL,
                 description TEXT,
                 activity TEXT,
-                session INTEGER,
+                session INTEGER NULL,
                 isToday INTEGER NOT NULL DEFAULT 0,
                 completedDay TEXT,
                 status TEXT NOT NULL,
-                FOREIGN KEY(session) REFERENCES sessions(id),
+                FOREIGN KEY(session) REFERENCES sessions(id) ON DELETE SET NULL,
                 FOREIGN KEY(activity) REFERENCES activities(name) ON UPDATE CASCADE ON DELETE CASCADE
             );
+            CREATE INDEX idx_tasks_completedDay ON tasks(completedDay);
             ",
-            // CREATE INDEX idx_tasks_activity ON tasks(activity);
-            // CREATE INDEX idx_tasks_session ON tasks(session);    
             kind: MigrationKind::Up,
         };
-
-        // let gratitude_table_migration = Migration {
-        //     version: 5,
-        //     description: "Create Gratitudes Table",
-        //     sql: "CREATE TABLE gratitudes (id INTEGER PRIMARY KEY, title TEXT NOT NULL, description TEXT, category TEXT CHECK(category IN ('Family', 'Partnership', 'Parenting', 'Social', 'Career', 'Personal Growth', 'Recreation', 'Spirituality', 'Community', 'Fitness')) NOT NULL, highlights TEXT, day TEXT NOT NULL, FOREIGN KEY (day) REFERENCES days(day) ON DELETE CASCADE); CREATE INDEX idx_gratitudes_day ON gratitudes(day);",
-        //     kind: MigrationKind::Up,
-        // };
 
         let remembers_table_migration = Migration {
             version: 6,
@@ -82,11 +74,20 @@ impl YMigrations {
             kind: MigrationKind::Up,
         };
 
+        
+        // let gratitude_table_migration = Migration {
+        //     version: 7,
+        //     description: "Create Gratitudes Table",
+        //     sql: "CREATE TABLE gratitudes (id INTEGER PRIMARY KEY, title TEXT NOT NULL, description TEXT, category TEXT CHECK(category IN ('Family', 'Partnership', 'Parenting', 'Social', 'Career', 'Personal Growth', 'Recreation', 'Spirituality', 'Community', 'Fitness')) NOT NULL, highlights TEXT, day TEXT NOT NULL, FOREIGN KEY (day) REFERENCES days(day) ON DELETE CASCADE); CREATE INDEX idx_gratitudes_day ON gratitudes(day);",
+        //     kind: MigrationKind::Up,
+        // };
+
         vec![
             days_table_migration,
             settings_table_migration,
             activities_table_migration,
             sessions_table_migration,
+            tasks_table_migration,
             remembers_table_migration,
         ]
     }

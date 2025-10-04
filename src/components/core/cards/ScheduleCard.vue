@@ -31,6 +31,7 @@ const sessionPopoverAnchor = shallowRef<ReferenceElement | undefined>();
 
 let gridStack: GridStack | undefined;
 
+//TODO: I don't like this being here, could add onFetchCallback but will also need loading.
 watch(selectedDay, async (day) => {
     await fetchSessions(day);
     gridStack?.removeAll(true, false);
@@ -163,7 +164,7 @@ onMounted(() => {
                     </div>
                     <template v-for="session in sessions" :key="session.id">
                         <div class="grid-stack-item" :gs-x="0" :gs-y="session.startTime.hour"
-                            :gs-h="session.endTime.hour - session.startTime.hour" :gs-id="`s${session.id}`"
+                            :gs-h="session.endTime.diff(session.startTime, 'hours').hours" :gs-id="`s${session.id}`"
                             :id="`s${session.id}`"
                             :style="{ '--color-hover': activities.find(a => a.name === session.activity)?.color ?? 'var(--primary)' }">
                             <div @contextmenu="handleSessionDelete(session.id);" @click="handleSession($event, session)"

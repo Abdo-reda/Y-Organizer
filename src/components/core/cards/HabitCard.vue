@@ -33,7 +33,7 @@ const habits: IHabit[] = [
     <FunctionCard title="Habits" :sub-title="currentMonth">
         <template #default>
             <div class="flex flex-col items-center gap-2 h-full">
-                <Carousel class="select-none w-1/2">
+                <Carousel class="select-none h-fit w-1/2">
                     <CarouselContent>
                         <CarouselItem v-for="habit in habits" :key="habit.title">
                             <p class="font-semibold text-lg text-center"> {{ habit.title }} </p>
@@ -49,7 +49,7 @@ const habits: IHabit[] = [
                 <!-- TODO: fix this shit in firefox -->
                 <div class="flex-1">
                     <div class="grid grid-cols-7 auto-rows-fr gap-2 h-full">
-                        <div v-for="_i in 30" class="rounded-xs aspect-square bg-gray-200 hover:transition-none transition-colors hover:bg-amber-400">
+                        <div v-for="_i in 30" class="rounded-xs aspect-square bg-gray-200 hover:transition-none transition-colors hover:bg-primary">
                         </div>
                     </div> 
                 </div>
