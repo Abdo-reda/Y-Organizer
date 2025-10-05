@@ -2,7 +2,7 @@
 import FunctionCard from '@/components/common/FunctionCard.vue';
 import ActivityDialog from '@/components/dialogs/ActivityDialog.vue';
 import { Button } from '@/components/ui/button';
-import { Dialog, DialogTrigger } from '@/components/ui/dialog';
+import { Dialog } from '@/components/ui/dialog';
 import { ActivityStatusEnum } from '@/core/enums/activityStatusEnum';
 import { IActivity, ISessionActivity } from '@/core/interfaces/entities/IActivity';
 import useActivity from '@/store/useActivity';
@@ -64,8 +64,7 @@ function handleActivity(event: PointerEvent, activity: IActivity) {
     switch (event.button) {
         case 0:
             if (event.ctrlKey) {
-                editActivity.value = activity;
-                dialogOpen.value = true;
+                openEditDialog(activity);
             } else if (event.altKey) {
                 activity.status = activity.status === ActivityStatusEnum.COMPLETED ? ActivityStatusEnum.ACTIVE : ActivityStatusEnum.COMPLETED;
             } else {
@@ -83,6 +82,11 @@ function handleActivity(event: PointerEvent, activity: IActivity) {
     }
 
     updateActivity(activity.name, activity);
+}
+
+function openEditDialog(activity: IActivity | null = null) {
+    editActivity.value = activity;
+    dialogOpen.value = true;
 }
 
 function handleCreate(activity: IActivity) {
@@ -103,18 +107,23 @@ function handleUpdate(id: string, activity: IActivity) {
 <template>
     <FunctionCard title="Activities">
         <template #default>
+            <Dialog v-model:open="dialogOpen">
+                <ActivityDialog :existing-activity="editActivity" @create="handleCreate" @update="handleUpdate" />
+            </Dialog>
             <Carousel>
                 <CarouselContent>
                     <CarouselItem>
                         <div class="flex flex-col h-full select-none overflow-hidden gap-1" v-auto-animate>
                             <div class="relative flex items-center justify-center flex-1 overflow-hidden">
                                 <svg viewBox="0 0 100 100" class="w-full h-full">
-                                    <circle v-if="!sessionActivities.length" cx="50" cy="50" r="45" fill="none" class="stroke-gray-300"
-                                        stroke-width="4" />
-                                    <circle v-for="activity in sessionActivities" :key="activity.name" cx="50" cy="50" r="45" fill="none" :stroke="activity.color" stroke-width="4" stroke-linecap="round" 
-                                    :stroke-dasharray="`${(activity.ratio / 100) * CIRCUMFERENCE} ${CIRCUMFERENCE}`" 
-                                    :stroke-dashoffset="-(CIRCUMFERENCE * activity.offset / 100)" 
-                                    class="transition-all duration-500" />
+                                    <circle v-if="!sessionActivities.length" cx="50" cy="50" r="45" fill="none"
+                                        class="stroke-gray-300" stroke-width="4" />
+                                    <circle v-for="activity in sessionActivities" :key="activity.name" cx="50" cy="50"
+                                        r="45" fill="none" :stroke="activity.color" stroke-width="4"
+                                        stroke-linecap="round"
+                                        :stroke-dasharray="`${(activity.ratio / 100) * CIRCUMFERENCE} ${CIRCUMFERENCE}`"
+                                        :stroke-dashoffset="-(CIRCUMFERENCE * activity.offset / 100)"
+                                        class="transition-all duration-500" />
                                 </svg>
                                 <div class="absolute inset-0 flex items-center justify-center">
                                     <div class="text-center">
@@ -134,7 +143,7 @@ function handleUpdate(id: string, activity: IActivity) {
                                             <p class="font-medium text-gray-900 truncate">{{ activity.name }}</p>
                                             <p class="flex items-center gap-1 text-sm">
                                                 <span class="transition-colors duration-300 group-hover:text-hover"> {{
-                                                    activity.duration / 60 }}h </span> 
+                                                    activity.duration / 60 }}h </span>
                                             </p>
                                         </div>
                                     </div>
@@ -179,7 +188,7 @@ function handleUpdate(id: string, activity: IActivity) {
                             </CarouselContent>
                         </Carousel>
                         <div v-else class="h-full flex items-center w-full">
-                            <div @click="dialogOpen = true"
+                            <div @click="openEditDialog()"
                                 class="w-full h-full p-4 m-2 border-2 border-dashed border-gray-300 rounded-sm text-gray-500 hover:border-primary hover:text-primary transition-colors flex items-center justify-center gap-2 text-sm duration-300 select-none">
                                 <PlusIcon class="size-4" />
                                 <p> Create Your First Activity </p>
@@ -191,14 +200,9 @@ function handleUpdate(id: string, activity: IActivity) {
         </template>
         <template #header-right-actions>
             <div class="flex justify-end gap-1">
-                <Dialog v-model:open="dialogOpen">
-                    <DialogTrigger>
-                        <Button variant="ghost" size="icon">
-                            <PlusIcon />
-                        </Button>
-                    </DialogTrigger>
-                    <ActivityDialog :existing-activity="editActivity" @create="handleCreate" @update="handleUpdate" />
-                </Dialog>
+                <Button @click="openEditDialog()" variant="ghost" size="icon">
+                    <PlusIcon />
+                </Button>
             </div>
         </template>
     </FunctionCard>

@@ -17,7 +17,7 @@ const { fetchTasks } = useTasks();
 //TODO: either do a loading state, or have a suspense and await, or a laoding screen or whatever... fuck this shit.
 fetchSettings();
 fetchActivities();
-watch(selectedDay, () => fetchTasks(selectedDay.value));
+watch(selectedDay, () => fetchTasks(selectedDay.value), {immediate: true});
 
 </script>
 

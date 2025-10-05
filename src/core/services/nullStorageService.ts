@@ -6,6 +6,7 @@ import { IActivity } from "../interfaces/entities/IActivity";
 import { SettingsCodeEnum, SettingsCodeValueMap } from "../enums/settingsCodeEnum";
 import { ISetting } from "../interfaces/entities/ISetting";
 import { ISession } from "../interfaces/entities/ISession";
+import { ITask } from "../interfaces/entities/ITask";
 
 export class NullStroageService implements IStorageService {
 	readonly DATABASE_NAME = "";
@@ -107,6 +108,22 @@ export class NullStroageService implements IStorageService {
     }
 
     deleteSession(_id: number): Promise<void> {
+        return Promise.resolve();
+    }
+
+    getTasks(_day: DateTime): Promise<ITask[]> {
+        return Promise.resolve([]);
+    }
+
+    createTask(_task: ITask): Promise<number | undefined> {
+       return Promise.resolve(undefined);
+    }
+
+    updateTask(_id: number, _task: ITask): Promise<void> {
+        return Promise.resolve();
+    }
+
+    deleteTask(_id: number): Promise<void> {
         return Promise.resolve();
     }
 }

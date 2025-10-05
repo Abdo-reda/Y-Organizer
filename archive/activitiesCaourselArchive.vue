@@ -2,6 +2,35 @@
 const carouselSetup = ref(false);
 const carouselSettled = ref(false);
 
+
+const sessionsTaskData = computed(() => {
+    const sessionId = currentSession.value?.id;
+
+    if (!sessionId) {
+        return {
+            activeAndPending: [],
+            completed: [],
+        };
+    }
+
+    const completed = [];
+    let pending = [];
+    let active = null;
+
+    for (const task of tasks) {
+        if (task.session !== sessionId) continue;
+
+        if (task.status === TaskStatusEnum.ACTIVE) active = task;
+        else if (task.status === TaskStatusEnum.PENDING && pending.length < 2) pending.push(task);
+        else completed.push(task);
+    }
+
+    return {
+        completed,
+        activeAndPending: [active,]
+    };
+});
+
 function setCarouselApi(api: CarouselApi) {
     console.log("--- hmm")
     if (!api || carouselSetup.value) return;

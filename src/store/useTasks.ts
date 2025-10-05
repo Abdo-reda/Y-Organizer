@@ -16,20 +16,22 @@ export default function useTasks() {
 
 	async function createTask(task: ITask) {
 		LoggingService.log("creating task...", task)
+		task.id = await storageService.createTask(task);
 		tasks.push(task);
-		await storageService.createTask(task);
+        console.log("--- tasks",)
 	}
 
 	async function updateTask(id: number|undefined, task: ITask) {
         if (!id) return;
 		LoggingService.log("updating task...", task)
-        // const oldTask = tasks.find((t) => t.id === id);
-        // if (!oldTask) return;
-        // Object.assign(oldTask, task)
+        const oldTask = tasks.find((t) => t.id === id);
+        if (!oldTask) return;
+        Object.assign(oldTask, task)
 		await storageService.updateTask(id, task);
 	}
 
-	async function deleteTask(id: number) {
+	async function deleteTask(id: number|undefined) {
+        if (!id) return;
 		const index = tasks.findIndex((t) => t.id === id);
 		if (index > -1) tasks.splice(index, 1);
 		LoggingService.log("deleting task...", id)

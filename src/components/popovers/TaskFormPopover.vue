@@ -1,17 +1,17 @@
 <script setup lang="ts">
-import { computed } from 'vue';
+// import { computed } from 'vue';
 import { reactiveComputed } from '@vueuse/core';
-import useActivity from '@/store/useActivity';
+// import useActivity from '@/store/useActivity';
 import { Button } from '../ui/button';
 import { PenIcon } from 'lucide-vue-next';
 import { Input } from '../ui/input';
 import { Textarea } from '../ui/textarea';
 import { PopoverContent } from '../ui/popover';
-import { ActivityStatusEnum } from '@/core/enums/activityStatusEnum';
+// import { ActivityStatusEnum } from '@/core/enums/activityStatusEnum';
 import { ITask } from '@/core/interfaces/entities/ITask';
 
-const { activities } = useActivity();
-const activeActivities = computed(() => activities.filter((a) => a.status === ActivityStatusEnum.ACTIVE));
+// const { activities } = useActivity();
+// const activeActivities = computed(() => activities.filter((a) => a.status === ActivityStatusEnum.ACTIVE));
 
 const props = defineProps<{ existingTask: ITask }>();
 const emits = defineEmits<{

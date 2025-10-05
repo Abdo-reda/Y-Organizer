@@ -15,52 +15,77 @@ import { computed, ref, shallowRef } from "vue";
 
 const { currentTime } = useCurrentTime();
 const { currentSession, updateSession } = useDaySessions();
-const { tasks, updateTask } = useTasks();
+const { tasks, createTask, updateTask, deleteTask } = useTasks();
 const { settings } = useSettings();
 const editTask = ref<ITask>(getDefaultSessionTask(currentSession.value));
 const editTaskPopoverOpen = ref(false);
 const taskPopoverAnchor = shallowRef<ReferenceElement | undefined>();
 
-//TODO: CURRENT SESSION CARD
-//- underneath them is the active task
-//- underneath it is 3 slots for tasks, each task can be cleared, deleted, edited, and marked as done and marked as active
-//- shortcuts?
-//- clear
-//- delete
-//- edit
-//- create
-//- mark as done
-//- mark as active
-
 const remainingTime = computed(() => currentSession.value ? Math.ceil(currentSession.value.endTime.diff(currentTime.value, 'minutes', { conversionAccuracy: 'casual' }).minutes) : 0)
-
-const pendingSessionTasks = computed(() => tasks.filter(t => t.session === currentSession.value?.id && t.status !== TaskStatusEnum.PENDING));
+const pendingSessionTasks = computed(() => tasks.filter(t => t.session === currentSession.value?.id && t.status === TaskStatusEnum.PENDING));
 const completedSessionsTasks = computed(() => tasks.filter(t => t.session === currentSession.value?.id && t.status === TaskStatusEnum.COMPLETED));
 const activeSessionTask = computed(() => tasks.find(t => t.session === currentSession.value?.id && t.status === TaskStatusEnum.ACTIVE));
+const tasksList = computed(() => {
+    const list = [];
+    if (activeSessionTask.value) list.push(activeSessionTask.value);
+    if (pendingSessionTasks.value[0]) list.push(pendingSessionTasks.value[0])
+    if (pendingSessionTasks.value[1]) list.push(pendingSessionTasks.value[1])
+    return list;
+});
 
-function handleOpenPopover(event: MouseEvent) {
-    editTask.value = getDefaultSessionTask(currentSession.value);
+function handleTask(event: MouseEvent, task: ITask) {
+    switch (event.button) {
+        case 0:
+            if (event.ctrlKey) {
+                handleOpenPopover(event, task)
+            } else { //TODO: alt click clears it from the current session maybe...
+                markTaskActive(task);
+            }
+            break;
+    }
+}
+
+function handleOpenPopover(event: MouseEvent, task?: ITask) {
+    editTask.value = task ?? getDefaultSessionTask(currentSession.value, activeSessionTask.value ? TaskStatusEnum.PENDING : TaskStatusEnum.ACTIVE);
     taskPopoverAnchor.value = event.currentTarget as ReferenceElement;
     editTaskPopoverOpen.value = true;
 }
 
-function markTaskActive(task: ITask) {
+async function markTaskActive(task: ITask) {
+    if (task.status === TaskStatusEnum.ACTIVE) return;
     if (activeSessionTask.value) {
-        activeSessionTask.value.status = TaskStatusEnum.PENDING;
-        updateTask(activeSessionTask.value.id, activeSessionTask.value);
+        updateTask(activeSessionTask.value.id, { ...activeSessionTask.value, status: TaskStatusEnum.PENDING });
     }
-    task.status = TaskStatusEnum.ACTIVE;
-    updateTask(task.id, task);
+    updateTask(task.id, { ...task, status: TaskStatusEnum.ACTIVE });
 }
 
 function markTaskCompleted(task: ITask) {
     task.status = TaskStatusEnum.COMPLETED;
     updateTask(task.id, task);
+    const pendingTask = pendingSessionTasks.value[0];
+    if (pendingTask) {
+        pendingTask.status = TaskStatusEnum.ACTIVE;
+        updateTask(pendingTask.id, pendingTask);
+    }
 }
 
 function updateSessionNotes() {
     if (!currentSession.value) return;
     updateSession(currentSession.value?.id, currentSession.value);
+}
+
+function handleCreateTask(task: ITask) {
+    createTask(task);
+    handleClosePopover();
+}
+
+function handleUpdateTask(id: number, task: ITask) {
+    updateTask(id, task);
+    handleClosePopover();
+}
+
+function handleClosePopover() {
+    editTaskPopoverOpen.value = false;
 }
 
 </script>
@@ -70,7 +95,7 @@ function updateSessionNotes() {
         <template #default>
             <Popover v-model:open="editTaskPopoverOpen">
                 <PopoverAnchor :reference="taskPopoverAnchor"> </PopoverAnchor>
-                <TaskFormPopover :existingTask="editTask" />
+                <TaskFormPopover :existingTask="editTask" @create="handleCreateTask" @update="handleUpdateTask" />
             </Popover>
             <div class="h-full flex flex-col items-center">
                 <!-- HEADER INFO -->
@@ -95,64 +120,41 @@ function updateSessionNotes() {
                 </div>
                 <div class="border-t border-primary/0 m-1 w-4/5"></div>
                 <!-- BODY -->
-                <div class="flex-1 flex justify-center gap-3 px-2 py-1 overflow-hidden w-full">
-
+                <div class="flex-1 flex justify-center gap-3.5 px-2 py-1 overflow-hidden w-full">
                     <!-- TASKS -->
-                    <div class="grid gap-1.5 grid-rows-[1fr_auto_1fr_1fr] w-full" v-auto-animate>
-                        <template v-if="activeSessionTask">
-                            <div
-                                class="p-2 flex items-center min-w-0 border border-primary/75 justify-between rounded-md relative">
-                                <div class="flex min-w-0 items-center gap-2">
-                                    <div class="flex-1 min-w-0">
-                                        <p class="font-medium text-sm text-gray-800 truncate"> {{
-                                            activeSessionTask.title }} </p>
-                                        <p class="text-xs text-gray-600 mt-1 truncate"> {{ activeSessionTask.description
-                                        }} </p>
-                                    </div>
-                                </div>
-                                <Button @click="markTaskCompleted(activeSessionTask)" variant="ghost" size="icon"
-                                    class="text-gray-400 size-6">
-                                    <CheckIcon class="size-3.5" />
-                                </Button>
-                                <div class="absolute top-0 right-0 m-1">
-                                    <ZapIcon class="fill-primary stroke-transparent size-3">
-                                    </ZapIcon>
-                                    <div class="absolute top-0 bg-primary/50 size-3 rounded-full animate-ping">
-                                    </div>
-                                </div>
-                            </div>
-                        </template>
-                        <button @click="handleOpenPopover" v-else
-                            class="w-full h-full border-2 border-dashed border-gray-300 rounded-xs text-gray-600 hover:border-primary hover:text-primary transition-all flex items-center justify-center gap-2">
-                            <PlusIcon class="size-4" />
-                            Add Task
-                        </button>
-                        <div class="border-t w-1/3 border-dashed border-primary mx-auto"></div>
-                        <div v-for="task in pendingSessionTasks.slice(0, 2)" :key="task.id"
-                            class="p-2 flex items-center min-w-0 justify-between bg-gray-50 border border-gray-200 rounded-sm">
+                    <div @contextmenu.prevent class="grid gap-3 grid-rows-3 w-full" v-auto-animate>
+                        <div v-for="task in tasksList" :key="task.id" @contextmenu="deleteTask(task.id)"
+                            @click="handleTask($event, task)"
+                            class="relative p-2 flex items-center min-w-0 justify-between ring ring-gray-200 rounded-md transition-shadow gap-2"
+                            :class="{
+                                'ring-primary': task.status === TaskStatusEnum.ACTIVE,
+                                'hover:ring-primary/75': task.status !== TaskStatusEnum.ACTIVE
+                            }">
+                            <Button @click.stop="markTaskCompleted(task)" variant="ghost" size="icon"
+                                class="text-gray-400 size-6 border border-gray-300">
+                                <CheckIcon class="size-3.5" />
+                            </Button>
                             <div class="flex-1 min-w-0">
-                                <div class="font-medium text-sm text-gray-800 truncate">{{ task.id }}
+                                <div class="font-medium text-sm text-gray-800 truncate">{{ task.title }}
                                 </div>
                                 <div class="text-xs text-gray-600 mt-1 truncate"> {{ task.description }} </div>
                             </div>
-                            <div class="flex items-center gap-1">
-                                <Button @click="markTaskActive(task)" variant="ghost" size="icon"
-                                    class="text-gray-400 size-6">
-                                    <ZapIcon class="size-3.5" />
-                                </Button>
-                                <Button @click="markTaskCompleted(task)" variant="ghost" size="icon"
-                                    class="text-gray-400 size-6">
-                                    <CheckIcon class="size-3.5" />
-                                </Button>
+                            <div class="absolute top-0 right-0 m-2 opacity-0 transition-opacity" :class="{
+                                'opacity-100': task.status === TaskStatusEnum.ACTIVE
+                            }">
+                                <ZapIcon class="fill-primary stroke-transparent size-3">
+                                </ZapIcon>
+                                <div class="absolute top-0 bg-primary/50 size-3 rounded-full animate-ping">
+                                </div>
                             </div>
                         </div>
-                        <button @click="handleOpenPopover" v-if="pendingSessionTasks.length < 2 && activeSessionTask"
-                            class="w-full h-full border-2 border-dashed border-gray-300 rounded-xs text-gray-600 hover:border-primary hover:text-primary transition-all flex items-center justify-center gap-2">
+                        <button @click="handleOpenPopover" v-if="tasksList.length < 3"
+                            class="w-full h-full border-2 border-dashed border-gray-300 rounded-md text-gray-600 hover:border-primary hover:text-primary transition-all flex items-center justify-center gap-2">
                             <PlusIcon class="size-4" />
                             Add Task
                         </button>
                     </div>
-                    <!-- NOTES -->
+                    <!-- NOTES & COMPLETED TASKS -->
                     <div class="w-1/3 h-full flex flex-col gap-2">
                         <div
                             class="relative p-1.5 pb-0 flex flex-col gap-0.5 h-full bg-gray-50 border border-gray-400 border-dashed rounded-sm text-gray-500 text-sm">
@@ -171,7 +173,7 @@ function updateSessionNotes() {
                                 class="absolute rounded-sm inset-0 bg-gradient-to-b from-transparent from-75% to-white/75 pointer-events-none" />
                         </div>
                         <div
-                            class="relative p-1.5 h-full flex flex-col gap-0.5 border border-gray-400 border-dashed rounded-sm text-gray-500 text-sm">
+                            class="relative p-1.5 h-full flex flex-col gap-0.5 border border-gray-400 border-dashed rounded-sm text-gray-500 overflow-hidden text-sm">
                             <div class="flex items-center gap-1.5">
                                 <ListCheckIcon class="size-4" />
                                 <p class="font-semibold">Completed</p>
@@ -180,12 +182,17 @@ function updateSessionNotes() {
                                     {{ completedSessionsTasks.length }}
                                 </span>
                             </div>
-                            <div class="flex-1 flex flex-col gap-2 scroll-hidden" v-auto-animate>
-                                <div v-for="task in completedSessionsTasks" :key="task.id"
-                                    class="flex items-center gap-2 p-1">
-                                    <CheckCheckIcon class="size-3" />
-                                    <span class="text-sm text-gray-500 line-through">{{ task.title }}</span>
-                                </div>
+                            <div class="flex-1 flex flex-col overflow-auto scroll-hidden" v-auto-animate>
+                                <template v-if="completedSessionsTasks.length">
+                                    <div v-for="task in completedSessionsTasks" :key="task.id"
+                                        class="flex items-center gap-2 px-1 py-0.5">
+                                        <CheckCheckIcon class="size-3" />
+                                        <span class="text-sm text-gray-500 line-through truncate">{{ task.title }}</span>
+                                    </div>
+                                </template>
+                                <p v-else class="text-gray-400">
+                                    - Empty -
+                                </p>
                             </div>
                             <div
                                 class="absolute rounded-sm inset-0 bg-gradient-to-b from-transparent from-75% to-white/75 pointer-events-none" />
