@@ -10,6 +10,7 @@ import { SettingsCodeEnum, SettingsCodeValueMap } from "../enums/settingsCodeEnu
 import { ISetting } from "../interfaces/entities/ISetting";
 import { ISession } from "../interfaces/entities/ISession";
 import { ITask } from "../interfaces/entities/ITask";
+import { IGoal } from "../interfaces/entities/IGoal";
 
 export class SqliteStroageService implements IStorageService {
 	readonly DATABASE_NAME = "y.db";
@@ -186,7 +187,7 @@ export class SqliteStroageService implements IStorageService {
 			task.description,
 			task.activity,
 			task.session,
-			task.isToday,
+			task.isToday ? 1 : 0,
 			task.completedDay,
 			task.status,
 		]);
@@ -199,7 +200,7 @@ export class SqliteStroageService implements IStorageService {
 			task.description,
 			task.activity,
 			task.session,
-			task.isToday,
+			task.isToday ? 1 : 0,
 			task.completedDay,
 			task.status,
 			id,
@@ -208,6 +209,38 @@ export class SqliteStroageService implements IStorageService {
 
 	async deleteTask(id: number): Promise<void> {
 		await this.database.execute("DELETE FROM tasks WHERE id = $1;", [id]);
+	}
+
+	getMonthlyGoals(yearMonth: DateTime): Promise<IGoal[]> {
+		return this.database.select<IGoal[]>("SELECT * FROM goals WHERE month = $1;", [yearMonth.toISODate({ precision: "month" })]);
+	}
+
+	async createGoal(goal: IGoal): Promise<number | undefined> {
+		const result = await this.database.execute("INSERT INTO goals (title, description, activity, points, totalPoints, month) VALUES ($1, $2, $3, $4, $5, $6);", [
+			goal.title,
+			goal.description,
+			goal.activity,
+			goal.points,
+			goal.totalPoints,
+			goal.month,
+		]);
+		return result.lastInsertId;
+	}
+
+	async updateGoal(id: number, goal: IGoal): Promise<void> {
+		await this.database.execute("UPDATE goals SET title = $1, description = $2, activity = $3, points = $4, totalPoints = $5, month = $6 WHERE id = $7;", [
+			goal.title,
+			goal.description,
+			goal.activity,
+			goal.points,
+			goal.totalPoints,
+			goal.month,
+			id,
+		]);
+	}
+
+	async deleteGoal(id: number): Promise<void> {
+        await this.database.execute("DELETE FROM goals WHERE id = $1;", [id]);
 	}
 
 	private mapSessions(sesions: ISession[]) {

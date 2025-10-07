@@ -10,7 +10,7 @@ impl YMigrations {
             sql: "CREATE TABLE days (day TEXT PRIMARY KEY, notes TEXT, doodle TEXT);",
             kind: MigrationKind::Up,
         };
-        
+
         let settings_table_migration = Migration {
             version: 2,
             description: "Create Settings Table",
@@ -47,8 +47,25 @@ impl YMigrations {
             kind: MigrationKind::Up,
         };
 
-        let tasks_table_migration = Migration {
+        let goals_table_migration = Migration {
             version: 5,
+            description: "Create Goals Table",
+            sql: "CREATE TABLE goals (
+                id INTEGER PRIMARY KEY,
+                title TEXT NOT NULL,
+                description TEXT,
+                activity TEXT,
+                points INTEGER,
+                totalPoints INTEGER,
+                month TEXT,
+                FOREIGN KEY(activity) REFERENCES activities(name) ON UPDATE CASCADE ON DELETE CASCADE
+            );
+            ",
+            kind: MigrationKind::Up,
+        };
+
+        let tasks_table_migration = Migration {
+            version: 6,
             description: "Create Tasks Table",
             sql: "CREATE TABLE tasks (
                 id INTEGER PRIMARY KEY,
@@ -68,13 +85,12 @@ impl YMigrations {
         };
 
         let remembers_table_migration = Migration {
-            version: 6,
+            version: 7,
             description: "Create Remembers Table",
             sql: "CREATE TABLE remembers (id INTEGER PRIMARY KEY, title TEXT NOT NULL, highlights TEXT);",
             kind: MigrationKind::Up,
         };
 
-        
         // let gratitude_table_migration = Migration {
         //     version: 7,
         //     description: "Create Gratitudes Table",
@@ -87,6 +103,7 @@ impl YMigrations {
             settings_table_migration,
             activities_table_migration,
             sessions_table_migration,
+            goals_table_migration,
             tasks_table_migration,
             remembers_table_migration,
         ]

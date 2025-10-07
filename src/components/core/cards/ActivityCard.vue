@@ -55,7 +55,7 @@ const sessionActivities = computed(() => {
             activityOffset += activityRatio;
         }
     })
-    return sessionActivites;
+    return sessionActivites.sort((a,b) => b.duration - a.duration);
 });
 
 const sortedActivites = computed(() => activities.sort((a, b) => a.name.localeCompare(b.name)));
@@ -73,7 +73,7 @@ function handleActivity(event: PointerEvent, activity: IActivity) {
             break;
         case 2:
             if (event.altKey) {
-                deleteActivity(activity.name);
+                // deleteActivity(activity.name); //TODO: Warning popup
                 return;
             } else {
                 activity.status = activity.status === ActivityStatusEnum.DISABLED ? ActivityStatusEnum.ACTIVE : ActivityStatusEnum.DISABLED;

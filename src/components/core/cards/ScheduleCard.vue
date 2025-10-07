@@ -26,7 +26,7 @@ const { sessions, onRemoveSession, fetchSessions, createSession, updateSession, 
 const { activities } = useActivity();
 const editSessionPopoverOpen = ref(false);
 const previewSessionPopoverOpen = ref(false);
-const editSession = ref<ISession>(generateDefaultSession(0));
+const editSession = ref<ISession>(generateDefaultSession(selectedDay.value, 0));
 const sessionPopoverAnchor = shallowRef<ReferenceElement | undefined>();
 
 let gridStack: GridStack | undefined;
@@ -53,21 +53,21 @@ function initGrid() {
 }
 
 function openSessionPopover(event: PointerEvent, i: number) {
-    editSession.value = generateDefaultSession(i);
+    editSession.value = generateDefaultSession(selectedDay.value, i);
     sessionPopoverAnchor.value = event.currentTarget as ReferenceElement;
     editSessionPopoverOpen.value = true;
 }
 
 async function handleSessionCreate(session: ISession) {
     const createdId = await createSession(session);
-    editSession.value = generateDefaultSession(0);
+    editSession.value = generateDefaultSession(selectedDay.value, 0);
     editSessionPopoverOpen.value = false;
     if (createdId) gridStack?.makeWidget(`s${createdId}`)
 }
 
 function handleSessionUpdate(id: number, session: ISession) {
     updateSession(id, session);
-    editSession.value = generateDefaultSession(0);
+    editSession.value = generateDefaultSession(selectedDay.value, 0);
     editSessionPopoverOpen.value = false;
 }
 

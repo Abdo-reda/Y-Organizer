@@ -7,45 +7,47 @@ import { SettingsCodeEnum, SettingsCodeValueMap } from "../enums/settingsCodeEnu
 import { ISetting } from "../interfaces/entities/ISetting";
 import { ISession } from "../interfaces/entities/ISession";
 import { ITask } from "../interfaces/entities/ITask";
+import { IGoal } from "../interfaces/entities/IGoal";
 
 export class NullStroageService implements IStorageService {
 	readonly DATABASE_NAME = "";
-	
+	private idCounter = 0;
+
 	init() {
 		return Promise.resolve();
 	}
-	
+
 	initDB() {
 		return Promise.resolve();
 	}
-	
+
 	initDay(_day: DateTime) {
 		return Promise.resolve();
 	}
 
-    getSettings(): Promise<ISetting<SettingsCodeEnum>[]> {
-        return Promise.resolve([]);
-    }
+	getSettings(): Promise<ISetting<SettingsCodeEnum>[]> {
+		return Promise.resolve([]);
+	}
 
-    updateSetting<T extends SettingsCodeEnum>(_code: T, _value: SettingsCodeValueMap[T] | null): Promise<void> {
-          return Promise.resolve();
-    }
+	updateSetting<T extends SettingsCodeEnum>(_code: T, _value: SettingsCodeValueMap[T] | null): Promise<void> {
+		return Promise.resolve();
+	}
 
 	getNotes(_day: DateTime): Promise<string> {
-		return Promise.resolve('');
+		return Promise.resolve("");
 	}
 
 	updateNotes(_day: DateTime, _notes: string): Promise<void> {
 		return Promise.resolve();
 	}
 
-    getDoodle(_day: DateTime): Promise<string> {
-        return Promise.resolve('');
-    }
+	getDoodle(_day: DateTime): Promise<string> {
+		return Promise.resolve("");
+	}
 
-    updateDoodle(_day: DateTime, _doodle: string): Promise<void> {
-        return Promise.resolve();
-    }
+	updateDoodle(_day: DateTime, _doodle: string): Promise<void> {
+		return Promise.resolve();
+	}
 
 	getGratitudes(_day: DateTime): Promise<IGratitude[]> {
 		return Promise.resolve([]);
@@ -62,13 +64,13 @@ export class NullStroageService implements IStorageService {
 	deleteGratitude(_id: number): Promise<void> {
 		return Promise.resolve();
 	}
-	
+
 	getRemembers(): Promise<IRemember[]> {
 		return Promise.resolve([]);
 	}
 
-	createRemember(_remember: IRemember): Promise<number|undefined> {
-		return Promise.resolve(undefined);
+	createRemember(_remember: IRemember): Promise<number | undefined> {
+		return Promise.resolve(this.idCounter++);
 	}
 
 	updateRemember(_id: number, _remember: IRemember): Promise<void> {
@@ -79,51 +81,67 @@ export class NullStroageService implements IStorageService {
 		return Promise.resolve();
 	}
 
-    getActivities(): Promise<IActivity[]> {
-        return Promise.resolve([]);
-    }
+	getActivities(): Promise<IActivity[]> {
+		return Promise.resolve([]);
+	}
 
-    createActivity(_activity: IActivity): Promise<void> {
-        return Promise.resolve(undefined);
-    }
+	createActivity(_activity: IActivity): Promise<void> {
+		return Promise.resolve();
+	}
 
-    updateActivity(_id: string, _activity: IActivity): Promise<void> {
-        return Promise.resolve();
-    }
+	updateActivity(_id: string, _activity: IActivity): Promise<void> {
+		return Promise.resolve();
+	}
 
-    deleteActivity(_id: string): Promise<void> {
-        return Promise.resolve();
-    }
+	deleteActivity(_id: string): Promise<void> {
+		return Promise.resolve();
+	}
 
-    getSessions(_day: DateTime): Promise<ISession[]> {
-        return Promise.resolve([]);
-    }
+	getSessions(_day: DateTime): Promise<ISession[]> {
+		return Promise.resolve([]);
+	}
 
-    createSession(_session: ISession): Promise<number | undefined> {
-       return Promise.resolve(undefined);
-    }
+	createSession(_session: ISession): Promise<number | undefined> {
+		return Promise.resolve(this.idCounter++);
+	}
 
-    updateSession(_id: number, _session: ISession): Promise<void> {
-        return Promise.resolve();
-    }
+	updateSession(_id: number, _session: ISession): Promise<void> {
+		return Promise.resolve();
+	}
 
-    deleteSession(_id: number): Promise<void> {
-        return Promise.resolve();
-    }
+	deleteSession(_id: number): Promise<void> {
+		return Promise.resolve();
+	}
 
-    getTasks(_day: DateTime): Promise<ITask[]> {
-        return Promise.resolve([]);
-    }
+	getTasks(_day: DateTime): Promise<ITask[]> {
+		return Promise.resolve([]);
+	}
 
-    createTask(_task: ITask): Promise<number | undefined> {
-       return Promise.resolve(undefined);
-    }
+	createTask(_task: ITask): Promise<number | undefined> {
+		return Promise.resolve(this.idCounter++);
+	}
 
-    updateTask(_id: number, _task: ITask): Promise<void> {
-        return Promise.resolve();
-    }
+	updateTask(_id: number, _task: ITask): Promise<void> {
+		return Promise.resolve();
+	}
 
-    deleteTask(_id: number): Promise<void> {
-        return Promise.resolve();
-    }
+	deleteTask(_id: number): Promise<void> {
+		return Promise.resolve();
+	}
+
+	getMonthlyGoals(_yearMonth: DateTime): Promise<IGoal[]> {
+		return Promise.resolve([]);
+	}
+
+	createGoal(_monthlyGoal: IGoal): Promise<number | undefined> {
+		return Promise.resolve(this.idCounter++);
+	}
+
+	updateGoal(_id: number, _monthlyGoal: IGoal): Promise<void> {
+		return Promise.resolve();
+	}
+
+	deleteGoal(_id: number): Promise<void> {
+		return Promise.resolve();
+	}
 }

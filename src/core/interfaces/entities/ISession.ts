@@ -12,15 +12,15 @@ export interface ISession {
     status: SessionStatusEnum;
 }
 
-export function generateDefaultSession(hour: number): ISession {
-    const startTime = DateTime.now().set({hour: hour, minute: 0});
+export function generateDefaultSession(day: DateTime<true>, hour: number): ISession {
+    const startTime = day.set({hour: hour, minute: 0});
     const endTime = startTime.plus({ hour: 1 });
 
     return {
         title: "",
         notes: "",
         activity: "",
-        day: startTime.toISODate(),
+        day: day.toISODate(),
         status: SessionStatusEnum.PENDING,
         startTime: startTime,
         endTime: endTime,

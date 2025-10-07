@@ -2,6 +2,7 @@
 import DayGridCardLayout from '@/components/core/layout/DayGridCardLayout.vue';
 import DayHeader from '@/components/core/layout/DayHeader.vue';
 import useActivity from '@/store/useActivity';
+import { useCurrentTime } from '@/store/useCurrentTime';
 import useDayState from '@/store/useDayState';
 import useSettings from '@/store/useSettings';
 import useTasks from '@/store/useTasks';
@@ -9,15 +10,23 @@ import { watch } from 'vue';
 
 // TODO: fix transitoin between routes... remove routes?
 
-const { selectedDay } = useDayState();
+const { currentTime } = useCurrentTime();
+const { selectedDay, initDay } = useDayState();
 const { fetchSettings } = useSettings();
 const { fetchActivities } = useActivity();
 const { fetchTasks } = useTasks();
 
 //TODO: either do a loading state, or have a suspense and await, or a laoding screen or whatever... fuck this shit.
-fetchSettings();
-fetchActivities();
-watch(selectedDay, () => fetchTasks(selectedDay.value), {immediate: true});
+
+await fetchSettings();
+await fetchActivities();
+watch(currentTime, (time, oldTime) => {
+    if (!time.hasSame(oldTime, 'day')) selectedDay.value = time.startOf('day')
+});
+watch(selectedDay, (day) => {
+    initDay(day);
+    fetchTasks(day);
+}, {immediate: true});
 
 </script>
 

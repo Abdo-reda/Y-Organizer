@@ -11,8 +11,6 @@ import { Textarea } from '../ui/textarea';
 import { PopoverContent } from '../ui/popover';
 import { ActivityStatusEnum } from '@/core/enums/activityStatusEnum';
 
-const { activities } = useActivity();
-const activeActivities = computed(() => activities.filter((a) => a.status === ActivityStatusEnum.ACTIVE));
 
 const props = defineProps<{ existingSession: ISession }>();
 const emits = defineEmits<{
@@ -20,9 +18,9 @@ const emits = defineEmits<{
     update: [id: number, session: ISession];
 }>();
 
-
 const sessionForm = reactiveComputed<ISession>(() => ({ ...props.existingSession }));
-
+const { activities } = useActivity();
+const activeActivities = computed(() => activities.filter((a) => a.status === ActivityStatusEnum.ACTIVE));
 const selectedActivity = computed({
     get: () => activities.find(a => a.name === sessionForm.activity),
     set: (activity) => {

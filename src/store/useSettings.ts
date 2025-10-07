@@ -8,13 +8,16 @@ import { TAppSettings } from "@/core/types/TAppSettings";
 
 const isGridLocked = ref(true);
 const settings = reactive<TAppSettings>(DEFAULT_SETTINGS);
+const settingsLoading = ref(false);
 
 export default function useSettings() {
 	const storageService = inject(StorageServiceKey)!;
 
 	async function fetchSettings() {
+        settingsLoading.value = true;
 		LoggingService.log("fetching settings...");
-		mapToAppSettings(await storageService.getSettings());
+        mapToAppSettings(await storageService.getSettings());
+        settingsLoading.value = false;
 	}
 
 	async function updateSetting<T extends SettingsCodeEnum>(code: T, value: SettingsCodeValueMap[T]) {
@@ -25,6 +28,7 @@ export default function useSettings() {
 
 	return {
 		settings,
+        settingsLoading,
 		isGridLocked,
 		fetchSettings,
 		updateSetting,

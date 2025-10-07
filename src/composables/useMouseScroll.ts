@@ -18,7 +18,6 @@ export function useMouseScroll(targetEl: Readonly<ShallowRef<HTMLElement | null>
 		isDragging.value = true;
 		startY.value = event.pageY;
 		scrollTop.value = targetEl.value?.scrollTop ?? 0;
-        // scrollContainer.value.style.scrollBehavior = 'auto'
 		event.preventDefault();
 	}
 

@@ -42,7 +42,7 @@ async function toggleHighlight(rememberId: number | undefined, wordIndex: number
 <template>
     <FunctionCard title="Remember">
         <template #default>
-            <div @contextmenu.prevent class="flex flex-col gap-2 h-full mx-2">
+            <div @contextmenu.prevent class="flex flex-col gap-2 h-full m-2">
                 <div v-auto-animate class="flex-1 flex flex-col gap-2 relative overflow-auto scroll-hidden">
                     <div @pointerdown="handlePointer($event, remember)" v-for="remember in remembers" :key="remember.id"
                         class="flex gap-4 hover:bg-gray-100/75 transition-colors duration-300 group rounded-sm px-2 py-1">

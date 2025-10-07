@@ -1,17 +1,14 @@
-//--- Everything is breaking.
-- Removing sessions is not animated.
-- Moving or chanign the size of a session opens the preview popup... need to prevent events from bubbeling up...
-
-
-
 //---- Now
-- Tasks in Now Card
-- loading behaviour?
+- Make monthly card
+
+//--- Later.
+- Removing sessions is not animated.
+- Make now card become a summary card in other days.
 - autostartup
+- loading behaviour?
+
 
 //---- Plan
-- Make monthly card
-- Make tasks card
 - Gratitude card
 
 //---- MVP
@@ -27,6 +24,7 @@
 //------ Thinking... & now
 
 //------ Enhancements
+- UNIFY shadows, rounded, percentages, and so on ...
 - All stores, will wait for the other stores as dependencies and will not import their own...
 - Add a smooth transition for cards when changing the day
 - Add a button to change the day in the header (left and right arrow)
