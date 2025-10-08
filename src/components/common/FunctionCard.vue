@@ -25,8 +25,10 @@ defineProps<IFunctionCardProps>();
             <div class="flex-1 relative">
                 <slot name="header-left-actions" />
             </div>
-            <div class="flex-2 text-center select-none">
-                <CardTitle class="text-xl font-bold">{{ title }}</CardTitle>
+            <div class="flex-2 text-center select-none ">
+                <CardTitle class="text-xl font-bold">
+                    <span> {{ title }} </span>
+                </CardTitle>
                 <CardDescription>{{ subTitle }}</CardDescription>
             </div>
             <div class="flex-1 relative">

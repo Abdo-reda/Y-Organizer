@@ -216,25 +216,27 @@ export class SqliteStroageService implements IStorageService {
 	}
 
 	async createGoal(goal: IGoal): Promise<number | undefined> {
-		const result = await this.database.execute("INSERT INTO goals (title, description, activity, points, totalPoints, month) VALUES ($1, $2, $3, $4, $5, $6);", [
+		const result = await this.database.execute("INSERT INTO goals (title, description, activity, points, totalPoints, month, status) VALUES ($1, $2, $3, $4, $5, $6, $7);", [
 			goal.title,
 			goal.description,
 			goal.activity,
 			goal.points,
 			goal.totalPoints,
 			goal.month,
+            goal.status,
 		]);
 		return result.lastInsertId;
 	}
 
 	async updateGoal(id: number, goal: IGoal): Promise<void> {
-		await this.database.execute("UPDATE goals SET title = $1, description = $2, activity = $3, points = $4, totalPoints = $5, month = $6 WHERE id = $7;", [
+		await this.database.execute("UPDATE goals SET title = $1, description = $2, activity = $3, points = $4, totalPoints = $5, month = $6, status = $7 WHERE id = $8;", [
 			goal.title,
 			goal.description,
 			goal.activity,
 			goal.points,
 			goal.totalPoints,
 			goal.month,
+            goal.status,
 			id,
 		]);
 	}

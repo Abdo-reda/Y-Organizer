@@ -13,7 +13,6 @@
 
 //---- MVP
 - AutoUpdates & Version number
-- Basic Cards Functionality which are
 
 //--- Prelude Optimizations 
 ** BEFORE YOU DO ANY OF THE BELOW, YOU SHOULD PROFILE FIRST**
@@ -32,6 +31,7 @@
 - Restructure header or add animation for the date popup when it changes position
 - Add ability to zoom in schedule and control things up to 10+ minutes
 - Activites could have icons, you pick one of the many icons.... could be neat, but annoying
+- Anything taht uses primary, could have a common class, with transition colors?
 
 /----- Cards ideas
 - reflections/learnings card
@@ -74,15 +74,6 @@ https://lottiefiles.com/free-animations/tick
 https://iconscout.com/lottie-animations/tick
 
 //------ General Todo
-- Layout, initial created from a config or something
-- Maybe card titles shouldn't be centered... and maybe the cards design should reflect that... especially the  Now card
-- Flexible & Editable Layout
-- Make theme customizable, so that it can depend on current activity. https://tweakcn.com/editor/theme //use correct classes, primary, secondary, accent and so on ... //anything that will change color should have transition, we can make a class that we reuse over and over agin... 
-    //- primary
-    //- secondary
-    //- accent
-    //- base?
-    //- destructive???
 - Make current activity determine color and theme
 - Make background have gradient/color or a pretty cool background... something neat looking and smooth can clean...
 - Summary card in place of the now card for days that are not today.
@@ -90,6 +81,4 @@ https://iconscout.com/lottie-animations/tick
 - Focus Mode, all cards are hidden, takes fulls screne, only the session and the active tasks are shown
 
 //------- Tauri
-- Make a default window size 
-- Remove Header
 - Add Icons and so on ...

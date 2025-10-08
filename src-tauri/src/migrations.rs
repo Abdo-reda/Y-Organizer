@@ -58,6 +58,7 @@ impl YMigrations {
                 points INTEGER,
                 totalPoints INTEGER,
                 month TEXT,
+                status TEXT,
                 FOREIGN KEY(activity) REFERENCES activities(name) ON UPDATE CASCADE ON DELETE CASCADE
             );
             ",

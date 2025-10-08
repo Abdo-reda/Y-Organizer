@@ -9,11 +9,15 @@ import { TaskStatusEnum, TaskStatusOrder } from '@/core/enums/taskStatusEnum';
 import { ITask } from '@/core/interfaces/entities/ITask';
 import useActivity from '@/store/useActivity';
 import useTasks from '@/store/useTasks';
-import { CheckIcon, PartyPopperIcon, PlusIcon } from 'lucide-vue-next';
+import { CheckIcon, PlusIcon } from 'lucide-vue-next';
 import { computed, ref, useTemplateRef } from 'vue';
 
 const tasksContainer = useTemplateRef('tasks-container');
-useMouseScroll(tasksContainer);
+const backlogContainer = useTemplateRef('backlog-container');
+const taskContainerEl = computed(() => tasksContainer.value?.$el)
+const backlogContainerEl = computed(() => backlogContainer.value?.$el)
+useMouseScroll(taskContainerEl);
+useMouseScroll(backlogContainerEl);
 const { activities } = useActivity();
 const { tasks, createTask, updateTask, deleteTask, completeTask } = useTasks();
 const todayTasks = computed(() => tasks.filter(t => t.isToday).sort((a, b) => {
@@ -65,6 +69,7 @@ function closeEditDialog() {
     taskEditDialogOpen.value = false;
 }
 
+
 </script>
 
 <template>
@@ -76,10 +81,11 @@ function closeEditDialog() {
             <Carousel>
                 <CarouselContent @contextmenu.prevent>
                     <CarouselItem>
-                        <div ref="tasks-container" class="scroll-drag h-full">
+                        <div class="flex flex-col h-full">
                             <p class="text-sm"> Today </p>
-                            <div class="flex flex-col select-none overflow-hidden gap-3 p-2" v-auto-animate>
-                                <div v-for="task in todayTasks" :key="task.id"
+                            <TransitionGroup ref="tasks-container" name="auto" tag="ul"
+                                class="scroll-drag flex-1 select-none overflow-hidden space-y-2 p-2">
+                                <li v-for="task in todayTasks" :key="task.id"
                                     @contextmenu="handleTaskSecondary($event, task)"
                                     @click="handleTaskPrimary($event, task)"
                                     class="relative p-1 flex items-center min-w-0 justify-between ring ring-transparent rounded-md transition-shadow gap-2.5 hover:ring-hover/80"
@@ -104,23 +110,24 @@ function closeEditDialog() {
                                             class="text-xs text-gray-600 mt-1 truncate"> {{
                                                 task.description ? task.description : '- no description -' }} </div>
                                     </div>
-                                </div>
-                            </div>
+                                </li>
+                            </TransitionGroup>
                         </div>
                     </CarouselItem>
                     <CarouselItem>
-                        <div ref="backlog-container" class="scroll-drag h-full">
+                        <div class="flex flex-col h-full">
                             <p class="text-sm"> Backlog </p>
-                            <div class="flex flex-col select-none overflow-hidden gap-3 p-2" v-auto-animate>
-                                <div v-for="task in backlogTasks" :key="task.id"
+                            <TransitionGroup ref="backlog-container" name="auto" tag="ul"
+                                class="scroll-drag flex-1 select-none overflow-hidden space-y-2 p-2">
+                                <li v-for="task in backlogTasks" :key="task.id"
                                     @contextmenu="handleTaskSecondary($event, task)"
                                     @click="handleTaskPrimary($event, task)"
                                     class="relative p-1 flex items-center min-w-0 justify-between ring ring-transparent rounded-md transition-shadow gap-2.5 hover:ring-hover/80"
                                     :class="{
                                         'opacity-50': task.status === TaskStatusEnum.COMPLETED
                                     }" :style="{
-                                            '--color-hover': activities.find(a => a.name === task.activity)?.color
-                                        }">
+                                        '--color-hover': activities.find(a => a.name === task.activity)?.color
+                                    }">
                                     <Button v-if="task.status !== TaskStatusEnum.COMPLETED"
                                         @click.stop="markTaskCompleted(task)" variant="ghost" size="icon"
                                         class="text-gray-400 size-5 hover:text-hover">
@@ -137,8 +144,8 @@ function closeEditDialog() {
                                             class="text-xs text-gray-600 mt-1 truncate"> {{
                                                 task.description ? task.description : '- no description -' }} </div>
                                     </div>
-                                </div>
-                            </div>
+                                </li>
+                            </TransitionGroup>
                         </div>
                     </CarouselItem>
                 </CarouselContent>

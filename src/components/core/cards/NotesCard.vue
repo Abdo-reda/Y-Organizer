@@ -5,6 +5,7 @@ import { EditorContent, useEditor } from '@tiptap/vue-3'
 import StarterKit from '@tiptap/starter-kit'
 import { Placeholder } from '@tiptap/extensions'
 import { onBeforeMount } from "vue";
+import { NotebookTabsIcon } from "lucide-vue-next";
 
 const { notes, onNotesFetched, updateNotes } = useDayNotes();
 //TODO: Fix placeholder
@@ -53,6 +54,9 @@ onBeforeMount(() => {
 
 <template>
     <FunctionCard title="Notes">
+        <template #card-icon> 
+            <NotebookTabsIcon />
+        </template>
         <template #default>
             <div
                 class="p-4 h-full rounded-lg hover:bg-primary/8 transition-colors duration-300 cursor-text focus-within:bg-primary/8">

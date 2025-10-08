@@ -140,8 +140,7 @@ function handleClosePopover() {
                     <!-- TASKS -->
                     <div @contextmenu.prevent class="grid gap-3 grid-rows-3 w-full select-none" v-auto-animate>
                         <div v-for="task in focusedTasks" :key="task.id"
-                            @contextmenu="handleTaskSecondary($event, task)"
-                            @click="handleTaskPrimary($event, task)"
+                            @contextmenu="handleTaskSecondary($event, task)" @click="handleTaskPrimary($event, task)"
                             class="relative p-2 flex items-center min-w-0 justify-between ring ring-gray-200 rounded-md transition-shadow gap-2"
                             :class="{
                                 'ring-primary': task.status === TaskStatusEnum.ACTIVE,
@@ -200,19 +199,19 @@ function handleClosePopover() {
                                     {{ completedSessionsTasks.length }}
                                 </span>
                             </div>
-                            <div class="flex-1 flex flex-col overflow-auto scroll-hidden" v-auto-animate>
+                            <TransitionGroup name="auto" tag="ul" class="flex-1 overflow-auto scroll-hidden relative">
                                 <template v-if="completedSessionsTasks.length">
-                                    <div v-for="task in completedSessionsTasks" :key="task.id"
+                                    <li v-for="task in completedSessionsTasks" :key="task.id"
                                         class="flex items-center gap-2 px-1 py-0.5">
                                         <CheckCheckIcon class="size-3" />
-                                        <span class="text-sm text-gray-500 line-through truncate">{{ task.title
-                                        }}</span>
-                                    </div>
+                                        <span class="flex-1 text-sm text-gray-500 line-through truncate">{{ task.title
+                                            }}</span>
+                                    </li>
                                 </template>
-                                <p v-else class="text-gray-400">
+                                <li v-else class="text-gray-400" key="else">
                                     - Empty -
-                                </p>
-                            </div>
+                                </li>
+                            </TransitionGroup>
                             <div
                                 class="absolute rounded-sm inset-0 bg-gradient-to-b from-transparent from-75% to-white/75 pointer-events-none" />
                         </div>

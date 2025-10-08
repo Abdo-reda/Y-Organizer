@@ -9,38 +9,46 @@ import { ActivityStatusEnum } from "@/core/enums/activityStatusEnum";
 import { computed } from "vue";
 import { Input } from "../ui/input";
 import { Textarea } from "../ui/textarea";
-import { getDefaultSessionTask, ITask } from "@/core/interfaces/entities/ITask";
 import useActivity from "@/store/useActivity";
 import { Select, SelectContent, SelectGroup, SelectItem, SelectTrigger, SelectValue } from "../ui/select";
+import { getDefaultGoal, IGoal } from "@/core/interfaces/entities/IGoal";
+import { GoalStatusEnum } from "@/core/enums/goalStatusEnum";
+import { NumberField, NumberFieldContent, NumberFieldDecrement, NumberFieldIncrement, NumberFieldInput } from "../ui/number-field";
 
-const props = defineProps<{ existingTask: ITask | null }>();
+const props = defineProps<{ existingGoal: IGoal | null }>();
 const emits = defineEmits<{
-    create: [task: ITask];
-    update: [id: number, task: ITask];
+    create: [goal: IGoal];
+    update: [id: number, goal: IGoal];
 }>();
 
-const taskForm = reactiveComputed<ITask>(() =>
-props.existingTask ? { ...props.existingTask } : getDefaultSessionTask()
+const goalForm = reactiveComputed<IGoal>(() =>
+    props.existingGoal ? { ...props.existingGoal } : getDefaultGoal()
 );
 
 const { activities } = useActivity();
 const activeActivities = computed(() => activities.filter((a) => a.status === ActivityStatusEnum.ACTIVE));
 const selectedActivity = computed({
-    get: () => activities.find(a => a.name === taskForm.activity),
+    get: () => activities.find(a => a.name === goalForm.activity),
     set: (activity) => {
-        if (activity) taskForm.activity = activity?.name;
+        if (activity) goalForm.activity = activity.name;
     }
 });
 
+const isActive = computed({
+    get: () => goalForm.status === GoalStatusEnum.ACTIVE,
+    set: (value: boolean) => {
+        goalForm.status = value ? GoalStatusEnum.ACTIVE : GoalStatusEnum.DISABLED;
+    },
+});
 
 function handleSubmit() {
-    const updatedTask = { ...taskForm };
-    if (props.existingTask?.id) {
-        emits("update", props.existingTask?.id, updatedTask);
+    const updatedGoal = { ...goalForm };
+    if (props.existingGoal?.id) {
+        emits("update", props.existingGoal?.id, updatedGoal);
     } else {
-        emits("create", updatedTask);
+        emits("create", updatedGoal);
     }
-    Object.assign(taskForm, getDefaultSessionTask())
+    Object.assign(goalForm, getDefaultGoal())
 }
 </script>
 
@@ -49,26 +57,27 @@ function handleSubmit() {
         <DialogHeader>
             <div class="flex justify-between">
                 <DialogTitle>
-                    Task
+                    Monthly Goal
                 </DialogTitle>
                 <div class="flex items-center gap-2">
-                    <Switch v-model="taskForm.isToday" id="isToday" />
-                    <Label for="isToday">Today</Label>
+                    <Switch v-model="isActive" id="isActive" />
+                    <Label for="isActive">Active</Label>
                 </div>
             </div>
-            <DialogDescription class="hidden"> Create or edit a task. </DialogDescription>
+            <DialogDescription class="hidden"> Create or edit a monthly goal. </DialogDescription>
         </DialogHeader>
-        <form id="task-form" name="task-form" @submit.prevent="handleSubmit">
+        <form id="goal-form" name="goal-form" @submit.prevent="handleSubmit">
             <div class="flex flex-col gap-3">
+                <!-- Title -->
+                <div class="flex-1 flex flex-col gap-1.5">
+                    <Label for="title"> Title </Label>
+                    <Input id="title" v-model="goalForm.title" type="text" placeholder="Goal title..." />
+                </div>
+
                 <div class="flex gap-2">
-                    <!-- Task Title -->
-                    <div class="flex-1 flex flex-col gap-1.5">
-                        <Label for="title"> Title </Label>
-                        <Input id="title" v-model="taskForm.title" type="text" placeholder="Task title..." />
-                    </div>
 
                     <!-- Activity Selection -->
-                    <div class="flex-1 flex flex-col gap-1.5">
+                    <div class="flex-2 flex flex-col gap-1.5">
                         <Label for="title"> Activity </Label>
                         <Select v-model="selectedActivity">
                             <SelectTrigger class="w-full">
@@ -95,19 +104,29 @@ function handleSubmit() {
                             </SelectContent>
                         </Select>
                     </div>
+
+                    <!-- Points -->
+                    <NumberField class="flex-1" id="totalPoints" v-model="goalForm.totalPoints" :min="0" :step="10">
+                        <Label for="totalPoints">Points</Label>
+                        <NumberFieldContent>
+                            <NumberFieldDecrement />
+                            <NumberFieldInput />
+                            <NumberFieldIncrement />
+                        </NumberFieldContent>
+                    </NumberField>
                 </div>
 
                 <!-- Description -->
                 <div class="flex flex-col gap-1.5">
                     <Label for="description"> Description </Label>
-                    <Textarea id="description" v-model="taskForm.description" placeholder="Task description..."
+                    <Textarea id="description" v-model="goalForm.description" placeholder="Goal description..."
                         class="resize-none" />
                 </div>
             </div>
         </form>
         <DialogFooter>
-            <Button type="submit" variant="outline" form="task-form">
-                <PenIcon /> {{ props.existingTask ? "Update" : "Create" }}
+            <Button type="submit" variant="outline" form="goal-form">
+                <PenIcon /> {{ props.existingGoal ? "Update" : "Create" }}
             </Button>
         </DialogFooter>
     </DialogContent>

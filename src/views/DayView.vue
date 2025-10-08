@@ -4,6 +4,7 @@ import DayHeader from '@/components/core/layout/DayHeader.vue';
 import useActivity from '@/store/useActivity';
 import { useCurrentTime } from '@/store/useCurrentTime';
 import useDayState from '@/store/useDayState';
+import useMonthlyGoals from '@/store/useMonthlyGoals';
 import useSettings from '@/store/useSettings';
 import useTasks from '@/store/useTasks';
 import { watch } from 'vue';
@@ -15,7 +16,7 @@ const { selectedDay, initDay } = useDayState();
 const { fetchSettings } = useSettings();
 const { fetchActivities } = useActivity();
 const { fetchTasks } = useTasks();
-
+const { fetchGoals } = useMonthlyGoals();
 //TODO: either do a loading state, or have a suspense and await, or a laoding screen or whatever... fuck this shit.
 
 await fetchSettings();
@@ -26,6 +27,7 @@ watch(currentTime, (time, oldTime) => {
 watch(selectedDay, (day) => {
     initDay(day);
     fetchTasks(day);
+    fetchGoals(day);
 }, {immediate: true});
 
 </script>

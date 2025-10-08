@@ -22,11 +22,7 @@ async function handleDelete(id: number | undefined) {
 }
 
 async function handlePointer(event: PointerEvent, remember: IRemember) {
-    switch (event.button) {
-        case 2:
-            await handleDelete(remember.id);
-            break;
-    }
+    if (event.button === 2) await handleDelete(remember.id);
 }
 
 async function toggleHighlight(rememberId: number | undefined, wordIndex: number) {
@@ -43,8 +39,9 @@ async function toggleHighlight(rememberId: number | undefined, wordIndex: number
     <FunctionCard title="Remember">
         <template #default>
             <div @contextmenu.prevent class="flex flex-col gap-2 h-full m-2">
-                <div v-auto-animate class="flex-1 flex flex-col gap-2 relative overflow-auto scroll-hidden">
-                    <div @pointerdown="handlePointer($event, remember)" v-for="remember in remembers" :key="remember.id"
+                <TransitionGroup name="auto" tag="ul"
+                    class="flex-1 space-y-2 relative overflow-auto scroll-hidden">
+                    <li @pointerdown="handlePointer($event, remember)" v-for="remember in remembers" :key="remember.id"
                         class="flex gap-4 hover:bg-gray-100/75 transition-colors duration-300 group rounded-sm px-2 py-1">
                         <div class="flex items-center">
                             <div class="relative size-2.5 rounded-full bg-primary">
@@ -69,9 +66,9 @@ async function toggleHighlight(rememberId: number | undefined, wordIndex: number
                                 <XIcon />
                             </Button>
                         </div>
-                    </div>
-                </div>
-                <form @submit.prevent="handleCreate" class="flex gap-2 p-2 items-center">
+                    </li>
+                </TransitionGroup>
+                <form @submit.prevent="handleCreate" class="flex gap-2 px-1 py-3 items-center">
                     <input name="remember-input" type="text" v-model="currentRemember" autocomplete="off"
                         autocorrect="off" placeholder="remember..."
                         class="w-full h-full focus:ring-1 [&::placeholder]:select-none ring-gray-200 transition-shadow bg-gray-50 rounded-md p-1.5 resize-none border-none outline-none text-gray-500 placeholder-gray-300" />

@@ -4,8 +4,9 @@ import { LoggingService } from "@/core/services/loggingService";
 import { type DateTime } from "luxon";
 import { IGoal } from "@/core/interfaces/entities/IGoal";
 
+const monthlyGoals = reactive<IGoal[]>([]);
+
 export default function useMonthlyGoals() {
-    const monthlyGoals = reactive<IGoal[]>([]);
 	const storageService = inject(StorageServiceKey)!;
 
 	async function fetchGoals(yearMonth: DateTime) {

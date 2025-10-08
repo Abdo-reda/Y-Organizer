@@ -12,18 +12,22 @@ import {
     CarouselContent,
     CarouselItem,
 } from '@/components/ui/carousel'
-import { computed, ref } from 'vue';
+import { computed, ref, useTemplateRef } from 'vue';
 import { LifeCategoryIconMapper } from '@/core/enums/lifeCategoryEnum';
 import useDaySessions from '@/store/useDaySessions';
+import { useMouseScroll } from '@/composables/useMouseScroll';
 
 //TODO: make the activities sorted by status and must add animation when changing status (list animation)
 //Note: if we add animation with caresoul, there are two issues. first we will need to add v-auto-animate to the inner div, which fucks things up. And second issue, is that when there is transition from previous carousel, the animation is weird. So, possible solutions here.
 //- handleActivity should return if the transition is still going.
-//- use Transition instead of v-auto-aniamte and see if that fixes the problem.
+//- use Transition instead of v-auto-animate and see if that fixes the problem.
 
 const CIRCUMFERENCE = 2 * Math.PI * 45;
+const activitiesContainer = useTemplateRef('activities-container');
+const activitiesContainerEl = computed(() => activitiesContainer.value?.$el)
+useMouseScroll(activitiesContainerEl);
 const { sessions } = useDaySessions();
-const { activities, createActivity, updateActivity, deleteActivity } = useActivity();
+const { activities, createActivity, updateActivity } = useActivity();
 const editActivity = ref<IActivity | null>(null);
 const dialogOpen = ref(false);
 const sessionsData = computed(() => {
@@ -55,33 +59,27 @@ const sessionActivities = computed(() => {
             activityOffset += activityRatio;
         }
     })
-    return sessionActivites.sort((a,b) => b.duration - a.duration);
+    return sessionActivites.sort((a, b) => b.duration - a.duration);
 });
 
 const sortedActivites = computed(() => activities.sort((a, b) => a.name.localeCompare(b.name)));
 
-function handleActivity(event: PointerEvent, activity: IActivity) {
-    switch (event.button) {
-        case 0:
-            if (event.ctrlKey) {
-                openEditDialog(activity);
-            } else if (event.altKey) {
-                activity.status = activity.status === ActivityStatusEnum.COMPLETED ? ActivityStatusEnum.ACTIVE : ActivityStatusEnum.COMPLETED;
-            } else {
-                return;
-            }
-            break;
-        case 2:
-            if (event.altKey) {
-                // deleteActivity(activity.name); //TODO: Warning popup
-                return;
-            } else {
-                activity.status = activity.status === ActivityStatusEnum.DISABLED ? ActivityStatusEnum.ACTIVE : ActivityStatusEnum.DISABLED;
-            }
-            break;
+function handleActivityPrimary(event: MouseEvent, activity: IActivity) {
+    if (event.button === 0 && event.ctrlKey) {
+        openEditDialog(activity);
+    } else if (event.button === 0 && event.altKey) {
+        activity.status = activity.status === ActivityStatusEnum.COMPLETED ? ActivityStatusEnum.ACTIVE : ActivityStatusEnum.COMPLETED;
+        updateActivity(activity.name, activity);
     }
+}
 
-    updateActivity(activity.name, activity);
+function handleActivitySecondary(event: MouseEvent, activity: IActivity) {
+    if (event.altKey) {
+        // deleteActivity(activity.name); //TODO: Warning popup
+    } else {
+        activity.status = activity.status === ActivityStatusEnum.DISABLED ? ActivityStatusEnum.ACTIVE : ActivityStatusEnum.DISABLED;
+        updateActivity(activity.name, activity);
+    }
 }
 
 function openEditDialog(activity: IActivity | null = null) {
@@ -152,48 +150,46 @@ function handleUpdate(id: string, activity: IActivity) {
                         </div>
                     </CarouselItem>
                     <CarouselItem @contextmenu.prevent>
-                        <Carousel v-if="sortedActivites.length" orientation="vertical" class="w-full"
-                            :opts="{ align: 'start' }">
-                            <CarouselContent class="-mt-1 p-2 select-none">
-                                <CarouselItem v-for="activity in sortedActivites" :key="activity.name"
-                                    class="pt-1 md:basis-1/5">
-                                    <div @pointerdown="handleActivity($event, activity)"
-                                        class="flex items-center justify-between p-1 px-2 group rounded-md hover:bg-gray-50 hover:ring-1 ring-hover duration-300 transition-all group"
-                                        :class="{ 'opacity-60 ': activity.status === ActivityStatusEnum.DISABLED }"
-                                        :style="{ '--color-hover': activity.color }">
-                                        <div class="flex items-center gap-3 min-w-0 flex-1">
-                                            <div :style="{ color: activity.color }">
-                                                <CircleIcon v-if="activity.status === ActivityStatusEnum.ACTIVE"
-                                                    class="size-4" stroke-width="0" :fill="activity.color" />
-                                                <CheckCheckIcon
-                                                    v-else-if="activity.status === ActivityStatusEnum.COMPLETED"
-                                                    class="size-4" />
-                                                <ArchiveIcon v-else class="size-4" />
-                                            </div>
-                                            <div class="min-w-0 flex-1">
-                                                <p class="font-medium text-gray-900 truncate w-fit strikethrough"
-                                                    :class="{
-                                                        'has-strikethrough': activity.status === ActivityStatusEnum.COMPLETED,
-                                                    }">{{ activity.name }}
-                                                </p>
-                                                <p class="text-sm text-gray-500 truncate">{{ activity.description }}</p>
-                                            </div>
+                        <TransitionGroup ref="activities-container" name="auto" tag="ul"
+                            class="scroll-drag h-full select-none overflow-hidden space-y-3 p-2">
+                            <template v-if="sortedActivites.length">
+                                <li v-for="activity in sortedActivites" :key="activity.name"
+                                    @click="handleActivityPrimary($event, activity)"
+                                    @contextmenu="handleActivitySecondary($event, activity)"
+                                    class="flex items-center justify-between p-1 px-2 group rounded-md hover:bg-gray-50 hover:ring-1 ring-hover duration-300 transition-all group"
+                                    :class="{ 'opacity-60 ': activity.status === ActivityStatusEnum.DISABLED }"
+                                    :style="{ '--color-hover': activity.color }">
+                                    <div class="flex items-center gap-3 min-w-0 flex-1">
+                                        <div :style="{ color: activity.color }">
+                                            <CircleIcon v-if="activity.status === ActivityStatusEnum.ACTIVE"
+                                                class="size-4" stroke-width="0" :fill="activity.color" />
+                                            <CheckCheckIcon v-else-if="activity.status === ActivityStatusEnum.COMPLETED"
+                                                class="size-4" />
+                                            <ArchiveIcon v-else class="size-4" />
                                         </div>
-                                        <div class="flex gap-1">
-                                            <component v-for="category in activity.categories"
-                                                :is="LifeCategoryIconMapper[category]" class="size-3.5 text-hover" />
+                                        <div class="min-w-0 flex-1">
+                                            <p class="font-medium text-gray-900 truncate w-fit strikethrough" :class="{
+                                                'has-strikethrough': activity.status === ActivityStatusEnum.COMPLETED,
+                                            }">{{ activity.name }}
+                                            </p>
+                                            <p class="text-sm text-gray-500 truncate">{{ activity.description }}</p>
                                         </div>
                                     </div>
-                                </CarouselItem>
-                            </CarouselContent>
-                        </Carousel>
-                        <div v-else class="h-full flex items-center w-full">
-                            <div @click="openEditDialog()"
-                                class="w-full h-full p-4 m-2 border-2 border-dashed border-gray-300 rounded-sm text-gray-500 hover:border-primary hover:text-primary transition-colors flex items-center justify-center gap-2 text-sm duration-300 select-none">
-                                <PlusIcon class="size-4" />
-                                <p> Create Your First Activity </p>
-                            </div>
-                        </div>
+                                    <div class="flex gap-1">
+                                        <component v-for="category in activity.categories"
+                                            :is="LifeCategoryIconMapper[category]" class="size-3.5 text-hover" />
+                                    </div>
+                                </li>
+                            </template>
+                            <li v-else class="h-full flex items-center w-full" key="else">
+                                <div @click="openEditDialog()"
+                                    class="w-full h-full p-4 m-2 border-2 border-dashed border-gray-300 rounded-sm text-gray-500 hover:border-primary hover:text-primary transition-colors flex items-center justify-center gap-2 text-sm duration-300 select-none">
+                                    <PlusIcon class="size-4" />
+                                    <p> Create Your First Activity </p>
+                                </div>
+                            </li>
+                        </TransitionGroup>
+
                     </CarouselItem>
                 </CarouselContent>
             </Carousel>

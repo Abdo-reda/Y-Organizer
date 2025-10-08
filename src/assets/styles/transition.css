@@ -1,16 +1,4 @@
-/* .fade-enter-active {
-    transition: opacity 0.2s ease-out;
-}
-
-.fade-leave-active {
-    transition: opacity 0.2s cubic-bezier(1, 0.5, 0.8, 1);
-}
-
-.fade-enter-from,
-.fade-leave-to {
-    opacity: 0;
-} */
-
+/* ------- FADE ----------- */
 .fade-enter-active,
 .fade-leave-active {
   transition: opacity 0.35s ease-in-out;
@@ -22,10 +10,37 @@
 }
 
 
-.list-move, /* apply transition to moving elements */
+/* ------- AUTO-ANIMATE CLONE --------  */
+.auto-move {
+  transition: transform 250ms ease-in-out;
+}
+
+.auto-enter-active,
+.auto-leave-active {
+  transition: all 250ms ease-in-out;
+}
+
+.auto-leave-active {
+  position: absolute;
+  width: 100%; 
+}
+
+.auto-enter-from,
+.auto-leave-to {
+  opacity: 0;
+  transform: scale(0.95); 
+}
+
+
+
+
+
+
+/* -------- LIST ---------- */
+.list-move,
 .list-enter-active,
 .list-leave-active {
-  transition: all 0.5s ease;
+  transition: all 0.25s ease-in-out;
 }
 
 .list-enter-from,
@@ -34,8 +49,6 @@
   transform: translateX(30px);
 }
 
-/* ensure leaving items are taken out of layout flow so that moving
-   animations can be calculated correctly. */
 .list-leave-active {
   position: absolute;
 }
