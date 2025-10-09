@@ -24,9 +24,9 @@ const emits = defineEmits<{
 const goalForm = reactiveComputed<IGoal>(() =>
     props.existingGoal ? { ...props.existingGoal } : getDefaultGoal()
 );
-
 const { activities } = useActivity();
 const activeActivities = computed(() => activities.filter((a) => a.status === ActivityStatusEnum.ACTIVE));
+
 const selectedActivity = computed({
     get: () => activities.find(a => a.name === goalForm.activity),
     set: (activity) => {
@@ -68,15 +68,16 @@ function handleSubmit() {
         </DialogHeader>
         <form id="goal-form" name="goal-form" @submit.prevent="handleSubmit">
             <div class="flex flex-col gap-3">
-                <!-- Title -->
+                <!-- Title & Activity -->
+
                 <div class="flex-1 flex flex-col gap-1.5">
                     <Label for="title"> Title </Label>
                     <Input id="title" v-model="goalForm.title" type="text" placeholder="Goal title..." />
                 </div>
 
-                <div class="flex gap-2">
 
-                    <!-- Activity Selection -->
+
+                <div class="flex gap-2">
                     <div class="flex-2 flex flex-col gap-1.5">
                         <Label for="title"> Activity </Label>
                         <Select v-model="selectedActivity">
@@ -105,7 +106,6 @@ function handleSubmit() {
                         </Select>
                     </div>
 
-                    <!-- Points -->
                     <NumberField class="flex-1" id="totalPoints" v-model="goalForm.totalPoints" :min="0" :step="10">
                         <Label for="totalPoints">Points</Label>
                         <NumberFieldContent>

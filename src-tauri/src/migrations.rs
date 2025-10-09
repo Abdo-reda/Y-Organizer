@@ -57,7 +57,7 @@ impl YMigrations {
                 activity TEXT,
                 points INTEGER,
                 totalPoints INTEGER,
-                month TEXT,
+                completedDay TEXT,
                 status TEXT,
                 FOREIGN KEY(activity) REFERENCES activities(name) ON UPDATE CASCADE ON DELETE CASCADE
             );
@@ -77,7 +77,10 @@ impl YMigrations {
                 isToday INTEGER NOT NULL DEFAULT 0,
                 completedDay TEXT,
                 status TEXT NOT NULL,
+                goal INTEGER NULL,
+                points INTEGER,
                 FOREIGN KEY(session) REFERENCES sessions(id) ON DELETE SET NULL,
+                FOREIGN KEY(goal) REFERENCES goals(id) ON DELETE SET NULL,
                 FOREIGN KEY(activity) REFERENCES activities(name) ON UPDATE CASCADE ON DELETE CASCADE
             );
             CREATE INDEX idx_tasks_completedDay ON tasks(completedDay);

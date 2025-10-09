@@ -1,5 +1,4 @@
 import { GoalStatusEnum } from "@/core/enums/goalStatusEnum";
-import { DateTime } from "luxon";
 
 export interface IGoal {
     id?: number;
@@ -8,7 +7,7 @@ export interface IGoal {
     activity: string;
     points: number;
     totalPoints: number;
-    month: string;
+    completedDay: string;
     status: GoalStatusEnum;
 }
 
@@ -19,7 +18,7 @@ export function getDefaultGoal(): IGoal {
         activity: '',
         points: 0,
         totalPoints: 100,
-        month: DateTime.now().toISODate({precision: 'month'}),
+        completedDay: '',
         status: GoalStatusEnum.ACTIVE,
     }
 }

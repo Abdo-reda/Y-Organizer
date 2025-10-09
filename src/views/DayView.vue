@@ -27,7 +27,7 @@ watch(currentTime, (time, oldTime) => {
 watch(selectedDay, (day) => {
     initDay(day);
     fetchTasks(day);
-    fetchGoals(day);
+    fetchGoals();
 }, {immediate: true});
 
 </script>

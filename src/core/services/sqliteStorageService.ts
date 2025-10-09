@@ -175,14 +175,12 @@ export class SqliteStroageService implements IStorageService {
 		await this.database.execute("DELETE FROM sessions WHERE id = $1;", [id]);
 	}
 
-	async getTasks(day: DateTime): Promise<ITask[]> {
-		const tasks = await this.database.select<ITask[]>("SELECT * FROM tasks WHERE completedDay = $1 OR completedDay = '';", [day.toISODate()]);
-		// this.mapSessions(tasks); //might need to be map the boolean
-		return tasks;
+	getTasks(day: DateTime): Promise<ITask[]> {
+		return this.database.select<ITask[]>("SELECT * FROM tasks WHERE completedDay = $1 OR completedDay = '';", [day.toISODate()]);
 	}
 
 	async createTask(task: ITask): Promise<number | undefined> {
-		const result = await this.database.execute("INSERT INTO tasks (title, description, activity, session, isToday, completedDay, status) VALUES ($1, $2, $3, $4, $5, $6, $7);", [
+		const result = await this.database.execute("INSERT INTO tasks (title, description, activity, session, isToday, completedDay, status, goal, points) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9);", [
 			task.title,
 			task.description,
 			task.activity,
@@ -190,12 +188,14 @@ export class SqliteStroageService implements IStorageService {
 			task.isToday ? 1 : 0,
 			task.completedDay,
 			task.status,
+            task.goal,
+            task.points,
 		]);
 		return result.lastInsertId;
 	}
 
 	async updateTask(id: number, task: ITask): Promise<void> {
-		await this.database.execute("UPDATE tasks SET title = $1, description = $2, activity = $3, session = $4, isToday = $5, completedDay = $6, status = $7 WHERE id = $8;", [
+		await this.database.execute("UPDATE tasks SET title = $1, description = $2, activity = $3, session = $4, isToday = $5, completedDay = $6, status = $7, goal = $8, points = $9 WHERE id = $10;", [
 			task.title,
 			task.description,
 			task.activity,
@@ -203,6 +203,8 @@ export class SqliteStroageService implements IStorageService {
 			task.isToday ? 1 : 0,
 			task.completedDay,
 			task.status,
+            task.goal,
+            task.points,
 			id,
 		]);
 	}
@@ -211,31 +213,31 @@ export class SqliteStroageService implements IStorageService {
 		await this.database.execute("DELETE FROM tasks WHERE id = $1;", [id]);
 	}
 
-	getMonthlyGoals(yearMonth: DateTime): Promise<IGoal[]> {
-		return this.database.select<IGoal[]>("SELECT * FROM goals WHERE month = $1;", [yearMonth.toISODate({ precision: "month" })]);
+    getGoals(): Promise<IGoal[]> {
+		return this.database.select<IGoal[]>("SELECT * FROM goals;");
 	}
 
 	async createGoal(goal: IGoal): Promise<number | undefined> {
-		const result = await this.database.execute("INSERT INTO goals (title, description, activity, points, totalPoints, month, status) VALUES ($1, $2, $3, $4, $5, $6, $7);", [
+		const result = await this.database.execute("INSERT INTO goals (title, description, activity, points, totalPoints, completedDay, status) VALUES ($1, $2, $3, $4, $5, $6, $7);", [
 			goal.title,
 			goal.description,
 			goal.activity,
 			goal.points,
 			goal.totalPoints,
-			goal.month,
+			goal.completedDay,
             goal.status,
 		]);
 		return result.lastInsertId;
 	}
 
 	async updateGoal(id: number, goal: IGoal): Promise<void> {
-		await this.database.execute("UPDATE goals SET title = $1, description = $2, activity = $3, points = $4, totalPoints = $5, month = $6, status = $7 WHERE id = $8;", [
+		await this.database.execute("UPDATE goals SET title = $1, description = $2, activity = $3, points = $4, totalPoints = $5, completedDay = $6, status = $7 WHERE id = $8;", [
 			goal.title,
 			goal.description,
 			goal.activity,
 			goal.points,
 			goal.totalPoints,
-			goal.month,
+			goal.completedDay,
             goal.status,
 			id,
 		]);

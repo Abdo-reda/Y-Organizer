@@ -48,7 +48,7 @@ export interface IStorageService {
 	updateTask(id: number, task: ITask): Promise<void>;
 	deleteTask(id: number): Promise<void>;
 
-    getMonthlyGoals(yearMonth: DateTime): Promise<IGoal[]>;
+    getGoals(): Promise<IGoal[]>;
 	createGoal(monthlyGoal: IGoal): Promise<number|undefined>;
 	updateGoal(id: number, monthlyGoal: IGoal): Promise<void>;
 	deleteGoal(id: number): Promise<void>;

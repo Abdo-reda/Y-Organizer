@@ -129,7 +129,7 @@ export class NullStroageService implements IStorageService {
 		return Promise.resolve();
 	}
 
-	getMonthlyGoals(_yearMonth: DateTime): Promise<IGoal[]> {
+	getGoals(): Promise<IGoal[]> {
 		return Promise.resolve([]);
 	}
 

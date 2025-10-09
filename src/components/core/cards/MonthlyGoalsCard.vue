@@ -22,10 +22,10 @@ useMouseScroll(currentGoalsContainerEl);
 useMouseScroll(backlogGoalsContainerEl);
 const { selectedDay } = useDayState();
 const { activities } = useActivity();
-const { monthlyGoals, createGoal, updateGoal, deleteGoal } = useMonthlyGoals();
-const currentMonthGoals = computed(() => monthlyGoals.filter(g => g.status !== GoalStatusEnum.DISABLED && g.month === selectedDay.value.toISODate({ precision: 'month' })));
+const { monthlyGoals, createGoal, updateGoal, deleteGoal, updateGoalStatus } = useMonthlyGoals();
+const backlogGoals = computed(() => monthlyGoals.filter(g => g.status !== GoalStatusEnum.ACTIVE && g.completedDay !== selectedDay.value.toISODate({precision: 'month'})).sort((a, b) => b.status.localeCompare(a.status)));
+const currentMonthGoals = computed(() => monthlyGoals.filter(g => g.status !== GoalStatusEnum.DISABLED && (g.completedDay === selectedDay.value.toISODate({precision: 'month'}) || !g.completedDay)));
 const completedCurrentMonth = computed(() => currentMonthGoals.value.filter(g => g.status === GoalStatusEnum.COMPLETED).length)
-const backlogGoals = computed(() => monthlyGoals.filter(g => g.status === GoalStatusEnum.DISABLED || g.month !== selectedDay.value.toISODate({ precision: 'month' })).sort((a, b) => a.status.localeCompare(b.status)));
 const currentMonth = computed(() => selectedDay.value.monthLong);
 
 const goalEditDialogOpen = ref(false);
@@ -35,8 +35,7 @@ function handleGoalPrimary(event: MouseEvent, goal: IGoal) {
     if (event.button === 0 && event.ctrlKey) {
         openEditDialog(goal);
     } else if (event.button === 0 && event.altKey) {
-        goal.status = goal.status === GoalStatusEnum.COMPLETED ? GoalStatusEnum.ACTIVE : GoalStatusEnum.COMPLETED;
-        updateGoal(goal.id, goal);
+        updateGoalStatus(goal, goal.status === GoalStatusEnum.COMPLETED ? GoalStatusEnum.ACTIVE : GoalStatusEnum.COMPLETED);
     }
 }
 
@@ -44,8 +43,7 @@ function handleGoalSecondary(event: MouseEvent, goal: IGoal) {
     if (event.altKey) {
         deleteGoal(goal.id);
     } else {
-        goal.status = goal.status === GoalStatusEnum.DISABLED ? GoalStatusEnum.ACTIVE : GoalStatusEnum.DISABLED;
-        updateGoal(goal.id, goal);
+        updateGoalStatus(goal, goal.status === GoalStatusEnum.DISABLED ? GoalStatusEnum.ACTIVE : GoalStatusEnum.DISABLED);
     }
 }
 
@@ -104,7 +102,7 @@ function closeEditDialog() {
                                             r="16" cx="18" cy="18" />
                                         <circle class="text-hover transition-all duration-500 ease-in-out"
                                             stroke-width="3" stroke-dasharray="100"
-                                            :stroke-dashoffset="CIRCUMFERENCE - (CIRCUMFERENCE * (goal.points / goal.totalPoints)) / 100"
+                                            :stroke-dashoffset="CIRCUMFERENCE - (CIRCUMFERENCE * (goal.points / goal.totalPoints))"
                                             stroke-linecap="round" stroke="currentColor" fill="none" r="16" cx="18"
                                             cy="18" />
                                     </svg>

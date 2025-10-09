@@ -4,11 +4,13 @@ import { LoggingService } from "@/core/services/loggingService";
 import { ITask } from "@/core/interfaces/entities/ITask";
 import { DateTime } from "luxon";
 import { TaskStatusEnum } from "@/core/enums/taskStatusEnum";
+import useMonthlyGoals from "./useMonthlyGoals";
 
 const tasks = reactive<ITask[]>([]);
 
 export default function useTasks() {
 	const storageService = inject(StorageServiceKey)!;
+    const {monthlyGoals, updateGoalPoints} = useMonthlyGoals();
 
 	async function fetchTasks(day: DateTime) {
 		LoggingService.log("fetching tasks...");
@@ -35,6 +37,8 @@ export default function useTasks() {
 		task.status = TaskStatusEnum.COMPLETED;
 		task.completedDay = DateTime.now().toISODate();
 		await updateTask(task.id, task);
+        const taskGoal = monthlyGoals.find(g => g.id === task.goal);
+        if (taskGoal) await updateGoalPoints(taskGoal, task.points);
 	}
 
 	async function deleteTask(id: number | undefined) {

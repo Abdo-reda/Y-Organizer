@@ -10,8 +10,8 @@ export interface ITask {
     isToday: boolean;
     completedDay: string;
     status: TaskStatusEnum;
-    // monthlyGoal?
-    // monthlyScore?
+    goal: number|null;
+    points: number;
     //dueDate //null or date... if match today, then its due today.. if null, then later
     //deadline? null or date
     //priority? 0-3?
@@ -26,5 +26,7 @@ export function getDefaultSessionTask(session?: ISession, status: TaskStatusEnum
         isToday: true,
         completedDay: '',
         status: status,
+        goal: null,
+        points: 0,
     }
 }

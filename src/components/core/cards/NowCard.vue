@@ -61,6 +61,7 @@ function handleTaskSecondary(event: MouseEvent, task: ITask) {
 }
 
 function handleOpenPopover(event: MouseEvent, task?: ITask) {
+    if (!currentSession.value) return;
     editTask.value = task ?? getDefaultSessionTask(currentSession.value, activeSessionTask.value ? TaskStatusEnum.PENDING : TaskStatusEnum.ACTIVE);
     taskPopoverAnchor.value = event.currentTarget as ReferenceElement;
     editTaskPopoverOpen.value = true;
@@ -168,9 +169,13 @@ function handleClosePopover() {
                             </div>
                         </div>
                         <button @click="handleOpenPopover" v-if="focusedTasks.length < 3"
-                            class="w-full h-full border-2 border-dashed border-gray-300 rounded-md text-gray-600 hover:border-primary hover:text-primary transition-all flex items-center justify-center gap-2">
-                            <PlusIcon class="size-4" />
-                            Add Task
+                            class="w-full h-full border-2 border-dashed border-gray-300 rounded-md text-gray-600 hover:border-primary hover:text-primary transition-all">
+                            <span v-if="currentSession" class="flex items-center justify-center gap-2">
+                                <PlusIcon class="size-4" /> Add Task
+                            </span>
+                            <span v-else>
+                                - No Session -
+                            </span>
                         </button>
                     </div>
                     <!-- NOTES & COMPLETED TASKS -->
