@@ -151,7 +151,7 @@ function handleUpdate(id: string, activity: IActivity) {
                     </CarouselItem>
                     <CarouselItem @contextmenu.prevent>
                         <TransitionGroup ref="activities-container" name="auto" tag="ul"
-                            class="scroll-drag h-full select-none overflow-hidden space-y-3 p-2">
+                            class="scroll-drag h-full select-none space-y-3 p-2">
                             <template v-if="sortedActivites.length">
                                 <li v-for="activity in sortedActivites" :key="activity.name"
                                     @click="handleActivityPrimary($event, activity)"
@@ -168,9 +168,11 @@ function handleUpdate(id: string, activity: IActivity) {
                                             <ArchiveIcon v-else class="size-4" />
                                         </div>
                                         <div class="min-w-0 flex-1">
-                                            <p class="font-medium text-gray-900 truncate w-fit strikethrough" :class="{
-                                                'has-strikethrough': activity.status === ActivityStatusEnum.COMPLETED,
-                                            }">{{ activity.name }}
+                                            <p class="font-medium text-gray-900 truncate">
+                                                <span class="strikethrough"
+                                                    :class="{ 'has-strikethrough': activity.status === ActivityStatusEnum.COMPLETED, }">
+                                                    {{ activity.name }}
+                                                </span>
                                             </p>
                                             <p class="text-sm text-gray-500 truncate">{{ activity.description }}</p>
                                         </div>
@@ -189,7 +191,6 @@ function handleUpdate(id: string, activity: IActivity) {
                                 </div>
                             </li>
                         </TransitionGroup>
-
                     </CarouselItem>
                 </CarouselContent>
             </Carousel>
@@ -203,24 +204,3 @@ function handleUpdate(id: string, activity: IActivity) {
         </template>
     </FunctionCard>
 </template>
-
-<style lang="css" scoped>
-.strikethrough {
-    position: relative;
-    white-space: nowrap;
-}
-
-.strikethrough:after {
-    border-top: 1px solid var(--color-gray-900);
-    position: absolute;
-    content: "";
-    top: 50%;
-    left: 0;
-    width: 0;
-    transition: width 0.2s ease-out;
-}
-
-.has-strikethrough:after {
-    width: 100%;
-}
-</style>

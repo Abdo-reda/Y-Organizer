@@ -13,6 +13,8 @@ import { CheckCheckIcon, CheckIcon, ListCheckIcon, NotepadTextIcon, PlusIcon, Za
 import { ReferenceElement } from "reka-ui";
 import { computed, ref, shallowRef, watch } from "vue";
 
+//TODO: fix weird layout shift, when completing the first task in a session, I think I can do this, by make sure there is always an element in the completed card? or in the grid?.
+
 const { currentTime } = useCurrentTime();
 const { currentSession, updateSession } = useDaySessions();
 const { tasks, createTask, updateTask, deleteTask, completeTask } = useTasks();
@@ -22,7 +24,7 @@ const editTaskPopoverOpen = ref(false);
 const taskPopoverAnchor = shallowRef<ReferenceElement | undefined>();
 
 const remainingTime = computed(() => currentSession.value ? Math.ceil(currentSession.value.endTime.diff(currentTime.value, 'minutes', { conversionAccuracy: 'casual' }).minutes) : 0)
-const suggestedTasks = computed(() => tasks.filter(t => t.session !== currentSession.value?.id && t.status !== TaskStatusEnum.COMPLETED && t.activity === currentSession.value?.activity))
+const suggestedTasks = computed(() => tasks.filter(t => t.session !== currentSession.value?.id && t.status !== TaskStatusEnum.COMPLETED && t.activity === currentSession.value?.activity && t.isToday))
 const pendingSessionTasks = computed(() => tasks.filter(t => t.session === currentSession.value?.id && t.status === TaskStatusEnum.PENDING));
 const completedSessionsTasks = computed(() => tasks.filter(t => t.session === currentSession.value?.id && t.status === TaskStatusEnum.COMPLETED));
 const activeSessionTask = computed(() => tasks.find(t => t.session === currentSession.value?.id && t.status === TaskStatusEnum.ACTIVE));

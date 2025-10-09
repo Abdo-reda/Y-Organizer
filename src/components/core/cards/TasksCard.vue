@@ -84,7 +84,7 @@ function closeEditDialog() {
                         <div class="flex flex-col h-full">
                             <p class="text-sm"> Today </p>
                             <TransitionGroup ref="tasks-container" name="auto" tag="ul"
-                                class="scroll-drag flex-1 select-none overflow-hidden space-y-2 p-2">
+                                class="scroll-drag flex-1 select-none space-y-2 p-2">
                                 <li v-for="task in todayTasks" :key="task.id"
                                     @contextmenu="handleTaskSecondary($event, task)"
                                     @click="handleTaskPrimary($event, task)"
@@ -118,7 +118,7 @@ function closeEditDialog() {
                         <div class="flex flex-col h-full">
                             <p class="text-sm"> Backlog </p>
                             <TransitionGroup ref="backlog-container" name="auto" tag="ul"
-                                class="scroll-drag flex-1 select-none overflow-hidden space-y-2 p-2">
+                                class="scroll-drag flex-1 select-none space-y-2 p-2">
                                 <li v-for="task in backlogTasks" :key="task.id"
                                     @contextmenu="handleTaskSecondary($event, task)"
                                     @click="handleTaskPrimary($event, task)"
