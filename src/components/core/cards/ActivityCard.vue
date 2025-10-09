@@ -17,11 +17,6 @@ import { LifeCategoryIconMapper } from '@/core/enums/lifeCategoryEnum';
 import useDaySessions from '@/store/useDaySessions';
 import { useMouseScroll } from '@/composables/useMouseScroll';
 
-//TODO: make the activities sorted by status and must add animation when changing status (list animation)
-//Note: if we add animation with caresoul, there are two issues. first we will need to add v-auto-animate to the inner div, which fucks things up. And second issue, is that when there is transition from previous carousel, the animation is weird. So, possible solutions here.
-//- handleActivity should return if the transition is still going.
-//- use Transition instead of v-auto-animate and see if that fixes the problem.
-
 const CIRCUMFERENCE = 2 * Math.PI * 45;
 const activitiesContainer = useTemplateRef('activities-container');
 const activitiesContainerEl = computed(() => activitiesContainer.value?.$el)
@@ -91,7 +86,6 @@ function handleCreate(activity: IActivity) {
     createActivity(activity);
     editActivity.value = null;
     dialogOpen.value = false;
-    //TODO: toast?
 }
 
 function handleUpdate(id: string, activity: IActivity) {
@@ -115,7 +109,7 @@ function handleUpdate(id: string, activity: IActivity) {
                             <div class="relative flex items-center justify-center flex-1 overflow-hidden">
                                 <svg viewBox="0 0 100 100" class="w-full h-full">
                                     <circle v-if="!sessionActivities.length" cx="50" cy="50" r="45" fill="none"
-                                        class="stroke-gray-300" stroke-width="4" />
+                                        class="stroke-muted-foreground/85" stroke-width="4" />
                                     <circle v-for="activity in sessionActivities" :key="activity.name" cx="50" cy="50"
                                         r="45" fill="none" :stroke="activity.color" stroke-width="4"
                                         stroke-linecap="round"
@@ -126,19 +120,19 @@ function handleUpdate(id: string, activity: IActivity) {
                                 <div class="absolute inset-0 flex items-center justify-center">
                                     <div class="text-center">
                                         <div class="text-2xl font-bold">{{ sessionsData.totalDuration / 60 }}h</div>
-                                        <div class="text-sm text-gray-500">Total</div>
+                                        <div class="text-sm text-muted-foreground">Total</div>
                                     </div>
                                 </div>
                             </div>
                             <div v-if="sessionActivities.length" class="grid grid-cols-2 m-1 gap-1" v-auto-animate>
                                 <div v-for="activity in sessionActivities" :key="activity.name"
-                                    class="flex items-center justify-between p-1 px-2 group rounded-md hover:bg-gray-50 hover:ring-1 ring-hover/20 duration-300 transition-all group"
+                                    class="flex items-center justify-between p-1 px-2 group rounded-md hover:bg-muted/20 hover:ring-1 ring-hover/20 duration-300 transition-all group"
                                     :style="{ '--color-hover': activity.color }">
                                     <div class="flex items-center gap-3 min-w-0 flex-1">
                                         <div class="size-3 rounded-full" :style="{ backgroundColor: activity.color }">
                                         </div>
                                         <div class="min-w-0 flex-1 flex justify-between items-center gap-2">
-                                            <p class="font-medium text-gray-900 truncate">{{ activity.name }}</p>
+                                            <p class="font-medium truncate">{{ activity.name }}</p>
                                             <p class="flex items-center gap-1 text-sm">
                                                 <span class="transition-colors duration-300 group-hover:text-hover"> {{
                                                     activity.duration / 60 }}h </span>
@@ -156,7 +150,7 @@ function handleUpdate(id: string, activity: IActivity) {
                                 <li v-for="activity in sortedActivites" :key="activity.name"
                                     @click="handleActivityPrimary($event, activity)"
                                     @contextmenu="handleActivitySecondary($event, activity)"
-                                    class="flex items-center justify-between p-1 px-2 group rounded-md hover:bg-gray-50 hover:ring-1 ring-hover duration-300 transition-all group"
+                                    class="flex items-center justify-between p-1 px-2 group rounded-md hover:bg-muted/20 hover:ring-1 ring-hover duration-300 transition-all group"
                                     :class="{ 'opacity-60 ': activity.status === ActivityStatusEnum.DISABLED }"
                                     :style="{ '--color-hover': activity.color }">
                                     <div class="flex items-center gap-3 min-w-0 flex-1">
@@ -168,13 +162,13 @@ function handleUpdate(id: string, activity: IActivity) {
                                             <ArchiveIcon v-else class="size-4" />
                                         </div>
                                         <div class="min-w-0 flex-1">
-                                            <p class="font-medium text-gray-900 truncate">
+                                            <p class="font-medium truncate">
                                                 <span class="strikethrough"
                                                     :class="{ 'has-strikethrough': activity.status === ActivityStatusEnum.COMPLETED, }">
                                                     {{ activity.name }}
                                                 </span>
                                             </p>
-                                            <p class="text-sm text-gray-500 truncate">{{ activity.description }}</p>
+                                            <p class="text-sm text-muted-foreground truncate">{{ activity.description }}</p>
                                         </div>
                                     </div>
                                     <div class="flex gap-1">
@@ -185,7 +179,7 @@ function handleUpdate(id: string, activity: IActivity) {
                             </template>
                             <li v-else class="h-full flex items-center w-full" key="else">
                                 <div @click="openEditDialog()"
-                                    class="w-full h-full p-4 m-2 border-2 border-dashed border-gray-300 rounded-sm text-gray-500 hover:border-primary hover:text-primary transition-colors flex items-center justify-center gap-2 text-sm duration-300 select-none">
+                                    class="w-full h-full p-4 m-2 border-2 border-dashed border-muted-foreground/85 rounded-sm text-muted-foreground hover:border-primary hover:text-primary transition-colors flex items-center justify-center gap-2 text-sm duration-300 select-none">
                                     <PlusIcon class="size-4" />
                                     <p> Create Your First Activity </p>
                                 </div>

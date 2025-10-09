@@ -51,15 +51,15 @@ function handleSubmit() {
                 </div>
             </form>
             <template v-if="suggestedTasks.length">
-                <div class="border-l border-gray-200" />
+                <div class="border-l border-muted" />
                 <div class="flex flex-col gap-2 overflow-hidden select-none p-0.5 max-w-52">
                     <div v-for="task in suggestedTasks" :key="task.id" @click="setSuggestedTask(task)"
-                        class="relative p-2 flex items-center min-w-0 justify-between ring ring-gray-200 rounded-md transition-shadow gap-2 hover:ring-primary/75">
+                        class="relative p-2 flex items-center min-w-0 justify-between ring ring-muted rounded-md transition-shadow gap-2 hover:ring-primary/75">
                         <div class="flex-1 flex gap-1 items-center min-w-0">
                             <div>
                                 <ListTodoIcon class="size-3.5" />
                             </div>
-                            <p class="font-medium text-xs text-gray-800 truncate">{{ task.title }}
+                            <p class="font-medium text-xs text-foreground/75 truncate">{{ task.title }}
                             </p>
                         </div>
                     </div>

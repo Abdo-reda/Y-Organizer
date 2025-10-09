@@ -42,7 +42,7 @@ async function toggleHighlight(rememberId: number | undefined, wordIndex: number
                 <TransitionGroup name="auto" tag="ul"
                     class="flex-1 space-y-2 relative overflow-auto scroll-hidden">
                     <li @pointerdown="handlePointer($event, remember)" v-for="remember in remembers" :key="remember.id"
-                        class="flex gap-4 hover:bg-gray-100/75 transition-colors duration-300 group rounded-sm px-2 py-1">
+                        class="flex gap-4 hover:bg-muted/50 transition-colors duration-300 group rounded-sm px-2 py-1">
                         <div class="flex items-center">
                             <div class="relative size-2.5 rounded-full bg-primary">
                                 <div class="size-2.5 rounded-full absolute animate-ping bg-primary duration-1000"></div>
@@ -62,17 +62,18 @@ async function toggleHighlight(rememberId: number | undefined, wordIndex: number
                         </p>
                         <div class="flex items-center">
                             <Button @click="handleDelete(remember.id)" variant="ghost" size="icon"
-                                class="text-gray-300 size-6 opacity-0 group-hover:opacity-100 duration-700 bg-transparent">
+                                class="text-muted-foreground/85 size-6 opacity-0 group-hover:opacity-100 duration-700 bg-transparent">
                                 <XIcon />
                             </Button>
                         </div>
                     </li>
                 </TransitionGroup>
                 <form @submit.prevent="handleCreate" class="flex gap-2 px-1 py-3 items-center">
+                    <!-- <Input /> -->
                     <input name="remember-input" type="text" v-model="currentRemember" autocomplete="off"
                         autocorrect="off" placeholder="remember..."
-                        class="w-full h-full focus:ring-1 [&::placeholder]:select-none ring-gray-200 transition-shadow bg-gray-50 rounded-md p-1.5 resize-none border-none outline-none text-gray-500 placeholder-gray-300" />
-                    <Button type="submit" variant="ghost" size="icon" class="text-gray-300">
+                        class="w-full h-full focus:ring-1 [&::placeholder]:select-none ring-muted transition-shadow bg-muted/20 rounded-md p-1.5 resize-none border-none outline-none text-muted-foreground placeholder-input" />
+                    <Button type="submit" variant="ghost" size="icon" class="text-muted">
                         <PlusIcon />
                     </Button>
                 </form>

@@ -34,11 +34,11 @@ useResizeObserver(drawArea, (entries) => {
 
 const { brush, clear, onCommitted, load } = useDrauu(drawArea, {
     brush: {
-        color: "oklch(14.5% 0 0)",
+        color: "var(--color-foreground)",
         size: 3,
     },
 });
-const colors = ["oklch(14.5% 0 0)", "oklch(63.7% 0.237 25.331)", "oklch(72.3% 0.219 149.579)", "oklch(68.5% 0.169 237.323)"];
+const colors = ["var(--color-foreground)", "oklch(63.7% 0.237 25.331)", "oklch(72.3% 0.219 149.579)", "oklch(68.5% 0.169 237.323)"];
 
 useMouseShortcuts(
     drawContainer,
@@ -113,7 +113,7 @@ function setColor(color: string) {
         <template #header-left-actions>
             <div class="flex gap-1 md:gap-2 mx-2">
                 <button @click="setColor(color)" v-for="color in colors" :key="color"
-                    class="rounded-full shadow-sm ring-0 ring-gray-200 w-1/6 max-w-6 min-w-3 aspect-square transition-all hover:scale-105"
+                    class="rounded-full shadow-sm ring-0 ring-muted w-1/6 max-w-6 min-w-3 aspect-square transition-all hover:scale-105"
                     :style="{ backgroundColor: color }" :class="{
                         'ring-3 scale-105': brush.color === color,
                     }"></button>
@@ -131,16 +131,16 @@ function setColor(color: string) {
         </template>
         <template #header-right-actions>
             <div class="flex justify-end gap-1 md:gap-2 mx-2">
-                <!-- <Button variant="ghost" size="icon" class="text-gray-300">
+                <!-- <Button variant="ghost" size="icon">
                     <BrushIcon />
                 </Button>
-                 <Button variant="ghost" size="icon" class="text-gray-300">
+                 <Button variant="ghost" size="icon">
                     <EraserIcon />
                 </Button>
-                 <Button variant="ghost" size="icon" class="text-gray-300">
+                 <Button variant="ghost" size="icon">
                     <BrushCleaningIcon />
                 </Button>
-                <Button variant="ghost" size="icon" class="text-gray-300">
+                <Button variant="ghost" size="icon">
                     <SaveIcon />
                 </Button> -->
             </div>

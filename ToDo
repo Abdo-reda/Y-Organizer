@@ -7,6 +7,19 @@
 - autostartup
 - loading behaviour?
 
+//---- Theme
+- gray-900 --> --color-foreground
+- gray-800  --> --color-foreground
+-  & gray-600 & gray-700 --> --color-muted-foreground
+//gray-500 --> muted-foreground
+- gray-400  --> --color-muted-foreground/85 
+- gray-300 --> muted
+- gray-200 --> muted ////// secondary/muted/accent
+- gray-100 --> muted/50 ////// secondary/muted/accent
+- gray-50 --> muted/20 ////// secondary/muted/accent
+- black --> foreground?
+- white --> background
+
 
 //---- Plan
 - Gratitude card

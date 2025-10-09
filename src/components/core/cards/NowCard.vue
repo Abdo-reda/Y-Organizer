@@ -125,7 +125,7 @@ function handleClosePopover() {
                     <p class="text-base text-center text-primary/75 font-semibold capitalize">
                         {{ currentSession ? currentSession.title : 'No Active Session' }}
                     </p>
-                    <div v-if="currentSession" class="text-xs text-center text-gray-500">
+                    <div v-if="currentSession" class="text-xs text-center text-muted-foreground">
                         <span> {{ currentSession.startTime.toFormat(settings.DATE_FORMAT) }} - {{
                             currentSession.endTime.toFormat(settings.DATE_FORMAT) }} </span> •
                         <span v-if="remainingTime">
@@ -144,19 +144,19 @@ function handleClosePopover() {
                     <div @contextmenu.prevent class="grid gap-3 grid-rows-3 w-full select-none" v-auto-animate>
                         <div v-for="task in focusedTasks" :key="task.id"
                             @contextmenu="handleTaskSecondary($event, task)" @click="handleTaskPrimary($event, task)"
-                            class="relative p-2 flex items-center min-w-0 justify-between ring ring-gray-200 rounded-md transition-shadow gap-2"
+                            class="relative p-2 flex items-center min-w-0 justify-between ring ring-muted rounded-md transition-shadow gap-2"
                             :class="{
                                 'ring-primary': task.status === TaskStatusEnum.ACTIVE,
                                 'hover:ring-primary/75': task.status !== TaskStatusEnum.ACTIVE
                             }">
                             <Button @click.stop="markTaskCompleted(task)" variant="ghost" size="icon"
-                                class="text-gray-400 size-6 border border-gray-300">
+                                class="text-muted-foreground/85 size-6 border border-muted-foreground/85">
                                 <CheckIcon class="size-3.5" />
                             </Button>
                             <div class="flex-1 min-w-0">
-                                <div class="font-medium text-sm text-gray-800 truncate">{{ task.title }}
+                                <div class="font-medium text-sm text-foreground/75 truncate">{{ task.title }}
                                 </div>
-                                <div v-if="task.description" class="text-xs text-gray-600 mt-1 truncate"> {{
+                                <div v-if="task.description" class="text-xs text-muted-foreground mt-1 truncate"> {{
                                     task.description }} </div>
                             </div>
                             <div class="absolute top-0 right-0 m-2 opacity-0 transition-opacity" :class="{
@@ -169,7 +169,7 @@ function handleClosePopover() {
                             </div>
                         </div>
                         <button @click="handleOpenPopover" v-if="focusedTasks.length < 3"
-                            class="w-full h-full border-2 border-dashed border-gray-300 rounded-md text-gray-600 hover:border-primary hover:text-primary transition-all">
+                            class="w-full h-full border-2 border-dashed border-muted-foreground/50 rounded-md text-muted-foreground/75 hover:border-primary hover:text-primary transition-all">
                             <span v-if="currentSession" class="flex items-center justify-center gap-2">
                                 <PlusIcon class="size-4" /> Add Task
                             </span>
@@ -181,7 +181,7 @@ function handleClosePopover() {
                     <!-- NOTES & COMPLETED TASKS -->
                     <div class="w-1/3 h-full flex flex-col gap-2">
                         <div
-                            class="relative p-1.5 pb-0 flex flex-col gap-0.5 h-full bg-gray-50 border border-gray-400 border-dashed rounded-sm text-gray-500 text-sm">
+                            class="relative p-1.5 pb-0 flex flex-col gap-0.5 h-full bg-accent border border-muted-foreground/85 border-dashed rounded-sm text-muted-foreground text-sm">
                             <div class="flex items-center gap-1.5">
                                 <NotepadTextIcon class="size-4" />
                                 <p class="font-semibold">Notes</p>
@@ -194,15 +194,15 @@ function handleClosePopover() {
                                 <p v-else> - No Session - </p>
                             </div>
                             <div
-                                class="absolute rounded-sm inset-0 bg-gradient-to-b from-transparent from-75% to-white/75 pointer-events-none" />
+                                class="absolute rounded-sm inset-0 bg-gradient-to-b from-transparent from-75% to-background/75 pointer-events-none" />
                         </div>
                         <div
-                            class="relative p-1.5 h-full flex flex-col gap-0.5 border border-gray-400 border-dashed rounded-sm text-gray-500 overflow-hidden text-sm">
+                            class="relative p-1.5 h-full flex flex-col gap-0.5 border border-muted-foreground/85 border-dashed rounded-sm text-muted-foreground overflow-hidden text-sm">
                             <div class="flex items-center gap-1.5">
                                 <ListCheckIcon class="size-4" />
                                 <p class="font-semibold">Completed</p>
                                 <span
-                                    class="bg-gray-100 text-xs mx-1 flex items-center justify-center rounded-full size-5">
+                                    class="bg-muted/50 text-xs mx-1 flex items-center justify-center rounded-full size-5">
                                     {{ completedSessionsTasks.length }}
                                 </span>
                             </div>
@@ -211,16 +211,16 @@ function handleClosePopover() {
                                     <li v-for="task in completedSessionsTasks" :key="task.id"
                                         class="flex items-center gap-2 px-1 py-0.5">
                                         <CheckCheckIcon class="size-3" />
-                                        <span class="flex-1 text-sm text-gray-500 line-through truncate">{{ task.title
+                                        <span class="flex-1 text-sm text-muted-foreground line-through truncate">{{ task.title
                                             }}</span>
                                     </li>
                                 </template>
-                                <li v-else class="text-gray-400" key="else">
+                                <li v-else class="text-muted-foreground/85" key="else">
                                     - Empty -
                                 </li>
                             </TransitionGroup>
                             <div
-                                class="absolute rounded-sm inset-0 bg-gradient-to-b from-transparent from-75% to-white/75 pointer-events-none" />
+                                class="absolute rounded-sm inset-0 bg-gradient-to-b from-transparent from-75% to-background/75 pointer-events-none" />
                         </div>
                     </div>
                 </div>

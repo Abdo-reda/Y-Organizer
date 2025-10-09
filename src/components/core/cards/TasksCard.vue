@@ -96,18 +96,18 @@ function closeEditDialog() {
                                     }">
                                     <Button v-if="task.status !== TaskStatusEnum.COMPLETED"
                                         @click.stop="markTaskCompleted(task)" variant="ghost" size="icon"
-                                        class="text-gray-400 size-5 hover:text-hover">
+                                        class="text-muted-foreground/85 size-5 hover:text-hover">
                                         <CheckIcon class="size-3" />
                                     </Button>
                                     <div class="flex-1 min-w-0">
                                         <div class="flex gap-1.5 items-center">
                                             <span class="size-2 rounded-full bg-hover aspect-square"> </span>
-                                            <p class="font-medium text-sm text-gray-800 truncate" :class="{
+                                            <p class="font-medium text-sm truncate" :class="{
                                                 'line-through': task.status === TaskStatusEnum.COMPLETED
                                             }"> {{ task.title }} </p>
                                         </div>
                                         <div v-if="task.status !== TaskStatusEnum.COMPLETED"
-                                            class="text-xs text-gray-600 mt-1 truncate"> {{
+                                            class="text-xs text-muted-foreground mt-1 truncate"> {{
                                                 task.description ? task.description : '- no description -' }} </div>
                                     </div>
                                 </li>
@@ -130,18 +130,18 @@ function closeEditDialog() {
                                     }">
                                     <Button v-if="task.status !== TaskStatusEnum.COMPLETED"
                                         @click.stop="markTaskCompleted(task)" variant="ghost" size="icon"
-                                        class="text-gray-400 size-5 hover:text-hover">
+                                        class="text-muted-foreground/85 size-5 hover:text-hover">
                                         <CheckIcon class="size-3" />
                                     </Button>
                                     <div class="flex-1 min-w-0">
                                         <div class="flex gap-1.5 items-center">
                                             <span class="size-2 rounded-full bg-hover aspect-square"> </span>
-                                            <p class="font-medium text-sm text-gray-800 truncate" :class="{
+                                            <p class="font-medium text-sm truncate" :class="{
                                                 'line-through': task.status === TaskStatusEnum.COMPLETED
                                             }"> {{ task.title }} </p>
                                         </div>
                                         <div v-if="task.status !== TaskStatusEnum.COMPLETED"
-                                            class="text-xs text-gray-600 mt-1 truncate"> {{
+                                            class="text-xs text-muted-foreground mt-1 truncate"> {{
                                                 task.description ? task.description : '- no description -' }} </div>
                                     </div>
                                 </li>

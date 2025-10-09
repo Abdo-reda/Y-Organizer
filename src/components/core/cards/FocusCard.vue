@@ -72,24 +72,24 @@ const isClicking = ref(false);
     <FunctionCard title="Focus">
         <template #header-left-actions>
             <div class="absolute flex flex-wrap">
-                <CheckIcon v-for="i in cardInfo.completed" :key="i" class="size-3 text-gray-500" />
+                <CheckIcon v-for="i in cardInfo.completed" :key="i" class="size-3 text-muted-foreground" />
             </div>
         </template>
         <template #default>
             <div class="flex justify-center items-center h-full relative p-6">
                 <div ref="timer" @mousedown="isClicking = true" @mouseup="isClicking = false" @mouseleave="isClicking = false"
-                    class="aspect-square w-full rounded-full hover:cursor-pointer transition-all bg-gradient-to-br from-primary to-gray-400 flex items-center justify-center shadow-lg hover:shadow-xl hover:scale-101"
+                    class="aspect-square w-full rounded-full hover:cursor-pointer transition-all bg-gradient-to-br from-primary to-muted-foreground/85 flex items-center justify-center shadow-lg hover:shadow-xl hover:scale-101"
                     :class="{
                         '!scale-98': isClicking,
                     }">
-                    <p class="text-4xl select-none text-white font-semibold"> {{ formattedRemaining }}
+                    <p class="text-4xl select-none text-background font-semibold"> {{ formattedRemaining }}
                     </p>
                 </div>
             </div>
             <!-- <svg class="aspect-square w-full transform -rotate-90 origin-center absolute" viewBox="0 0 100 100">
                     <defs>
                         <linearGradient id="ringGradient" x1="0%" y1="100%" x2="100%" y2="0%">
-                            <stop offset="0%" :style="{ stopColor: 'var(--color-gray-400)', stopOpacity: 1 }" />
+                            <stop offset="0%" :style="{ stopColor: 'var(--color-muted-foreground/85)', stopOpacity: 1 }" />
                             <stop offset="100%" :style="{ stopColor: 'var(--primary)', stopOpacity: 1 }" />
                         </linearGradient>
                     </defs>

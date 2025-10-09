@@ -72,7 +72,7 @@ function closeEditDialog() {
 <template>
     <FunctionCard title="Monthly Goals" :sub-title="currentMonth">
         <template #header-left-actions>
-            <div class="flex items-center gap-1 rounded-md border border-gray-300 py-1 px-2 m-1 w-fit">
+            <div class="flex items-center gap-1 rounded-md border border-muted-foreground/85 py-1 px-2 m-1 w-fit">
                 <CheckCheckIcon class="size-4" />
                 <p class="text-sm">
                     {{ `${completedCurrentMonth} / ${currentMonthGoals.length}` }}</p>
@@ -98,7 +98,7 @@ function closeEditDialog() {
                                 <div class="relative size-10 flex items-center justify-center">
                                     <svg class="absolute top-0 left-0 w-full h-full transform -rotate-90"
                                         viewBox="0 0 36 36">
-                                        <circle class="text-gray-200" stroke-width="3" stroke="currentColor" fill="none"
+                                        <circle class="text-muted" stroke-width="3" stroke="currentColor" fill="none"
                                             r="16" cx="18" cy="18" />
                                         <circle class="text-hover transition-all duration-500 ease-in-out"
                                             stroke-width="3" stroke-dasharray="100"
@@ -117,13 +117,13 @@ function closeEditDialog() {
                                 </div>
 
                                 <div class="flex-1 min-w-0">
-                                    <p class="text-sm font-semibold text-gray-900 truncate">
+                                    <p class="text-sm font-semibold truncate">
                                         <span class="strikethrough"
                                             :class="{ 'has-strikethrough': goal.status === GoalStatusEnum.COMPLETED }">
                                             {{ goal.title }}
                                         </span>
                                     </p>
-                                    <p class="text-xs text-gray-600 truncate">
+                                    <p class="text-xs text-muted-foreground truncate">
                                         <span class="strikethrough"
                                             :class="{ 'has-strikethrough': goal.status === GoalStatusEnum.COMPLETED }">
                                             {{ goal.description }}
@@ -148,7 +148,7 @@ function closeEditDialog() {
                                 <div class="relative size-10 flex items-center justify-center">
                                     <svg class="absolute top-0 left-0 w-full h-full transform -rotate-90"
                                         viewBox="0 0 36 36">
-                                        <circle class="text-gray-200" stroke-width="3" stroke="currentColor" fill="none"
+                                        <circle class="text-muted" stroke-width="3" stroke="currentColor" fill="none"
                                             r="16" cx="18" cy="18" />
                                         <circle class="text-hover transition-all duration-500 ease-in-out"
                                             stroke-width="3" stroke-dasharray="100"
@@ -167,13 +167,13 @@ function closeEditDialog() {
                                 </div>
 
                                 <div class="flex-1 min-w-0">
-                                    <p class="text-sm font-semibold text-gray-900 truncate">
+                                    <p class="text-sm font-semibold truncate">
                                         <span class="strikethrough"
                                             :class="{ 'has-strikethrough': goal.status === GoalStatusEnum.COMPLETED }">
                                             {{ goal.title }}
                                         </span>
                                     </p>
-                                    <p class="text-xs text-gray-600 truncate">
+                                    <p class="text-xs text-muted-foreground truncate">
                                         <span class="strikethrough"
                                             :class="{ 'has-strikethrough': goal.status === GoalStatusEnum.COMPLETED }">
                                             {{ goal.description }}

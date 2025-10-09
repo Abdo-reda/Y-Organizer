@@ -30,8 +30,7 @@ const editor = useEditor({
     ],
     editorProps: {
         attributes: {
-            class: "w-full h-full border-none outline-none text-gray-700 bg-transparent overflow-auto scroll-hidden focus:outline-none prose prose-sm prose-li:[&>p]:m-0",
-            // [&::placeholder]:select-none placeholder-gray-400
+            class: "w-full h-full border-none outline-none text-foreground bg-transparent overflow-auto scroll-hidden focus:outline-none prose-strong:text-foreground prose prose-sm prose-li:[&>p]:m-0",
         },
     },
     content: notes.value,
@@ -69,7 +68,8 @@ onBeforeMount(() => {
 
 <style lang="css">
 .is-editor-empty:first-child::before {
-    color: var(--color-gray-400);
+    color: var(--color-muted-foreground);
+    opacity: 75%;
     content: attr(data-placeholder);
     float: left;
     height: 0;

@@ -144,7 +144,7 @@ function handleSubmit() {
                                         </SelectItem>
                                     </template>
                                     <template v-else>
-                                        <p class="text-sm text-gray-400 select-none">
+                                        <p class="text-sm text-highlight select-none">
                                             - No Goals Found -
                                         </p>
                                     </template>

@@ -6,14 +6,14 @@ import { useCurrentTime } from "@/store/useCurrentTime";
 import { computed, ref } from "vue";
 import { CalendarDate, parseDate } from "@internationalized/date";
 import useDayState from "@/store/useDayState";
-import { ChevronLeftIcon, ChevronRightIcon, LockIcon, UnlockIcon, XIcon } from "lucide-vue-next";
+import { ChevronLeftIcon, ChevronRightIcon, LaptopIcon, LockIcon, MoonIcon, SunIcon, SunMoonIcon, UnlockIcon, XIcon } from "lucide-vue-next";
 import { Button } from "@/components/ui/button";
 import { getCurrentWindow } from '@tauri-apps/api/window';
 import { isTauri } from "@tauri-apps/api/core";
 import { Dialog } from "@/components/ui/dialog";
 import AboutDialog from "@/components/dialogs/AboutDialog.vue";
 import useSettings from "@/store/useSettings";
-import { SettingsCodeEnum } from "@/core/enums/settingsCodeEnum";
+import { getNextTheme, SettingsCodeEnum } from "@/core/enums/settingsCodeEnum";
 
 //TODO: ENHANCEMENT: animation when chaning the day and the popover keeps moving when you change hte day, either animate it, or make the anchor static and doesnt change, or redesign this part.. figure something out.
 //TODO: add a left and right arrow to go to next and previous day, should only appear when I hover over the header text "TODAY sunday 2010-10-29"
@@ -36,6 +36,10 @@ const calendarDate = computed<CalendarDate>({
 })
 
 const appWindow = isTauri() ? getCurrentWindow() : undefined;
+
+function switchTheme() {
+    updateSetting(SettingsCodeEnum.THEME, getNextTheme(settings.THEME));
+}
 
 function toggleFormat() {
     updateSetting(SettingsCodeEnum.DATE_FORMAT, settings.DATE_FORMAT === 'HH:mm' ? 'hh:mm' : 'HH:mm')
@@ -73,19 +77,19 @@ function nextDay() {
             <div class="flex items-end relative">
                 <div class="flex items-center gap-0 hover:gap-2 transition-all group">
                     <Button @click="prevDay" variant="ghost"
-                        class="hover:bg-transparent app-no-drag !p-0 w-2 opacity-0 group-hover:opacity-100">
+                        class="hover:bg-transparent dark:hover:bg-transparent app-no-drag !p-0 w-2 opacity-0 group-hover:opacity-100">
                         <ChevronLeftIcon />
                     </Button>
                     <h1 class="text-4xl font-bold text-primary capitalize transition-colors">{{ relativeDate }}</h1>
                     <Button @click="nextDay" variant="ghost"
-                        class="hover:bg-transparent app-no-drag !p-0 w-2 opacity-0 group-hover:opacity-100">
+                        class="hover:bg-transparent dark:hover:bg-transparent app-no-drag !p-0 w-2 opacity-0 group-hover:opacity-100">
                         <ChevronRightIcon />
                     </Button>
                 </div>
                 <Popover>
                     <PopoverTrigger as-child>
                         <button
-                            class="text-xs app-no-drag font-medium text-gray-400 hover:text-primary transition-colors absolute left-full mx-2 whitespace-nowrap">
+                            class="text-xs app-no-drag font-medium text-muted-foreground/85 hover:text-primary transition-colors absolute left-full mx-2 whitespace-nowrap">
                             <span class="text-lg font-semibold"> {{ dateDayName }} </span> <span> {{ isoDate }} </span>
                         </button>
                     </PopoverTrigger>
@@ -98,19 +102,26 @@ function nextDay() {
         <div class="flex justify-end items-center px-2 gap-6">
             <div class="flex items-center">
                 <!-- TODO: remove this and put it in settings. -->
+                <Button @click="switchTheme" variant="ghost" size="icon"
+                    class="text-muted-foreground/85 app-no-drag hover:bg-transparent">
+                    <SunIcon v-if="settings.THEME === 'light'" />
+                    <MoonIcon v-else-if="settings.THEME === 'dark'" />
+                    <LaptopIcon v-else-if="settings.THEME === 'auto'" />
+                    <SunMoonIcon v-else />
+                </Button>
                 <Button @click="isGridLocked = !isGridLocked" variant="ghost" size="icon"
-                    class="text-gray-400 app-no-drag hover:bg-transparent">
-                    <LockIcon v-if="isGridLocked" />
-                    <UnlockIcon v-else />
+                    class="text-muted-foreground/85 app-no-drag hover:bg-transparent">
+                    <LockIcon class="size-3.5" v-if="isGridLocked" />
+                    <UnlockIcon class="size-3.5" v-else />
                 </Button>
             </div>
-            <div class="border-r border-gray-300 h-1/3" />
+            <div class="border-r border-muted-foreground/85 h-1/3" />
             <div class="flex hover:gap-2 gap-0 transition-all group items-center">
-                <div @click="toggleFormat" class="text-xl font-bold text-gray-400 hover:text-primary transition-colors">
+                <div @click="toggleFormat" class="text-xl font-bold text-muted-foreground/85 hover:text-primary transition-colors">
                     {{ formattedTime }}
                 </div>
                 <Button v-if="isTauri()" @click="handleClose" variant="ghost" size="icon"
-                    class="text-transparent app-no-drag size-6 hover:bg-transparent group-hover:text-gray-400">
+                    class="text-transparent app-no-drag size-6 hover:bg-transparent group-hover:text-muted-foreground/85">
                     <XIcon class="size-3" />
                 </Button>
             </div>

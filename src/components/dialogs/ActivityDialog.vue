@@ -84,7 +84,7 @@ function handleSubmit() {
                             <button type="button" v-for="color in ACTIVITY_COLORS" :key="color"
                                 @click="activityForm.color = color" :class="[
                                     'size-5 rounded-full transition-all hover:scale-110',
-                                    activityForm.color === color ? 'ring-2 ring-gray-200 scale-110' : '',
+                                    activityForm.color === color ? 'ring-2 ring-muted scale-110' : '',
                                 ]" :style="{ backgroundColor: color }"></button>
                         </div>
                     </div>
@@ -98,8 +98,8 @@ function handleSubmit() {
                             @click="toggleCategory(category)" :class="[
                                 'px-2 py-1 text-xs rounded-md border transition-all flex items-center gap-1',
                                 activityForm.categories.includes(category)
-                                    ? 'bg-white border-hover/75 text-hover font-semibold'
-                                    : 'bg-gray-50 border-gray-200 text-gray-600 hover:bg-gray-100',
+                                    ? 'bg-background border-hover/75 text-hover font-semibold'
+                                    : 'bg-muted/10 border-muted text-muted-foreground hover:bg-muted/60',
                             ]" :style="{ '--color-hover': LifeCategoryColorMapper[category] }">
                             <component :is="LifeCategoryIconMapper[category]" class="size-3" />
                             {{ category }}

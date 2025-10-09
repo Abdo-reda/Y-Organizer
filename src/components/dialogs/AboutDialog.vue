@@ -14,7 +14,7 @@ function openExternalUrl() {
 </script>
 
 <template>
-    <DialogContent class="bg-white/60 backdrop-blur-md select-none">
+    <DialogContent class="bg-background/60 backdrop-blur-md select-none">
         <DialogHeader>
             <DialogTitle class="hidden"> Y-Organizer </DialogTitle>
             <DialogDescription class="hidden"> About Y-Organizer </DialogDescription>
@@ -24,17 +24,17 @@ function openExternalUrl() {
                 <div class="relative rounded-full aspect-square p-4 flex items-center justify-center">
                     <img class="absolute brightness-85 opacity-60"
                         src="@/assets/images/sphere.png" />
-                    <span class="text-4xl text-gray-700 font-bold">Y</span>
+                    <span class="text-4xl text-muted-foreground font-bold">Y</span>
                 </div>
             </div>
-            <div class="w-2/3 border-t border-t-gray-400/75" />
-            <div class="text-gray-600 text-sm leading-relaxed text-center">
+            <div class="w-2/3 border-t border-t-muted-foreground/85" />
+            <div class="text-muted-foreground text-sm leading-relaxed text-center">
                 <p>Made by <span @click="openExternalUrl" class="cursor-default font-semibold relative highlight-word">
                         NoPoint</span></p>
             </div>
         </div>
         <DialogFooter>
-            <span class="text-gray-400 text-xs"> v{{ version }} </span>
+            <span class="text-muted-foreground/85 text-xs"> v{{ version }} </span>
         </DialogFooter>
     </DialogContent>
 </template>
@@ -47,7 +47,7 @@ function openExternalUrl() {
     bottom: 0;
     width: 0;
     height: 1px;
-    background-color: var(--color-gray-600);
+    background-color: var(--color-muted-foreground);
     transition: width 0.15s ease-out;
 }
 

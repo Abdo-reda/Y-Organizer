@@ -136,11 +136,11 @@ onMounted(() => {
                 <div class="h-full flex flex-col">
                     <template v-for="(_i, index) in 24" :key="index">
                         <div class="flex-1 relative flex flex-col items-center justify-between">
-                            <p class="text-xs text-gray-500 font-semibold -translate-y-1/2">{{ settings.DATE_FORMAT ===
+                            <p class="text-xs text-muted-foreground font-semibold -translate-y-1/2">{{ settings.DATE_FORMAT ===
                                 'HH:mm' ? index : (index % 12 === 0 ? 12 : index % 12) }}:00 </p>
                         </div>
                     </template>
-                    <p class="text-xs text-gray-500 font-semibold absolute bottom-0 -translate-y-1/2">
+                    <p class="text-xs text-muted-foreground font-semibold absolute bottom-0 -translate-y-1/2">
                         {{ settings.DATE_FORMAT === 'HH:mm' ? 24 : 12 }}:00
                     </p>
                 </div>
@@ -148,7 +148,7 @@ onMounted(() => {
                     <div class="absolute size-full z-10 pointer-events-none p-0.5">
                         <div class="w-full bg-primary/10 backdrop-saturate-50 rounded-t-sm"
                             :style="{ height: `${dayPercentage * 100}%` }" />
-                        <div class="w-full border-black/20 border-t-2" />
+                        <div class="w-full border-foreground/20 border-t-2" />
                     </div>
                     <StepForwardIcon
                         class="absolute stroke-transparent fill-primary -translate-y-1/2 -translate-x-full size-3"
@@ -156,9 +156,9 @@ onMounted(() => {
                     <div class="absolute h-full w-full flex flex-col p-0.5 gap-1.5">
                         <div v-for="i in 24" :key="i" @click="openSessionPopover($event, i - 1)" class="flex-1 group">
                             <div
-                                class="rounded-sm bg-gray-50 p-1 border border-gray-300 border-dashed h-full flex items-center justify-center group-hover:border-gray-500 transition-colors group-hover:transition-none">
+                                class="rounded-sm bg-muted/25 p-1 border border-muted border-dashed h-full flex items-center justify-center group-hover:border-muted-foreground transition-colors group-hover:transition-none">
                                 <PlusIcon
-                                    class="size-3 text-gray-300 group-hover:text-gray-500 transition-colors group-hover:transition-none" />
+                                    class="size-3 text-muted group-hover:text-muted-foreground transition-colors group-hover:transition-none" />
                             </div>
                         </div>
                     </div>
@@ -168,16 +168,10 @@ onMounted(() => {
                             :id="`s${session.id}`"
                             :style="{ '--color-hover': activities.find(a => a.name === session.activity)?.color ?? 'var(--primary)' }">
                             <div @contextmenu="handleSessionDelete(session.id);" @click="handleSession($event, session)"
-                                class="rounded-sm flex-1 grid-stack-item-content !overflow-hidden hover:ring-1 ring-gray-400 transition-shadow bg-hover">
+                                class="rounded-sm flex-1 grid-stack-item-content !overflow-hidden hover:ring-1 ring-muted-foreground/85 transition-shadow bg-hover">
                                 <div class="flex items-start justify-between gap-1">
                                     <p class="capitalize text-black font-extrabold text-xl px-1 opacity-30"> {{
                                         session.activity }} </p>
-                                    <!-- <CircleDotIcon v-if="session.status === SessionStatusEnum.PENDING" class="stroke-3 size-4 text-gray-200 m-1.5" />
-                                    <CheckIcon v-else-if="session.status === SessionStatusEnum.COMPLETED" class="stroke-4 size-4 text-gray-200 m-1.5" />
-                                    <CheckCheckIcon v-else-if="session.status === SessionStatusEnum.SUCCESS" class="stroke-4 size-4 text-gray-200 m-1.5" />
-                                    <CircleSlashIcon v-else-if="session.status === SessionStatusEnum.SKIPPED" class="stroke-4 size-4 text-gray-200 m-1.5" /> -->
-                                    <!-- ZapIcon -->
-
                                 </div>
                                 <div class="absolute opacity-15 left-0 -mx-2 flex">
                                     <component

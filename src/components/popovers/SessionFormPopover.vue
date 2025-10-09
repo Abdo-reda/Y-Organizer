@@ -73,7 +73,7 @@ function handleSubmit() {
 
                 <Textarea id="description" v-model="sessionForm.notes" placeholder="Session Notes..." class="resize-none" />
 
-                <Button :class="{ 'text-white/85 hover:text-white': selectedActivity }" type="submit" variant="outline"
+                <Button :class="{ 'text-background/85 hover:text-background': selectedActivity }" type="submit" variant="outline"
                     form="session-form" :style="{ backgroundColor: selectedActivity?.color }">
                     <PenIcon /> {{ props.existingSession.id ? "Update" : "Create" }}
                 </Button>
