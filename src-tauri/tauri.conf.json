@@ -6,6 +6,13 @@
 	"plugins": {
 		"sql": {
 			"preload": ["sqlite:y.db"]
+		},
+		"updater": {
+			"pubkey": "dW50cnVzdGVkIGNvbW1lbnQ6IG1pbmlzaWduIHB1YmxpYyBrZXk6IDM1NEFCQjY5QjE2OTY3M0MKUldROFoybXhhYnRLTmJLc1FVZDYxQ0liY1BCNVpFdmNjNHBla3pNKzArcnE1YnA1S2drWGpjRkgK",
+			"endpoints": ["https://y-organizer.app/latest.json", "https://github.com/Abdo-reda/Y-Organizer/releases/latest/download/latest.json"],
+			"windows": {
+				"installMode": "passive"
+			}
 		}
 	},
 	"build": {
@@ -20,10 +27,10 @@
 				"title": "y",
 				"width": 1366,
 				"height": 768,
-                "decorations": false,
-                "transparent": true,
-                "shadow": false,
-                "zoomHotkeysEnabled": true
+				"decorations": false,
+				"transparent": true,
+				"shadow": false,
+				"zoomHotkeysEnabled": true
 			}
 		],
 		"security": {
@@ -32,6 +39,7 @@
 	},
 	"bundle": {
 		"active": true,
+		"createUpdaterArtifacts": true,
 		"targets": "all",
 		"icon": ["icons/32x32.png", "icons/128x128.png", "icons/128x128@2x.png", "icons/icon.icns", "icons/icon.ico"]
 	}

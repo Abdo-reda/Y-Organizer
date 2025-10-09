@@ -13,6 +13,8 @@ pub fn run() {
     let mut migrations = YMigrations::get_migrations();
     migrations.extend(YSeeders::get_seeders());
     tauri::Builder::default()
+        .plugin(tauri_plugin_process::init())
+        .plugin(tauri_plugin_updater::Builder::new().build())
         .plugin(
             tauri_plugin_sql::Builder::new()
                 .add_migrations("sqlite:y.db", migrations)
