@@ -2,7 +2,7 @@
 import { Button } from "@/components/ui/button";
 import { DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { reactiveComputed } from "@vueuse/core";
-import { CircleDotIcon, FlagIcon, MapPinIcon, PenIcon } from "lucide-vue-next";
+import { CircleDotIcon, PenIcon } from "lucide-vue-next";
 import { Switch } from "../ui/switch";
 import { Label } from "@/components/ui/label"
 import { ActivityStatusEnum } from "@/core/enums/activityStatusEnum";
