@@ -125,7 +125,7 @@ function handleUpdate(id: string, activity: IActivity) {
                                 </div>
                             </div>
                             <div v-if="sessionActivities.length" class="grid grid-cols-2 m-1 gap-1" v-auto-animate>
-                                <div v-for="activity in sessionActivities" :key="activity.name"
+                                <div v-for="activity in sessionActivities.slice(0, 6)" :key="activity.name"
                                     class="flex items-center justify-between p-1 px-2 group rounded-md hover:bg-muted/20 hover:ring-1 ring-hover/20 duration-300 transition-all group"
                                     :style="{ '--color-hover': activity.color }">
                                     <div class="flex items-center gap-3 min-w-0 flex-1">

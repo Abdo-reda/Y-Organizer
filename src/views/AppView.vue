@@ -36,7 +36,7 @@ watch(selectedDay, (day) => {
 <template>
     <div class="h-full flex flex-col overflow-hidden">
         <AppHeader  /> 
-        <main class="flex-1 px-2 pb-2 overflow-hidden">
+        <main class="flex-1 px-2 pb-2 overflow-hidden relative">
             <TransitionGroup name="auto">
                 <DayGridCardLayout v-if="appView === 'day'" key="day" />
                 <WeekGridLayout v-else-if="appView === 'week'" key="week" />

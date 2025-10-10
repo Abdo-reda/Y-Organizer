@@ -13,16 +13,13 @@ export type SettingsCodeValueMap = {
 	[SettingsCodeEnum.THEME]: TAppTheme;
 };
 
-
 export function getNextTheme(theme: TAppTheme): TAppTheme {
     switch (theme) {
-        case 'auto':
-            return 'light';
         case 'light':
             return 'dark';  
         case 'dark':
             return 'ambient';
         case 'ambient':
-            return 'auto';
+            return 'light';
     }
 }

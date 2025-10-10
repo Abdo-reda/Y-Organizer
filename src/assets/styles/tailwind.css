@@ -10,6 +10,10 @@
     app-region: no-drag;
 }
 
+@utility text-xss {
+    font-size: 0.625rem;
+}
+
 @utility scroll-drag {
 
     /* hide scrollbar */

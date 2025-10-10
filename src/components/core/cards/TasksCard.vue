@@ -85,31 +85,37 @@ function closeEditDialog() {
                             <p class="text-sm"> Today </p>
                             <TransitionGroup ref="tasks-container" name="auto" tag="ul"
                                 class="scroll-drag flex-1 select-none space-y-2 p-2">
-                                <li v-for="task in todayTasks" :key="task.id"
-                                    @contextmenu="handleTaskSecondary($event, task)"
-                                    @click="handleTaskPrimary($event, task)"
-                                    class="relative p-1 flex items-center min-w-0 justify-between ring ring-transparent rounded-md transition-shadow gap-2.5 hover:ring-hover/80"
-                                    :class="{
-                                        'opacity-50': task.status === TaskStatusEnum.COMPLETED
-                                    }" :style="{
-                                        '--color-hover': activities.find(a => a.name === task.activity)?.color
-                                    }">
-                                    <Button v-if="task.status !== TaskStatusEnum.COMPLETED"
-                                        @click.stop="markTaskCompleted(task)" variant="ghost" size="icon"
-                                        class="text-muted-foreground/85 size-5 hover:text-hover">
-                                        <CheckIcon class="size-3" />
-                                    </Button>
-                                    <div class="flex-1 min-w-0">
-                                        <div class="flex gap-1.5 items-center">
-                                            <span class="size-2 rounded-full bg-hover aspect-square"> </span>
-                                            <p class="font-medium text-sm truncate" :class="{
-                                                'line-through': task.status === TaskStatusEnum.COMPLETED
-                                            }"> {{ task.title }} </p>
+                                <template v-if="todayTasks.length">
+                                    <li v-for="task in todayTasks" :key="task.id"
+                                        @contextmenu="handleTaskSecondary($event, task)"
+                                        @click="handleTaskPrimary($event, task)"
+                                        class="relative p-1 flex items-center min-w-0 justify-between ring ring-transparent rounded-md transition-shadow gap-2.5 hover:ring-hover/80"
+                                        :class="{
+                                            'opacity-50': task.status === TaskStatusEnum.COMPLETED
+                                        }" :style="{
+                                            '--color-hover': activities.find(a => a.name === task.activity)?.color
+                                        }">
+                                        <Button v-if="task.status !== TaskStatusEnum.COMPLETED"
+                                            @click.stop="markTaskCompleted(task)" variant="ghost" size="icon"
+                                            class="text-muted-foreground/85 size-5 hover:text-hover">
+                                            <CheckIcon class="size-3" />
+                                        </Button>
+                                        <div class="flex-1 min-w-0">
+                                            <div class="flex gap-1.5 items-center">
+                                                <span class="size-2 rounded-full bg-hover aspect-square"> </span>
+                                                <p class="font-medium text-sm truncate" :class="{
+                                                    'line-through': task.status === TaskStatusEnum.COMPLETED
+                                                }"> {{ task.title }} </p>
+                                            </div>
+                                            <div v-if="task.status !== TaskStatusEnum.COMPLETED"
+                                                class="text-xs text-muted-foreground mt-1 truncate"> {{
+                                                    task.description ? task.description : '- no description -' }} </div>
                                         </div>
-                                        <div v-if="task.status !== TaskStatusEnum.COMPLETED"
-                                            class="text-xs text-muted-foreground mt-1 truncate"> {{
-                                                task.description ? task.description : '- no description -' }} </div>
-                                    </div>
+                                    </li>
+                                </template>
+                                <li v-else key="else" class="text-muted-foreground text-center">
+                                    No Tasks for Today
+                                    <p> yaaaay :O </p>
                                 </li>
                             </TransitionGroup>
                         </div>

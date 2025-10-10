@@ -6,7 +6,7 @@ import { useCurrentTime } from "@/store/useCurrentTime";
 import { computed, ref } from "vue";
 import { CalendarDate, parseDate } from "@internationalized/date";
 import useDayState from "@/store/useDayState";
-import { CalendarDaysIcon, ChevronLeftIcon, ChevronRightIcon, LaptopIcon, LockIcon, MoonIcon, SunIcon, SunMoonIcon, UnlockIcon, XIcon } from "lucide-vue-next";
+import { CalendarDaysIcon, ChevronLeftIcon, ChevronRightIcon, LockIcon, MoonIcon, SunIcon, SunMoonIcon, UnlockIcon, XIcon } from "lucide-vue-next";
 import { Button } from "@/components/ui/button";
 import { getCurrentWindow } from '@tauri-apps/api/window';
 import { isTauri } from "@tauri-apps/api/core";
@@ -14,14 +14,14 @@ import { Dialog } from "@/components/ui/dialog";
 import AboutDialog from "@/components/dialogs/AboutDialog.vue";
 import useSettings from "@/store/useSettings";
 import { getNextTheme, SettingsCodeEnum } from "@/core/enums/settingsCodeEnum";
+import SettingsDialog from "@/components/dialogs/SettingsDialog.vue";
 
 //TODO: ENHANCEMENT: animation when chaning the day and the popover keeps moving when you change hte day, either animate it, or make the anchor static and doesnt change, or redesign this part.. figure something out.
-//TODO: add a left and right arrow to go to next and previous day, should only appear when I hover over the header text "TODAY sunday 2010-10-29"
-
 
 const { appView, isGridLocked, settings, updateSetting } = useSettings();
 const { selectedDay } = useDayState();
 const openAbout = ref(false);
+const openSettings = ref(false);
 const relativeDate = computed(() => selectedDay.value.toRelativeCalendar());
 const isoDate = computed(() => selectedDay.value.toISODate());
 const dateDayName = computed(() => selectedDay.value.weekdayLong);
@@ -36,6 +36,11 @@ const calendarDate = computed<CalendarDate>({
 })
 
 const appWindow = isTauri() ? getCurrentWindow() : undefined;
+
+function handleLogo(event: MouseEvent) {
+    if (event.ctrlKey) openSettings.value = true;
+    else openAbout.value = true;
+}
 
 function switchTheme() {
     updateSetting(SettingsCodeEnum.THEME, getNextTheme(settings.THEME));
@@ -70,7 +75,7 @@ function nextDate() {
 <template>
     <header class="px-2 py-1 grid grid-cols-3 select-none draggable app-drag">
         <div class="flex items-center px-2">
-            <div @click="openAbout = true" class="p-4 relative flex items-center justify-center group">
+            <div @click="handleLogo" class="p-4 relative flex items-center justify-center group">
                 <img class="absolute brightness-85 opacity-20 group-hover:opacity-60 duration-500 transition-opacity"
                     src="@/assets/images/sphere.png" />
                 <p
@@ -79,6 +84,9 @@ function nextDate() {
             </div>
             <Dialog v-model:open="openAbout">
                 <AboutDialog />
+            </Dialog>
+            <Dialog v-model:open="openSettings">
+                <SettingsDialog />
             </Dialog>
         </div>
         <div class="flex flex-1 items-center justify-center gap-2">
@@ -120,7 +128,6 @@ function nextDate() {
                     class="text-muted-foreground/85 app-no-drag hover:bg-transparent">
                     <SunIcon v-if="settings.THEME === 'light'" />
                     <MoonIcon v-else-if="settings.THEME === 'dark'" />
-                    <LaptopIcon v-else-if="settings.THEME === 'auto'" />
                     <SunMoonIcon v-else />
                 </Button>
                 <Button @click="isGridLocked = !isGridLocked" variant="ghost" size="icon"

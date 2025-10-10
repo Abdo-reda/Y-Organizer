@@ -8,6 +8,6 @@ export enum DayCardEnum {
     HABIT_CARD = 'habit-card',
     MONTHLY_CARD = 'monthly-card',
     TASKS_CARD = 'tasks-card',
-    // GRATITUDE_CARD = 'gratitude-card',
+    GRATITUDE_CARD = 'gratitude-card',
     TEST_CARD = 'test-card',
 }

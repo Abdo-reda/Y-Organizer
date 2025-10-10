@@ -8,6 +8,7 @@ import ScheduleCard from "@/components/core/cards/ScheduleCard.vue";
 import TestCard from "@/components/core/cards/TestCard.vue";
 import MonthlyGoalsCard from "@/components/core/cards/MonthlyGoalsCard.vue";
 import TasksCard from "@/components/core/cards/TasksCard.vue";
+import GratitudeCard from "@/components/core/cards/GratitudeCard.vue";
 import { type Component } from "vue";
 import { DayCardEnum } from "../enums/dayCardEnum";
 
@@ -21,6 +22,6 @@ export const DayCardComponentMapper: Record<DayCardEnum, Component> = {
     [DayCardEnum.HABIT_CARD]: HabitCard,
     [DayCardEnum.MONTHLY_CARD]: MonthlyGoalsCard,
     [DayCardEnum.TASKS_CARD]: TasksCard,
-    // [DayCardEnum.GRATITUDE_CARD]: GratitudeCard
+    [DayCardEnum.GRATITUDE_CARD]: GratitudeCard,
     [DayCardEnum.TEST_CARD]: TestCard,
 };

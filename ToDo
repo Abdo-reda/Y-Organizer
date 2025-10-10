@@ -1,15 +1,20 @@
 //---- MVP
+- Welcome Page
 - Weekend View
 - Focus Mode
 - AutoUpdates & Version number
+- Export & Import Data
 - Summary Card //now card become a summary card in other days.
+-
 
 
 //---- Additional Features
+- Settings 
 - Gratitude card
-
+- Popup for the now card... soo many things I want to do...
 
 //------ Enhancements
+- Sounds & Audio... simple feedback & maybe toasts and sonnets
 - Removing sessions is not animated. maybe you need to remove widget first?
 - autostartup?
 - proper settings?
