@@ -30,7 +30,7 @@ const editor = useEditor({
     ],
     editorProps: {
         attributes: {
-            class: "w-full h-full border-none outline-none text-foreground bg-transparent overflow-auto scroll-hidden focus:outline-none prose-strong:text-foreground prose prose-sm prose-li:[&>p]:m-0",
+            class: "w-full h-full border-none outline-none text-foreground bg-transparent overflow-auto scroll-hidden focus:outline-none prose-strong:text-foreground prose-a:text-foreground prose prose-sm prose-li:[&>p]:m-0",
         },
     },
     content: notes.value,

@@ -1,52 +1,30 @@
-//---- Now
-- Make monthly card
-
-//--- Later.
-- Removing sessions is not animated.
-- Make now card become a summary card in other days.
-- autostartup
-- loading behaviour?
-
-//---- Theme
-- gray-900 --> --color-foreground
-- gray-800  --> --color-foreground
--  & gray-600 & gray-700 --> --color-muted-foreground
-//gray-500 --> muted-foreground
-- gray-400  --> --color-muted-foreground/85 
-- gray-300 --> muted
-- gray-200 --> muted ////// secondary/muted/accent
-- gray-100 --> muted/50 ////// secondary/muted/accent
-- gray-50 --> muted/20 ////// secondary/muted/accent
-- black --> foreground?
-- white --> background
+//---- MVP
+- Weekend View
+- Focus Mode
+- AutoUpdates & Version number
+- Summary Card //now card become a summary card in other days.
 
 
-//---- Plan
+//---- Additional Features
 - Gratitude card
 
-//---- MVP
-- AutoUpdates & Version number
-
-//--- Prelude Optimizations 
-** BEFORE YOU DO ANY OF THE BELOW, YOU SHOULD PROFILE FIRST**
-- get sessions with join activities
-- seperate setters and getters of stores and handle dependencies better
-- make more global states, like currentSession and so on ...
-
-//------ Thinking... & now
 
 //------ Enhancements
+- Removing sessions is not animated. maybe you need to remove widget first?
+- autostartup?
+- proper settings?
+- loading behaviour?
 - UNIFY shadows, rounded, percentages, and so on ...
 - All stores, will wait for the other stores as dependencies and will not import their own...
 - Add a smooth transition for cards when changing the day
-- Add a button to change the day in the header (left and right arrow)
 - Add toasts/sonnets
 - Restructure header or add animation for the date popup when it changes position
 - Add ability to zoom in schedule and control things up to 10+ minutes
 - Activites could have icons, you pick one of the many icons.... could be neat, but annoying
 - Anything taht uses primary, could have a common class, with transition colors?
 
-/----- Cards ideas
+
+//----- Ideas
 - reflections/learnings card
 - game of life card
 - snake card
@@ -61,13 +39,13 @@
 - show accessibility buttons
 - default font size level?
 - check for updates and update.
--     ('theme', 'system'),
-                ('language', 'en'),
-                ('first_day_of_week', 'monday'),
-                ('default_view', 'week'),
-                ('notifications_enabled', 'true'),
-                ('auto_save', 'true'),
-                ('backup_interval', 'daily')
+- ('theme', 'system'),
+- ('language', 'en'),
+- ('first_day_of_week', 'monday'),
+- ('default_view', 'week'),
+- ('notifications_enabled', 'true'),
+- ('auto_save', 'true'),
+- ('backup_interval', 'daily')
 
 //------ Tauri stuff
 - single instance https://tauri.app/plugin/single-instance/

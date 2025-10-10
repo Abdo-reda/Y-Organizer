@@ -141,7 +141,7 @@ function handleClosePopover() {
                 <!-- BODY -->
                 <div class="flex-1 flex justify-center gap-3.5 px-2 py-1 overflow-hidden w-full">
                     <!-- TASKS -->
-                    <div @contextmenu.prevent class="grid gap-3 grid-rows-3 w-full select-none" v-auto-animate>
+                    <div @contextmenu.prevent class="grid gap-3 grid-rows-3 flex-1 select-none" v-auto-animate>
                         <div v-for="task in focusedTasks" :key="task.id"
                             @contextmenu="handleTaskSecondary($event, task)" @click="handleTaskPrimary($event, task)"
                             class="relative p-2 flex items-center min-w-0 justify-between ring ring-muted rounded-md transition-shadow gap-2"
@@ -181,7 +181,7 @@ function handleClosePopover() {
                     <!-- NOTES & COMPLETED TASKS -->
                     <div class="w-1/3 h-full flex flex-col gap-2">
                         <div
-                            class="relative p-1.5 pb-0 flex flex-col gap-0.5 h-full bg-accent border border-muted-foreground/85 border-dashed rounded-sm text-muted-foreground text-sm">
+                            class="w-full relative p-1.5 pb-0 flex flex-col gap-0.5 h-full bg-muted/25 border border-muted-foreground/85 border-dashed rounded-sm text-muted-foreground text-sm">
                             <div class="flex items-center gap-1.5">
                                 <NotepadTextIcon class="size-4" />
                                 <p class="font-semibold">Notes</p>

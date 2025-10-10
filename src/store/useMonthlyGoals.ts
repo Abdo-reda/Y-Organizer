@@ -39,7 +39,11 @@ export default function useMonthlyGoals() {
 	}
 
     async function updateGoalPoints(goal: IGoal, points: number) {
-		goal.points = goal.points + points;
+		goal.points = Math.min(goal.points + points, goal.totalPoints);
+        if (goal.points === goal.totalPoints) {
+            goal.status = GoalStatusEnum.COMPLETED;
+            goal.completedDay = DateTime.now().toISODate({precision: 'month'});
+        }
 		await updateGoal(goal.id, goal);
 	}
 

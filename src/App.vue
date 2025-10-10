@@ -5,8 +5,11 @@ import useDaySessions from './store/useDaySessions';
 import useActivity from './store/useActivity';
 import useSettings from './store/useSettings';
 import { useColorMode } from '@vueuse/core';
+import AppView from './views/AppView.vue';
 
-const theme = useColorMode();
+const theme = useColorMode({
+    disableTransition: false
+});
 const { init, clean, currentTime } = useCurrentTime();
 const { settings } = useSettings();
 const { activities } = useActivity();
@@ -34,11 +37,7 @@ onUnmounted(() => {
 </script>
 
 <template>
-    <RouterView v-slot="{ Component, route }" :style="dynamicStyles">
-        <!-- <Transition name="fade" mode="out-in"> -->
-            <Suspense>
-                <component id="view-container" :key="route.name" class="flex-1 max-h-full overflow-hidden gradient-background" :is="Component" />
-            </Suspense>
-        <!-- </Transition> -->
-    </RouterView>
+    <Suspense>
+        <AppView :style="dynamicStyles" id="view-container" class="flex-1 max-h-full overflow-hidden gradient-background" />
+    </Suspense>
 </template>

@@ -6,6 +6,7 @@ import { type ISetting } from "@/core/interfaces/entities/ISetting";
 import { DEFAULT_SETTINGS } from "@/core/constants/defaultSettings";
 import { TAppSettings } from "@/core/types/TAppSettings";
 
+const appView = ref<'week'|'day'>('day');
 const isGridLocked = ref(true);
 const settings = reactive<TAppSettings>(DEFAULT_SETTINGS);
 const settingsLoading = ref(false);
@@ -30,6 +31,7 @@ export default function useSettings() {
 		settings,
         settingsLoading,
 		isGridLocked,
+        appView,
 		fetchSettings,
 		updateSetting,
 	};

@@ -3,11 +3,11 @@ body {
 }
 
 .gradient-background {
-    @apply bg-gradient-to-tl from-primary/25 to-transparent to-75% bg-no-repeat transition-colors rounded-xl;
+    @apply bg-gradient-to-tl from-primary/25 to-transparent to-75% bg-no-repeat transition-colors duration-1000 rounded-xl;
 }
 
 #app {
-    @apply h-full bg-card rounded-xl border shadow-sm;
+    @apply h-full bg-card rounded-xl border shadow-sm transition-colors duration-300;
     /* animation: slow-glow 8s infinite ease-in-out alternate; TODO: uses like 12% gpu */
 }
 

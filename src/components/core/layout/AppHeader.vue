@@ -6,7 +6,7 @@ import { useCurrentTime } from "@/store/useCurrentTime";
 import { computed, ref } from "vue";
 import { CalendarDate, parseDate } from "@internationalized/date";
 import useDayState from "@/store/useDayState";
-import { ChevronLeftIcon, ChevronRightIcon, LaptopIcon, LockIcon, MoonIcon, SunIcon, SunMoonIcon, UnlockIcon, XIcon } from "lucide-vue-next";
+import { CalendarDaysIcon, ChevronLeftIcon, ChevronRightIcon, LaptopIcon, LockIcon, MoonIcon, SunIcon, SunMoonIcon, UnlockIcon, XIcon } from "lucide-vue-next";
 import { Button } from "@/components/ui/button";
 import { getCurrentWindow } from '@tauri-apps/api/window';
 import { isTauri } from "@tauri-apps/api/core";
@@ -19,7 +19,7 @@ import { getNextTheme, SettingsCodeEnum } from "@/core/enums/settingsCodeEnum";
 //TODO: add a left and right arrow to go to next and previous day, should only appear when I hover over the header text "TODAY sunday 2010-10-29"
 
 
-const { isGridLocked, updateSetting, settings } = useSettings();
+const { appView, isGridLocked, settings, updateSetting } = useSettings();
 const { selectedDay } = useDayState();
 const openAbout = ref(false);
 const relativeDate = computed(() => selectedDay.value.toRelativeCalendar());
@@ -41,6 +41,10 @@ function switchTheme() {
     updateSetting(SettingsCodeEnum.THEME, getNextTheme(settings.THEME));
 }
 
+function switchView() {
+    appView.value = appView.value === 'day' ? 'week' : 'day'
+}
+
 function toggleFormat() {
     updateSetting(SettingsCodeEnum.DATE_FORMAT, settings.DATE_FORMAT === 'HH:mm' ? 'hh:mm' : 'HH:mm')
 }
@@ -49,12 +53,16 @@ function handleClose() {
     appWindow?.close();
 }
 
-function prevDay() {
-    selectedDay.value = selectedDay.value.minus({ day: 1 })
+function setToday() {
+    selectedDay.value = DateTime.now();
 }
 
-function nextDay() {
-    selectedDay.value = selectedDay.value.plus({ day: 1 })
+function prevDate() {
+    selectedDay.value = selectedDay.value.minus({ day: appView.value === 'day' ? 1 : 7 })
+}
+
+function nextDate() {
+    selectedDay.value = selectedDay.value.plus({ day: appView.value === 'day' ? 1 : 7 })
 }
 
 </script>
@@ -76,12 +84,14 @@ function nextDay() {
         <div class="flex flex-1 items-center justify-center gap-2">
             <div class="flex items-end relative">
                 <div class="flex items-center gap-0 hover:gap-2 transition-all group">
-                    <Button @click="prevDay" variant="ghost"
+                    <Button @click="prevDate" variant="ghost"
                         class="hover:bg-transparent dark:hover:bg-transparent app-no-drag !p-0 w-2 opacity-0 group-hover:opacity-100">
                         <ChevronLeftIcon />
                     </Button>
-                    <h1 class="text-4xl font-bold text-primary capitalize transition-colors">{{ relativeDate }}</h1>
-                    <Button @click="nextDay" variant="ghost"
+                    <h1 @click="setToday" class="text-4xl font-bold text-primary capitalize transition-colors">
+                        {{ appView === 'day' ? relativeDate : `Week ${selectedDay.weekNumber}` }}
+                    </h1>
+                    <Button @click="nextDate" variant="ghost"
                         class="hover:bg-transparent dark:hover:bg-transparent app-no-drag !p-0 w-2 opacity-0 group-hover:opacity-100">
                         <ChevronRightIcon />
                     </Button>
@@ -101,6 +111,10 @@ function nextDay() {
         </div>
         <div class="flex justify-end items-center px-2 gap-6">
             <div class="flex items-center">
+                <Button @click="switchView" variant="ghost" size="icon"
+                    class="text-muted-foreground/85 app-no-drag hover:bg-transparent">
+                    <CalendarDaysIcon />
+                </Button>
                 <!-- TODO: remove this and put it in settings. -->
                 <Button @click="switchTheme" variant="ghost" size="icon"
                     class="text-muted-foreground/85 app-no-drag hover:bg-transparent">
