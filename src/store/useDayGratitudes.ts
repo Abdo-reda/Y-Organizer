@@ -1,5 +1,5 @@
 import { StorageServiceKey } from "@/core/constants/injectionKeys";
-import { inject, reactive, watch } from "vue";
+import { inject, reactive } from "vue";
 import useDayState from "./useDayState";
 import { IGratitude } from "@/core/interfaces/entities/IGratitude";
 import { LoggingService } from "@/core/services/loggingService";
@@ -38,6 +38,7 @@ export default function useDayGratitudes() {
 
 	return {
 		gratitudes,
+        fetchGratitudes,
 		createGratitude,
 		updateGratitude,
 		deleteGratitude,

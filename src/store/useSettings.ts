@@ -5,8 +5,9 @@ import { SettingsCodeEnum, SettingsCodeValueMap } from "@/core/enums/settingsCod
 import { type ISetting } from "@/core/interfaces/entities/ISetting";
 import { DEFAULT_SETTINGS } from "@/core/constants/defaultSettings";
 import { TAppSettings } from "@/core/types/TAppSettings";
+import { useStorage } from "@vueuse/core";
 
-const appView = ref<'week'|'day'>('day');
+const appView = useStorage<'welcome'|'week'|'day'>('app-view', 'welcome', sessionStorage) 
 const isGridLocked = ref(true);
 const settings = reactive<TAppSettings>(DEFAULT_SETTINGS);
 const settingsLoading = ref(false);

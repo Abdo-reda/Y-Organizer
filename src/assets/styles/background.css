@@ -3,7 +3,7 @@ body {
 }
 
 .gradient-background {
-    @apply bg-gradient-to-tl from-primary/25 to-transparent to-75% bg-no-repeat transition-colors duration-1000 rounded-xl;
+    @apply bg-gradient-to-tl from-primary/40 to-transparent bg-no-repeat transition-colors duration-1000 rounded-xl;
 }
 
 #app {

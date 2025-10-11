@@ -5,7 +5,7 @@ import { ISession } from "@/core/interfaces/entities/ISession";
 import useActivity from "@/store/useActivity";
 import useMonthlyGoals from "@/store/useMonthlyGoals";
 import useWeekTasks from "@/store/useWeekTasks";
-import { ArrowUpIcon, ChartColumnBigIcon, CheckCheckIcon, CircleDotIcon, PartyPopperIcon } from "lucide-vue-next";
+import { ArrowUpIcon, CheckCheckIcon, CircleDotIcon, PartyPopperIcon } from "lucide-vue-next";
 import { type DateTime } from "luxon";
 import { computed, watch } from "vue";
 
@@ -85,7 +85,7 @@ watch(
 
 <template>
 	<Card class="gap-0 !overflow-hidden py-4 w-full">
-		<CardContent class="flex-1 px-4 pt-2 overflow-hidden flex flex-col gap-4" v-auto-animate>
+		<CardContent class="flex-1 px-4 pt-2 overflow-hidden flex flex-col gap-4">
 			<div class="flex items-center justify-between">
                 <h2 class="text-2xl font-semibold">Summary <span class="text-sm text-muted-foreground">{{ `${startOfWeek.monthShort} ${startOfWeek.day} - ${endOfWeek.monthShort} ${endOfWeek.day}` }}</span> </h2>
 			</div>
