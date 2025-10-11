@@ -175,7 +175,10 @@ export class SqliteStroageService implements IStorageService {
 		await this.database.execute("DELETE FROM sessions WHERE id = $1;", [id]);
 	}
 
-	getTasks(day: DateTime): Promise<ITask[]> {
+	getTasks(day: DateTime, endDate?: DateTime): Promise<ITask[]> {
+        if (endDate) {
+            return this.database.select<ITask[]>("SELECT * FROM tasks WHERE completedDay BETWEEN $1 AND $2;", [day.toISODate(), endDate.toISODate()]);
+        }
 		return this.database.select<ITask[]>("SELECT * FROM tasks WHERE completedDay = $1 OR completedDay = '';", [day.toISODate()]);
 	}
 

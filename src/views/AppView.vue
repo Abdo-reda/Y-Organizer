@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import DayGridCardLayout from '@/components/core/layout/DayGridCardLayout.vue';
 import AppHeader from '@/components/core/layout/AppHeader.vue';
 import useActivity from '@/store/useActivity';
 import { useCurrentTime } from '@/store/useCurrentTime';
@@ -8,7 +7,8 @@ import useMonthlyGoals from '@/store/useMonthlyGoals';
 import useSettings from '@/store/useSettings';
 import useTasks from '@/store/useTasks';
 import { watch } from 'vue';
-import WeekGridLayout from '@/components/core/layout/WeekGridLayout.vue';
+import DayView from './DayView.vue';
+import WeekView from './WeekView.vue';
 
 // TODO: fix transitoin between routes... remove routes?
 
@@ -38,8 +38,8 @@ watch(selectedDay, (day) => {
         <AppHeader  /> 
         <main class="flex-1 px-2 pb-2 overflow-hidden relative">
             <TransitionGroup name="auto">
-                <DayGridCardLayout v-if="appView === 'day'" key="day" />
-                <WeekGridLayout v-else-if="appView === 'week'" key="week" />
+                <DayView v-if="appView === 'day'" key="day" />
+                <WeekView v-else-if="appView === 'week'" key="week" />
             </TransitionGroup>
         </main>
     </div>

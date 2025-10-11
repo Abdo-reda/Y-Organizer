@@ -2,42 +2,23 @@
 import { LifeCategoryIconMapper } from "@/core/enums/lifeCategoryEnum";
 import { ISession } from "@/core/interfaces/entities/ISession";
 import useActivity from "@/store/useActivity";
-import useWeekSessions from "@/store/useWeekSessions";
 import { DateTime } from "luxon";
-import { watch } from "vue";
+import { type ReferenceElement } from "reka-ui";
 
 interface IDayScheduleProps {
 	date: DateTime<true>;
+    sessions: ISession[];
 }
 
-const props = defineProps<IDayScheduleProps>();
+defineProps<IDayScheduleProps>();
+const emits = defineEmits<{
+    preview: [target: ReferenceElement, session: ISession];
+}>();
 
-const { sessions, fetchSessions } = useWeekSessions();
 const { activities } = useActivity();
 
-watch(
-	() => props.date,
-	() => fetchSessions(props.date),
-	{ immediate: true }
-);
-
 function handleSessionPrimary(event: MouseEvent, session: ISession) {
-	// switch (event.button) {
-	//     case 0:
-	//         if (event.ctrlKey) {
-	//             sessionPopoverAnchor.value = event.currentTarget as ReferenceElement;
-	//             editSession.value = session;
-	//             editSessionPopoverOpen.value = true;
-	//         } else if (event.altKey) {
-	//             session.status = getNextStatus(session.status);
-	//             updateSession(session.id, session);
-	//         } else {
-	//             sessionPopoverAnchor.value = event.currentTarget as ReferenceElement;
-	//             editSession.value = session;
-	//             previewSessionPopoverOpen.value = true;
-	//         }
-	//         break;
-	// }
+    emits('preview', event.currentTarget as ReferenceElement, session);
 }
 </script>
 <template>
@@ -45,7 +26,7 @@ function handleSessionPrimary(event: MouseEvent, session: ISession) {
 		<div class="flex gap-1 items-end">
 			<p> <span class="font-semibold"> {{ date.weekdayLong }} </span>  <span class="text-xs mx-1"> {{ `${date.day}\`${date.monthShort}` }}  </span></p>
 		</div>
-		<div class="flex-1 overflow-hidden grid grid-rows-[repeat(24,1fr)] gap-1 ">
+		<div class="flex-1 overflow-hidden grid grid-rows-[repeat(24,1fr)] gap-1 relative select-none">
 			<TransitionGroup name="auto">
 				<template v-if="sessions.length">
 					<template v-for="session in sessions" :key="session.id">

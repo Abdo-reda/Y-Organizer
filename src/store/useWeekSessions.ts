@@ -5,13 +5,21 @@ import { ISession } from "@/core/interfaces/entities/ISession";
 import { DateTime } from "luxon";
 
 export default function useWeekSessions() {
-    const sessions = reactive<ISession[]>([]);
+	const sessions = reactive<ISession[][]>([[], [], [], [], [], [], []]);
 	const storageService = inject(StorageServiceKey)!;
 
 	async function fetchSessions(day: DateTime) {
 		LoggingService.log("fetching sessions...");
-		sessions.length = 0;
-		Object.assign(sessions, await storageService.getSessions(day));
+		initSessions();
+		for (let i = 0; i < 7; i++) {
+			Object.assign(sessions[i], await storageService.getSessions(day.plus({ day: i })));
+		}
+	}
+
+	function initSessions() {
+		for (let i = 0; i < 7; i++) {
+			sessions[i].length = 0;
+		}
 	}
 
 	return {

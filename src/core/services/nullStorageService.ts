@@ -113,7 +113,7 @@ export class NullStroageService implements IStorageService {
 		return Promise.resolve();
 	}
 
-	getTasks(_day: DateTime): Promise<ITask[]> {
+	getTasks(_day: DateTime, _endDate?: DateTime): Promise<ITask[]> {
 		return Promise.resolve([]);
 	}
 

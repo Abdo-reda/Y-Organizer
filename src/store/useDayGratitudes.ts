@@ -34,7 +34,7 @@ export default function useDayGratitudes() {
 		await storageService.deleteGratitude(id);
 	}
 
-	watch(selectedDay, () => fetchGratitudes(), { immediate: true });
+	// watch(selectedDay, () => fetchGratitudes(), { immediate: true });
 
 	return {
 		gratitudes,

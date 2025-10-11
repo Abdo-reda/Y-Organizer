@@ -43,7 +43,7 @@ export interface IStorageService {
 	updateSession(id: number, session: ISession): Promise<void>;
 	deleteSession(id: number): Promise<void>;
 
-    getTasks(day: DateTime): Promise<ITask[]>;
+    getTasks(day: DateTime, endDate?: DateTime): Promise<ITask[]>;
 	createTask(task: ITask): Promise<number|undefined>;
 	updateTask(id: number, task: ITask): Promise<void>;
 	deleteTask(id: number): Promise<void>;

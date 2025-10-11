@@ -110,7 +110,7 @@ function checkForUpdates() {
                                 </Select>
                             </div>
 
-                            <Separator />
+                            <!--  <Separator /> -->
 
                             <div class="flex items-center justify-between">
                                 <div class="space-y-0.5">
@@ -132,7 +132,7 @@ function checkForUpdates() {
                                 </Select>
                             </div>
 
-                            <Separator />
+                            <!-- <Separator /> -->
 
                             <div class="flex items-center justify-between">
                                 <div class="space-y-0.5">
@@ -152,7 +152,7 @@ function checkForUpdates() {
                                 </Select>
                             </div>
 
-                            <Separator />
+                            <!-- <Separator /> -->
 
                             <div class="flex items-center justify-between">
                                 <div class="space-y-0.5">
@@ -199,7 +199,7 @@ function checkForUpdates() {
                                 </Select>
                             </div>
 
-                            <Separator />
+                            <!-- <Separator /> -->
 
                             <div class="flex items-center justify-between">
                                 <div class="space-y-0.5">
@@ -220,7 +220,7 @@ function checkForUpdates() {
                                 </Select>
                             </div>
 
-                            <Separator />
+                            <!-- <Separator /> -->
 
                             <div class="flex items-center justify-between">
                                 <div class="space-y-0.5">
@@ -252,7 +252,7 @@ function checkForUpdates() {
                                 />
                             </div>
 
-                            <Separator />
+                            <!-- <Separator /> -->
 
                             <div class="flex items-center justify-between">
                                 <div class="space-y-0.5">
@@ -274,7 +274,7 @@ function checkForUpdates() {
                                 </Select>
                             </div>
 
-                            <Separator />
+                            <!-- <Separator /> -->
 
                             <div class="space-y-3">
                                 <div>
@@ -293,7 +293,7 @@ function checkForUpdates() {
                                 </div>
                             </div>
 
-                            <Separator />
+                            <!-- <Separator /> -->
 
                             <div class="space-y-3">
                                 <div>
@@ -325,7 +325,7 @@ function checkForUpdates() {
                                 />
                             </div>
 
-                            <Separator />
+                            <!-- <Separator /> -->
 
                             <div class="p-4 rounded-lg bg-muted/50 text-sm text-muted-foreground">
                                 More notification settings coming soon...
