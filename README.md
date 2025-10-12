@@ -94,12 +94,12 @@ ___
 
 ___ 
 **Creating a Release**
-- Bump Vesrion.
-- Commit Code.
+- Bump Version.
+- Commit & Push Code.
 - Create Tag
     - `git tag -a <version> -m "<version>"`
     - `git push origin <version>`
-- Push Code.
+- Merge vesrion PR.
 - Edit and Publish Release Notes on Github.
 
 
