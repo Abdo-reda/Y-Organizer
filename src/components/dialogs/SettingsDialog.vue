@@ -1,339 +1,209 @@
 <script setup lang="ts">
 import { Button } from "@/components/ui/button";
 import { DialogContent, DialogDescription, DialogHeader, DialogTitle } from "@/components/ui/dialog";
-import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Select, SelectContent, SelectGroup, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { Switch } from "@/components/ui/switch";
-// import { Separator } from "@/components/ui/separator";
-import { 
-    SettingsIcon, 
-    PaletteIcon, 
-    DatabaseIcon, 
-    BellIcon, 
-    DownloadIcon,
-    UploadIcon,
-    RefreshCwIcon
-} from "lucide-vue-next";
+import { SettingsIcon, PaletteIcon, DatabaseIcon, DownloadIcon, UploadIcon, RefreshCwIcon } from "lucide-vue-next";
 import { ref } from "vue";
+import { Input } from "../ui/input";
+import SettingSection from "../common/SettingSection.vue";
+import useSettings from "@/store/useSettings";
+import useUpdater from "@/composables/useUpdater";
+import { SettingsCodeEnum } from "@/core/enums/settingsCodeEnum";
+import useTauri from "@/composables/useTauri";
 
-type SettingsCategory = 'general' | 'appearance' | 'data' | 'notifications';
-
-const activeCategory = ref<SettingsCategory>('general');
-
-// Settings state
-const settings = ref({
-    theme: 'system',
-    language: 'en',
-    firstDayOfWeek: 'monday',
-    defaultView: 'week',
-    timeFormat: '24h',
-    showAccessibilityButtons: true,
-    defaultFontSize: 'medium',
-    notificationsEnabled: true,
-    autoSave: true,
-    backupInterval: 'daily',
-});
-
-const categories = [
-    { id: 'general' as const, label: 'General', icon: SettingsIcon },
-    { id: 'appearance' as const, label: 'Appearance', icon: PaletteIcon },
-    { id: 'data' as const, label: 'Data & Backup', icon: DatabaseIcon },
-    { id: 'notifications' as const, label: 'Notifications', icon: BellIcon },
+const settingCatogories = [
+	{ id: "general", label: "General", icon: SettingsIcon },
+	{ id: "appearance", label: "Appearance", icon: PaletteIcon },
+	{ id: "data", label: "Data & Backup", icon: DatabaseIcon },
+	// { id: 'notifications', label: 'Notifications', icon: BellIcon },
 ];
 
+const { exportDatabase, importDatabase } = useTauri();
+const { settings, updateSetting } = useSettings();
+const { checkLatest } = useUpdater();
+const activeCategory = ref("general");
+
+function saveSettings(code: SettingsCodeEnum) {
+	updateSetting(code, settings[code]);
+}
+
+// TODO: sonnets!
 function handleExportData() {
-    console.log('[v0] Exporting data...');
-    // Export logic here
+    exportDatabase();
 }
 
 function handleImportData() {
-    console.log('[v0] Importing data...');
-    // Import logic here
+    importDatabase();
 }
 
 function checkForUpdates() {
-    console.log('[v0] Checking for updates...');
-    // Update check logic here
+	// Update check logic here
+	checkLatest();
 }
 </script>
 
 <template>
-    <DialogContent class="max-w-4xl max-h-[85vh] p-0 gap-0">
-        <DialogHeader class="px-6 pt-6 pb-4">
-            <DialogTitle>Settings</DialogTitle>
-            <DialogDescription>Manage your application preferences and settings</DialogDescription>
-        </DialogHeader>
+	<DialogContent class="gap-0 p-0" @open-auto-focus.prevent>
+		<DialogHeader class="p-4 border-b">
+			<DialogTitle>Settings</DialogTitle>
+			<DialogDescription>Manage your application preferences and settings</DialogDescription>
+		</DialogHeader>
 
-        <div class="flex flex-1 overflow-hidden">
-            <!-- Sidebar -->
-            <div class="w-48 border-r bg-muted/30 p-3 space-y-1">
-                <button
-                    v-for="category in categories"
-                    :key="category.id"
-                    @click="activeCategory = category.id"
-                    :class="[
-                        'w-full flex items-center gap-3 px-3 py-2 rounded-md text-sm transition-colors',
-                        activeCategory === category.id
-                            ? 'bg-background text-foreground shadow-sm'
-                            : 'text-muted-foreground hover:text-foreground hover:bg-background/50'
-                    ]"
-                >
-                    <component :is="category.icon" class="size-4" />
-                    {{ category.label }}
-                </button>
-            </div>
+		<div class="flex flex-1 overflow-hidden min-w-0">
+			<!-- Sidebar -->
+			<div class="border-r bg-muted/30 p-2 flex flex-col gap-1 rounded-tr-lg">
+				<button
+					v-for="category in settingCatogories"
+					:key="category.id"
+					@click="activeCategory = category.id"
+					class="w-full flex items-center gap-3 px-3 py-2 rounded-md text-sm transition-colors"
+					:class="{
+						'bg-background text-foreground shadow-sm': activeCategory === category.id,
+						'text-muted-foreground hover:text-foreground hover:bg-background/50': activeCategory !== category.id,
+					}"
+				>
+					<component :is="category.icon" class="size-4" />
+					{{ category.label }}
+				</button>
+			</div>
+			<!-- Content -->
+			<div class="flex-1 flex flex-col px-6 py-4 h-96">
+				<div class="flex-1">
+					<SettingSection v-if="activeCategory === 'general'" title="General Settings">
+						<div class="flex items-start gap-4 justify-between">
+							<div class="flex-2">
+								<Label for="user_name">User Name</Label>
+								<p class="my-0.5 text-xs text-muted-foreground/75">Welcome page user name</p>
+							</div>
+							<Input name="user_name" v-model="settings.USER_NAME" class="flex-1" @update:model-value="saveSettings(SettingsCodeEnum.USER_NAME)" />
+						</div>
+						<div class="flex items-start gap-4 justify-between">
+							<div class="flex-2">
+								<Label>Updates</Label>
+								<p class="my-0.5 text-xs text-muted-foreground/75">Check for updates</p>
+							</div>
+							<Button class="flex-1" variant="outline" size="sm" @click="checkForUpdates">
+								<RefreshCwIcon class="size-4" />
+								<p>Check</p>
+							</Button>
+						</div>
+					</SettingSection>
 
-            <!-- Content -->
-            <div class="flex-1 overflow-y-auto p-6">
-                <!-- General Settings -->
-                <div v-if="activeCategory === 'general'" class="space-y-6">
-                    <div>
-                        <h3 class="text-lg font-semibold mb-4">General Settings</h3>
-                        <div class="space-y-4">
-                            <div class="flex items-center justify-between">
-                                <div class="space-y-0.5">
-                                    <Label>Theme</Label>
-                                    <p class="text-sm text-muted-foreground">Choose your interface theme</p>
-                                </div>
-                                <Select v-model="settings.theme">
-                                    <SelectTrigger class="w-32">
-                                        <SelectValue />
-                                    </SelectTrigger>
-                                    <SelectContent>
-                                        <SelectGroup>
-                                            <SelectItem value="light">Light</SelectItem>
-                                            <SelectItem value="dark">Dark</SelectItem>
-                                            <SelectItem value="system">System</SelectItem>
-                                        </SelectGroup>
-                                    </SelectContent>
-                                </Select>
+					<SettingSection v-else-if="activeCategory === 'appearance'" title="Appearance Settings">
+						<div class="flex items-start gap-4 justify-between">
+							<div class="flex-2">
+								<Label>Theme</Label>
+								<p class="my-0.5 text-xs text-muted-foreground/75">Application default theme</p>
+							</div>
+							<Select v-model="settings.THEME" @update:model-value="saveSettings(SettingsCodeEnum.THEME)">
+								<SelectTrigger class="flex-1">
+									<SelectValue />
+								</SelectTrigger>
+								<SelectContent>
+									<SelectGroup>
+										<SelectItem value="light">Light</SelectItem>
+										<SelectItem value="dark">Dark</SelectItem>
+										<SelectItem value="ambient">Ambient</SelectItem>
+									</SelectGroup>
+								</SelectContent>
+							</Select>
+						</div>
+						<div class="flex items-start gap-4 justify-between">
+							<div class="flex-2">
+								<Label>Default Font Size</Label>
+								<p class="my-0.5 text-xs text-muted-foreground/75">Base font size</p>
+							</div>
+							<Select v-model="settings.FONT_SIZE" @update:model-value="saveSettings(SettingsCodeEnum.FONT_SIZE)">
+								<SelectTrigger class="flex-1">
+									<SelectValue />
+								</SelectTrigger>
+								<SelectContent>
+									<SelectGroup>
+										<SelectItem value="small">Small</SelectItem>
+										<SelectItem value="medium">Medium</SelectItem>
+										<SelectItem value="large">Large</SelectItem>
+									</SelectGroup>
+								</SelectContent>
+							</Select>
+						</div>
+						<div class="flex items-start gap-4 justify-between">
+							<div class="flex-2">
+								<Label>Time Format</Label>
+								<p class="my-0.5 text-xs text-muted-foreground/75">12-hour or 24-hour format</p>
+							</div>
+							<Select v-model="settings.DATE_FORMAT" @update:model-value="saveSettings(SettingsCodeEnum.DATE_FORMAT)">
+								<SelectTrigger class="flex-1">
+									<SelectValue />
+								</SelectTrigger>
+								<SelectContent>
+									<SelectGroup>
+										<SelectItem value="hh:mm">12-hour</SelectItem>
+										<SelectItem value="HH:mm">24-hour</SelectItem>
+									</SelectGroup>
+								</SelectContent>
+							</Select>
+						</div>
+						<!-- <div class="flex items-center gap-4 justify-between">
+                            <div class="flex-2">
+                                <Label for="accessibility">Minimal Design</Label>
+                                <p class="my-0.5 text-xs text-muted-foreground/75">Hides additional accessibility controls</p>
                             </div>
+                            <Switch id="accessibility" />
+                        </div> -->
+					</SettingSection>
 
-                            <!--  <Separator /> -->
-
-                            <div class="flex items-center justify-between">
-                                <div class="space-y-0.5">
-                                    <Label>Language</Label>
-                                    <p class="text-sm text-muted-foreground">Select your preferred language</p>
-                                </div>
-                                <Select v-model="settings.language">
-                                    <SelectTrigger class="w-32">
-                                        <SelectValue />
-                                    </SelectTrigger>
-                                    <SelectContent>
-                                        <SelectGroup>
-                                            <SelectItem value="en">English</SelectItem>
-                                            <SelectItem value="es">Spanish</SelectItem>
-                                            <SelectItem value="fr">French</SelectItem>
-                                            <SelectItem value="de">German</SelectItem>
-                                        </SelectGroup>
-                                    </SelectContent>
-                                </Select>
+					<SettingSection v-else-if="activeCategory === 'data'" title="Data & Backup">
+						<!-- <div class="flex items-center gap-4 justify-between">
+                            <div class="flex-2">
+                                <Label for="accessibility">Auto Save</Label>
+                                <p class="my-0.5 text-xs text-muted-foreground/75">Automatically save changes</p>
                             </div>
-
-                            <!-- <Separator /> -->
-
-                            <div class="flex items-center justify-between">
-                                <div class="space-y-0.5">
-                                    <Label>First Day of Week</Label>
-                                    <p class="text-sm text-muted-foreground">Choose the first day of your week</p>
-                                </div>
-                                <Select v-model="settings.firstDayOfWeek">
-                                    <SelectTrigger class="w-32">
-                                        <SelectValue />
-                                    </SelectTrigger>
-                                    <SelectContent>
-                                        <SelectGroup>
-                                            <SelectItem value="sunday">Sunday</SelectItem>
-                                            <SelectItem value="monday">Monday</SelectItem>
-                                        </SelectGroup>
-                                    </SelectContent>
-                                </Select>
+                            <Switch id="autosave" v-model="settings.autoSave" />
+                        </div> -->
+						<!-- <div class="flex items-start gap-4 justify-between">
+                            <div class="flex-2">
+                                <Label>Backup Interval</Label>
+                                <p class="my-0.5 text-xs text-muted-foreground/75">How often to backup your data</p>
                             </div>
+                            <Select v-model="settings.backupInterval">
+                                <SelectTrigger class="flex-1">
+                                    <SelectValue />
+                                </SelectTrigger>
+                                <SelectContent>
+                                    <SelectGroup>
+                                        <SelectItem value="hourly">Hourly</SelectItem>
+                                        <SelectItem value="daily">Daily</SelectItem>
+                                        <SelectItem value="weekly">Weekly</SelectItem>
+                                        <SelectItem value="never">Never</SelectItem>
+                                    </SelectGroup>
+                                </SelectContent>
+                            </Select>
+                        </div> -->
 
-                            <!-- <Separator /> -->
-
-                            <div class="flex items-center justify-between">
-                                <div class="space-y-0.5">
-                                    <Label>Default View</Label>
-                                    <p class="text-sm text-muted-foreground">Choose your default calendar view</p>
-                                </div>
-                                <Select v-model="settings.defaultView">
-                                    <SelectTrigger class="w-32">
-                                        <SelectValue />
-                                    </SelectTrigger>
-                                    <SelectContent>
-                                        <SelectGroup>
-                                            <SelectItem value="day">Day</SelectItem>
-                                            <SelectItem value="week">Week</SelectItem>
-                                            <SelectItem value="month">Month</SelectItem>
-                                        </SelectGroup>
-                                    </SelectContent>
-                                </Select>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Appearance Settings -->
-                <div v-if="activeCategory === 'appearance'" class="space-y-6">
-                    <div>
-                        <h3 class="text-lg font-semibold mb-4">Appearance Settings</h3>
-                        <div class="space-y-4">
-                            <div class="flex items-center justify-between">
-                                <div class="space-y-0.5">
-                                    <Label>Time Format</Label>
-                                    <p class="text-sm text-muted-foreground">Choose 12-hour or 24-hour format</p>
-                                </div>
-                                <Select v-model="settings.timeFormat">
-                                    <SelectTrigger class="w-32">
-                                        <SelectValue />
-                                    </SelectTrigger>
-                                    <SelectContent>
-                                        <SelectGroup>
-                                            <SelectItem value="12h">12-hour</SelectItem>
-                                            <SelectItem value="24h">24-hour</SelectItem>
-                                        </SelectGroup>
-                                    </SelectContent>
-                                </Select>
-                            </div>
-
-                            <!-- <Separator /> -->
-
-                            <div class="flex items-center justify-between">
-                                <div class="space-y-0.5">
-                                    <Label>Default Font Size</Label>
-                                    <p class="text-sm text-muted-foreground">Adjust the base font size</p>
-                                </div>
-                                <Select v-model="settings.defaultFontSize">
-                                    <SelectTrigger class="w-32">
-                                        <SelectValue />
-                                    </SelectTrigger>
-                                    <SelectContent>
-                                        <SelectGroup>
-                                            <SelectItem value="small">Small</SelectItem>
-                                            <SelectItem value="medium">Medium</SelectItem>
-                                            <SelectItem value="large">Large</SelectItem>
-                                        </SelectGroup>
-                                    </SelectContent>
-                                </Select>
-                            </div>
-
-                            <!-- <Separator /> -->
-
-                            <div class="flex items-center justify-between">
-                                <div class="space-y-0.5">
-                                    <Label for="accessibility">Show Accessibility Buttons</Label>
-                                    <p class="text-sm text-muted-foreground">Display additional accessibility controls</p>
-                                </div>
-                                <Switch 
-                                    id="accessibility"
-                                    v-model="settings.showAccessibilityButtons" 
-                                />
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Data & Backup Settings -->
-                <div v-if="activeCategory === 'data'" class="space-y-6">
-                    <div>
-                        <h3 class="text-lg font-semibold mb-4">Data & Backup</h3>
-                        <div class="space-y-4">
-                            <div class="flex items-center justify-between">
-                                <div class="space-y-0.5">
-                                    <Label for="autosave">Auto Save</Label>
-                                    <p class="text-sm text-muted-foreground">Automatically save changes</p>
-                                </div>
-                                <Switch 
-                                    id="autosave"
-                                    v-model="settings.autoSave" 
-                                />
-                            </div>
-
-                            <!-- <Separator /> -->
-
-                            <div class="flex items-center justify-between">
-                                <div class="space-y-0.5">
-                                    <Label>Backup Interval</Label>
-                                    <p class="text-sm text-muted-foreground">How often to backup your data</p>
-                                </div>
-                                <Select v-model="settings.backupInterval">
-                                    <SelectTrigger class="w-32">
-                                        <SelectValue />
-                                    </SelectTrigger>
-                                    <SelectContent>
-                                        <SelectGroup>
-                                            <SelectItem value="hourly">Hourly</SelectItem>
-                                            <SelectItem value="daily">Daily</SelectItem>
-                                            <SelectItem value="weekly">Weekly</SelectItem>
-                                            <SelectItem value="never">Never</SelectItem>
-                                        </SelectGroup>
-                                    </SelectContent>
-                                </Select>
-                            </div>
-
-                            <!-- <Separator /> -->
-
-                            <div class="space-y-3">
-                                <div>
-                                    <Label>Import & Export</Label>
-                                    <p class="text-sm text-muted-foreground">Manage your data</p>
-                                </div>
-                                <div class="flex gap-2">
-                                    <Button variant="outline" size="sm" @click="handleExportData">
-                                        <DownloadIcon class="size-4" />
-                                        Export Data
-                                    </Button>
-                                    <Button variant="outline" size="sm" @click="handleImportData">
-                                        <UploadIcon class="size-4" />
-                                        Import Data
-                                    </Button>
-                                </div>
-                            </div>
-
-                            <!-- <Separator /> -->
-
-                            <div class="space-y-3">
-                                <div>
-                                    <Label>Updates</Label>
-                                    <p class="text-sm text-muted-foreground">Check for application updates</p>
-                                </div>
-                                <Button variant="outline" size="sm" @click="checkForUpdates">
-                                    <RefreshCwIcon class="size-4" />
-                                    Check for Updates
-                                </Button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Notifications Settings -->
-                <div v-if="activeCategory === 'notifications'" class="space-y-6">
-                    <div>
-                        <h3 class="text-lg font-semibold mb-4">Notifications</h3>
-                        <div class="space-y-4">
-                            <div class="flex items-center justify-between">
-                                <div class="space-y-0.5">
-                                    <Label for="notifications">Enable Notifications</Label>
-                                    <p class="text-sm text-muted-foreground">Receive notifications for important events</p>
-                                </div>
-                                <Switch 
-                                    id="notifications"
-                                    v-model="settings.notificationsEnabled" 
-                                />
-                            </div>
-
-                            <!-- <Separator /> -->
-
-                            <div class="p-4 rounded-lg bg-muted/50 text-sm text-muted-foreground">
-                                More notification settings coming soon...
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </DialogContent>
+						<div class="flex items-start gap-4 justify-between">
+							<div class="flex-2">
+								<Label>Import</Label>
+								<p class="my-0.5 text-xs text-muted-foreground/75">Overwrite existing data</p>
+							</div>
+							<Button class="flex-1" variant="outline" size="sm" @click="handleImportData">
+								<DownloadIcon class="size-4" />
+								<p>Import Data</p>
+							</Button>
+						</div>
+						<div class="flex items-start gap-4 justify-between">
+							<div class="flex-2">
+								<Label>Export</Label>
+								<p class="my-0.5 text-xs text-muted-foreground/75">Export your data</p>
+							</div>
+							<Button class="flex-1" variant="outline" size="sm" @click="handleExportData">
+								<UploadIcon class="size-4" />
+								<p>Export Data</p>
+							</Button>
+						</div>
+					</SettingSection>
+				</div>
+			</div>
+		</div>
+	</DialogContent>
 </template>

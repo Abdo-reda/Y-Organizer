@@ -6,6 +6,7 @@ export enum SettingsCodeEnum {
     DAY_LAYOUT = 'DAY_LAYOUT',
     DATE_FORMAT = 'DATE_FORMAT',
     THEME = 'THEME',
+    FONT_SIZE = 'FONT_SIZE'
 }
 
 export type SettingsCodeValueMap = {
@@ -13,6 +14,7 @@ export type SettingsCodeValueMap = {
 	[SettingsCodeEnum.DAY_LAYOUT]: ICardStructure[];
 	[SettingsCodeEnum.DATE_FORMAT]: "HH:mm" | "hh:mm";
 	[SettingsCodeEnum.THEME]: TAppTheme;
+	[SettingsCodeEnum.FONT_SIZE]: 'small' | 'medium' | 'large';
 };
 
 export function getNextTheme(theme: TAppTheme): TAppTheme {
@@ -23,5 +25,16 @@ export function getNextTheme(theme: TAppTheme): TAppTheme {
             return 'ambient';
         case 'ambient':
             return 'light';
+    }
+}
+
+export function getFontSize(size: 'small' | 'medium' | 'large'): number {
+    switch (size) {
+        case 'small':
+            return 70;  
+        case 'medium':
+            return 80;
+        case 'large':
+            return 100;
     }
 }

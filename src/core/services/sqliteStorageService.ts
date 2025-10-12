@@ -31,6 +31,10 @@ export class SqliteStroageService implements IStorageService {
 		await this.database.execute("INSERT OR IGNORE INTO days (day, notes) VALUES ($1, '');", [day.toISODate()]);
 	}
 
+    async close() {
+        await this.database.close();
+    }
+
 	async getSettings(): Promise<ISetting<SettingsCodeEnum>[]> {
 		const settings = await this.database.select<ISetting<SettingsCodeEnum>[]>("SELECT * FROM settings;");
 		this.mapSettings(settings);

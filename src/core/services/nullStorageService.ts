@@ -25,6 +25,10 @@ export class NullStroageService implements IStorageService {
 		return Promise.resolve();
 	}
 
+    close() {
+        return Promise.resolve();
+    }
+
 	getSettings(): Promise<ISetting<SettingsCodeEnum>[]> {
 		return Promise.resolve([]);
 	}

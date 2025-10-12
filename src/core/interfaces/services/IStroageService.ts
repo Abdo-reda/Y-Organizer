@@ -11,6 +11,7 @@ import { IGoal } from "../entities/IGoal";
 export interface IStorageService {
 	DATABASE_NAME: Readonly<String>;
 	init(): Promise<void>;
+    close(): Promise<void>
 	initDB(): Promise<void>;
 	initDay(day: DateTime): Promise<void>;
 

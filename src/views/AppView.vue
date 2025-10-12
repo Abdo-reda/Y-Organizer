@@ -23,9 +23,11 @@ const { fetchGoals } = useMonthlyGoals();
 
 await fetchSettings();
 await fetchActivities();
+
 watch(currentTime, (time, oldTime) => {
 	if (!time.hasSame(oldTime, "day")) selectedDay.value = time.startOf("day");
 });
+
 watch(
 	selectedDay,
 	(day) => {
@@ -40,12 +42,10 @@ watch(
 <template>
 	<div class="h-full flex flex-col overflow-hidden">
 		<AppHeader v-if="appView !== 'welcome'" />
-		<main class="flex-1 px-2 pb-2 overflow-hidden relative">
-			<TransitionGroup name="auto">
-				<WelcomeView v-if="appView === 'welcome'" />
-				<DayView v-else-if="appView === 'day'" key="day" />
-				<WeekView v-else-if="appView === 'week'" key="week" />
-			</TransitionGroup>
+		<main class="flex-1 px-2 pb-2 overflow-hidden relative" v-auto-animate="{ duration: 100 }">
+            <WelcomeView v-if="appView === 'welcome'" />
+            <DayView v-else-if="appView === 'day'" key="day" />
+            <WeekView v-else-if="appView === 'week'" key="week" />
 		</main>
 	</div>
 </template>

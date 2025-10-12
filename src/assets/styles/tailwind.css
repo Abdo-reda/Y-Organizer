@@ -55,7 +55,6 @@
 
 @theme inline {
     --animate-pulse-slow: pulse 4s cubic-bezier(0.4, 0, 0.6, 1) infinite;
-    --color-highlight: var(--highlight);
     --color-hover: var(--color-hover);
     --color-background: var(--background);
     --color-foreground: var(--foreground);
@@ -153,7 +152,6 @@
     --font-sans: Montserrat, sans-serif;
     --font-serif: Georgia, serif;
     --font-mono: Fira Code, monospace;
-    --highlight: oklch(70.7% 0.022 261.325);
     --radius: 0.5rem;
     --shadow-2xs: 0px 4px 6px 0px hsl(240 30% 25% / 0.06);
     --shadow-xs: 0px 4px 6px 0px hsl(240 30% 25% / 0.06);
@@ -200,7 +198,6 @@
     --sidebar-accent-foreground: oklch(0.2429 0.0304 283.9110);
     --sidebar-border: oklch(0.4037 0.0320 280.1520);
     --sidebar-ring: oklch(0.1828 0.0204 284.2039);
-    --highlight: oklch(70.7% 0.022 261.325);
 }
 
 @layer base {

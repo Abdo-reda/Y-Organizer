@@ -2,16 +2,16 @@ body {
     @apply relative overflow-hidden bg-transparent p-px h-screen;
 }
 
-.gradient-background {
-    @apply bg-gradient-to-tl from-primary/40 to-transparent bg-no-repeat transition-colors duration-1000 rounded-xl;
-}
-
 #app {
     @apply h-full bg-card rounded-xl border shadow-sm transition-colors duration-300;
 }
 
+.gradient-background {
+    @apply bg-gradient-to-tl from-primary/40 to-transparent bg-no-repeat transition-colors duration-1000 rounded-xl;
+}
+
 .dot-background {
-    background-image: radial-gradient(circle, var(--color-highlight) 1px, transparent 1px);
+    background-image: radial-gradient(circle, color-mix(in oklab, var(--muted-foreground) 50%, transparent) 1px, transparent 1px);
     background-size: 20px 20px;
     background-position: 0 0;
 }

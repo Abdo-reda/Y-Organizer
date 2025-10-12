@@ -153,7 +153,7 @@ function handleSubmit() {
                         </Select>
                     </div>
 
-                    <NumberField class="flex-1" id="points" v-model="taskForm.points" :min="0" :step="10">
+                    <NumberField class="flex-1" id="points" :disabled="!taskForm.goal" v-model="taskForm.points" :min="0" :step="10">
                         <Label for="points">Points</Label>
                         <NumberFieldContent>
                             <NumberFieldDecrement />

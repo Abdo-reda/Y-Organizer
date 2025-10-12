@@ -30,8 +30,6 @@ useResizeObserver(drawArea, (entries) => {
     drawAreaHeight.value = height;
 });
 
-//TODO: undo and redo?
-
 const { brush, clear, onCommitted, load } = useDrauu(drawArea, {
     brush: {
         color: "var(--color-foreground)",

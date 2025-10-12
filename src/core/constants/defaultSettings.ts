@@ -7,4 +7,5 @@ export const DEFAULT_SETTINGS: TAppSettings = {
 	[SettingsCodeEnum.DAY_LAYOUT]: DEFAULT_DAY_CARD_LAYOUT,
 	[SettingsCodeEnum.DATE_FORMAT]: "hh:mm",
 	[SettingsCodeEnum.THEME]: "ambient",
+	[SettingsCodeEnum.FONT_SIZE]: "medium",
 }

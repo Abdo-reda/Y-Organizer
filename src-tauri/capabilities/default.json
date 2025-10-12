@@ -1,24 +1,32 @@
 {
-	"$schema": "../gen/schemas/desktop-schema.json",
-	"identifier": "default",
-	"description": "Capability for the main window",
-	"platforms": ["macOS", "windows", "linux"],
-	"windows": ["main"],
-	"permissions": [
-		"core:window:default",
-		"core:window:allow-start-dragging",
-		"core:window:allow-close",
-		"sql:default",
-		"sql:allow-execute",
-		{
-			"identifier": "opener:allow-open-url",
-			"allow": [
-				{
-					"url": "https://github.com/Abdo-reda"
-				}
-			]
-		},
-		"updater:default",
-		"process:default"
-	]
+  "$schema": "../gen/schemas/desktop-schema.json",
+  "identifier": "default",
+  "description": "Capability for the main window",
+  "platforms": [
+    "macOS",
+    "windows",
+    "linux"
+  ],
+  "windows": [
+    "main"
+  ],
+  "permissions": [
+    "core:window:default",
+    "core:window:allow-start-dragging",
+    "core:window:allow-close",
+    "sql:default",
+    "sql:allow-execute",
+    {
+      "identifier": "opener:allow-open-url",
+      "allow": [
+        {
+          "url": "https://github.com/Abdo-reda"
+        }
+      ]
+    },
+    "updater:default",
+    "process:default",
+    "dialog:allow-save",
+    "dialog:allow-open"
+  ]
 }
