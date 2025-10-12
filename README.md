@@ -1,6 +1,6 @@
-# Y-Organizer
 
 ![Y Logo](resources/repo-cover.png)
+# Y-Organizer
 
 This might look like another note-taking/to-do app, but its not really like that! 
 
@@ -16,11 +16,11 @@ The app is **totally free**. Its **completely offline** and requires no internet
 
 ## Screenshots
 
-![Screenshot Dark 0](resources/screenshot_0_dark.png)
-![Screenshot Light 0](resources/screenshot_0_light.png)
-![Screenshot Light 2](resources/screenshot_2_light.png)
-![Screenshot Dark 1](resources/screenshot_1_dark.png)
-![Screenshot Dark 2](resources/screenshot_2_dark.png)
+![Screenshot 0](resources/screenshot_0.png)
+![Screenshot 1](resources/screenshot_1.png)
+![Screenshot 2](resources/screenshot_2.png)
+![Screenshot 3](resources/screenshot_3.png)
+![Screenshot 4](resources/screenshot_4.png)
 
 ## Usage & Installation
 
