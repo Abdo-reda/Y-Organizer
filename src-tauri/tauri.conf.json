@@ -1,8 +1,8 @@
 {
 	"$schema": "https://schema.tauri.app/config/2",
-	"productName": "y",
-	"version": "0.1.0",
-	"identifier": "com.abdo.y",
+	"productName": "y-organizer",
+	"version": "0.7.0",
+	"identifier": "com.nopoint.y",
 	"plugins": {
 		"sql": {
 			"preload": ["sqlite:y.db"]

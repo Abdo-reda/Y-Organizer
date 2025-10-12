@@ -65,27 +65,27 @@ export class SqliteStroageService implements IStorageService {
 
 	async getGratitudes(day: DateTime): Promise<IGratitude[]> {
 		const gratitudes = await this.database.select<IGratitude[]>("SELECT * FROM gratitudes WHERE day = $1;", [day.toISODate()]);
-		this.mapGratitudes(gratitudes);
-		return gratitudes;
+        this.mapGratitudes(gratitudes);
+        return gratitudes;
 	}
 
 	async createGratitude(gratitude: IGratitude) {
-		await this.database.execute("INSERT into gratitudes (title, description, category, highlights, day) VALUES ($1, $2, $3, $4, $5);", [
+		const result = await this.database.execute("INSERT into gratitudes (title, category, highlights, day) VALUES ($1, $2, $3, $4);", [
 			gratitude.title,
-			gratitude.description,
 			gratitude.category,
 			gratitude.highlights,
 			gratitude.day,
 		]);
+        return result.lastInsertId;
 	}
 
-	async updateGratitude(gratitude: IGratitude) {
-		await this.database.execute("UPDATE gratitudes SET title = $1, description = $2, category = $3, highlights = $4 WHERE day = $5;", [
+	async updateGratitude(id: number, gratitude: IGratitude) {
+		await this.database.execute("UPDATE gratitudes SET title = $1, category = $2, highlights = $3, day = $4 WHERE id = $5;", [
 			gratitude.title,
-			gratitude.description,
 			gratitude.category,
 			gratitude.highlights,
-			gratitude.day,
+            gratitude.day,
+			id,
 		]);
 	}
 

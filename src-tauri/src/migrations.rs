@@ -95,12 +95,20 @@ impl YMigrations {
             kind: MigrationKind::Up,
         };
 
-        // let gratitude_table_migration = Migration {
-        //     version: 7,
-        //     description: "Create Gratitudes Table",
-        //     sql: "CREATE TABLE gratitudes (id INTEGER PRIMARY KEY, title TEXT NOT NULL, description TEXT, category TEXT CHECK(category IN ('Family', 'Partnership', 'Parenting', 'Social', 'Career', 'Personal Growth', 'Recreation', 'Spirituality', 'Community', 'Fitness')) NOT NULL, highlights TEXT, day TEXT NOT NULL, FOREIGN KEY (day) REFERENCES days(day) ON DELETE CASCADE); CREATE INDEX idx_gratitudes_day ON gratitudes(day);",
-        //     kind: MigrationKind::Up,
-        // };
+        let gratitude_table_migration = Migration {
+            version: 8,
+            description: "Create Gratitudes Table",
+            sql: "CREATE TABLE gratitudes (
+                id INTEGER PRIMARY KEY, 
+                title TEXT NOT NULL, 
+                category TEXT, 
+                highlights TEXT, 
+                day TEXT NOT NULL, 
+                FOREIGN KEY (day) REFERENCES days(day) ON DELETE CASCADE
+            ); 
+            CREATE INDEX idx_gratitudes_day ON gratitudes(day);",
+            kind: MigrationKind::Up,
+        };
 
         vec![
             days_table_migration,
@@ -110,6 +118,7 @@ impl YMigrations {
             goals_table_migration,
             tasks_table_migration,
             remembers_table_migration,
+            gratitude_table_migration
         ]
     }
 }

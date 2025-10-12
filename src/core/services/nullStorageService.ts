@@ -57,11 +57,11 @@ export class NullStroageService implements IStorageService {
 		return Promise.resolve([]);
 	}
 
-	createGratitude(_gratitude: IGratitude): Promise<void> {
-		return Promise.resolve();
+	createGratitude(_gratitude: IGratitude): Promise<number|undefined> {
+		return Promise.resolve(this.idCounter++);
 	}
 
-	updateGratitude(_gratitude: IGratitude): Promise<void> {
+	updateGratitude(_id: number, _gratitude: IGratitude): Promise<void> {
 		return Promise.resolve();
 	}
 

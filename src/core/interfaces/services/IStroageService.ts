@@ -25,8 +25,8 @@ export interface IStorageService {
 	updateDoodle(day: DateTime, doodle: string): Promise<void>;
 
 	getGratitudes(day: DateTime): Promise<IGratitude[]>;
-	createGratitude(gratitude: IGratitude): Promise<void>;
-	updateGratitude(gratitude: IGratitude): Promise<void>;
+	createGratitude(gratitude: IGratitude): Promise<number|undefined>;
+	updateGratitude(id: number, gratitude: IGratitude): Promise<void>;
 	deleteGratitude(id: number): Promise<void>;
 
 	getRemembers(): Promise<IRemember[]>;

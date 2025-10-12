@@ -32,12 +32,12 @@ export const LifeCategoryIconMapper: Record<LifeCategoryEnum, FunctionalComponen
 export const LifeCategoryColorMapper: Record<LifeCategoryEnum, string> = {
     [LifeCategoryEnum.FAMILY]: AMBER,
     [LifeCategoryEnum.PARTNERSHIP]: RED,
-    [LifeCategoryEnum.PARENTING]: YELLOW,
+    [LifeCategoryEnum.PARENTING]: VIOLET,
     [LifeCategoryEnum.CAREER]: STONE,
     [LifeCategoryEnum.PERSONAL_GROWTH]: LIME,
     [LifeCategoryEnum.RECREATION]: SKY,
     [LifeCategoryEnum.SPIRITUALITY]: EMERALD,
-    [LifeCategoryEnum.SOCIAL]: VIOLET,
+    [LifeCategoryEnum.SOCIAL]: YELLOW,
     [LifeCategoryEnum.COMMUNITY]: GREEN,
     [LifeCategoryEnum.FITNESS]: PINK, 
 };
