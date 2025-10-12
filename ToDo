@@ -48,13 +48,9 @@
 - ('backup_interval', 'daily')
 
 //------ Tauri stuff
-- single instance https://tauri.app/plugin/single-instance/
-- sql interaction https://tauri.app/plugin/sql/
 - automatic updates https://tauri.app/plugin/updater/
 - upload and download files https://tauri.app/plugin/upload/
 - App size optimizations https://tauri.app/concept/size/
-- App icons https://tauri.app/develop/icons/
-- Window customization https://tauri.app/learn/window-customization/
 <!-- - autostart https://tauri.app/plugin/autostart/ -->
 
 //--> should activities have types? book? course? project? learning? ... hmm..
@@ -64,12 +60,5 @@
 https://lottiefiles.com/free-animations/tick
 https://iconscout.com/lottie-animations/tick
 
-//------ General Todo
-- Make current activity determine color and theme
-- Make background have gradient/color or a pretty cool background... something neat looking and smooth can clean...
-- Summary card in place of the now card for days that are not today.
+//------ Look into
 - check figma playground... has the idea of cards or small activities.. pretty cool
-- Focus Mode, all cards are hidden, takes fulls screne, only the session and the active tasks are shown
-
-//------- Tauri
-- Add Icons and so on ...
