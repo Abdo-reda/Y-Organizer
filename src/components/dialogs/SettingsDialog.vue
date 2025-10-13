@@ -4,7 +4,7 @@ import { DialogContent, DialogDescription, DialogHeader, DialogTitle } from "@/c
 import { Label } from "@/components/ui/label";
 import { Select, SelectContent, SelectGroup, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { SettingsIcon, PaletteIcon, DatabaseIcon, DownloadIcon, UploadIcon, RefreshCwIcon } from "lucide-vue-next";
-import { ref, Transition } from "vue";
+import { ref } from "vue";
 import { Input } from "../ui/input";
 import SettingSection from "../common/SettingSection.vue";
 import useSettings from "@/store/useSettings";
