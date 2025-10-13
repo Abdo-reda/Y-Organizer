@@ -2,18 +2,34 @@ import { check, Update } from "@tauri-apps/plugin-updater";
 import { relaunch } from "@tauri-apps/plugin-process";
 import { ref } from "vue";
 import { LoggingService } from "@/core/services/loggingService";
+import { isTauri } from "@tauri-apps/api/core";
 
 export default function useUpdater() {
 
 	// TODO: sonnets & toasts
 
 	let currentUpdate: Update | null;
-	const progress = ref(0);
+	const updaterProgress = ref(0);
+    const checkingUpdates = ref(false);
+    const checkedWithUpdates = ref<boolean|null>(null);
+    const newVersion = ref();
 
-	async function checkLatest(): Promise<boolean> {
-        progress.value = 0;
+    function resetUpdaterState() {
+        updaterProgress.value = 0;
+        checkingUpdates.value = false;
+        checkedWithUpdates.value = null;
+        newVersion.value = undefined;
+    }
+
+	async function checkLatest() {
+        if (!isTauri()) return;
+        resetUpdaterState();
+        checkingUpdates.value = true;
 		currentUpdate = await check();
-		return !!currentUpdate;
+        checkingUpdates.value = false;
+        checkedWithUpdates.value = !!currentUpdate;
+        newVersion.value = currentUpdate?.version;
+        console.log("--- current update", currentUpdate)
 	}
 
 	function downloadAndInstall() {
@@ -29,7 +45,7 @@ export default function useUpdater() {
 					break;
 				case "Progress":
 					downloadedBytes += event.data.chunkLength;
-                    progress.value = downloadedBytes / totalBytes;
+                    updaterProgress.value = downloadedBytes / totalBytes;
 					LoggingService.log(`downloaded ${downloadedBytes} from ${totalBytes}`);
 					break;
 				case "Finished":
@@ -44,6 +60,11 @@ export default function useUpdater() {
     }
 
 	return {
+        checkingUpdates,
+        checkedWithUpdates,
+        newVersion,
+        updaterProgress,
+        resetUpdaterState,
 		checkLatest,
 		downloadAndInstall,
 		relaunchApp,

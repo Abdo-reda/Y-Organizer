@@ -96,15 +96,10 @@ ___
 **Creating a Release**
 - Bump Version.
 - Commit & Push Code.
-- Create Tag
-    - `git tag -a <version> -m "<version>"`
-    - `git push origin <version>`
-- Merge vesrion PR.
 - Edit and Publish Release Notes on Github.
-
 
 ## Random Ramblings
 
-Now, I will be honest, it could be a **bit too much** to keep track of what you do everyday. Your goals, your tasks, and activities in your life. It might **backfire**, and end up making you more worried about how you spend your time. Whether you are spending it on the right things or not. As a result, you might end up getting **stunlocked**... not sure what exactly should you be doing next. Feeling like there is not enough time to do the things you want, or doing things with worry and stress all the time that it feels like you were better of not doing them to begin with. This can lead to just overall a terrible day and a pretty **negative feedback loop/cycle**. Which is quite **opposite of what the app is TRYING TO DO!**
+Now, I will be honest, it could be a **bit too much** to keep track of what you do everyday. Your goals, your tasks, and activities in your life. It might **backfire**, and end up making you more worried about how you spend your time and whether you are spending it on the right things. As a result, you might end up getting **stunlocked**... not sure what exactly should you be doing next. Feeling like there is not enough time to do the things you want, or doing things with worry and stress all the time that it feels like you were better of not doing them to begin with. This can lead to just overall a terrible day and a pretty **negative feedback loop/cycle**. Which is quite **opposite of what the app is TRYING TO DO!**
 
-So.. how can you prevent this from happening? I am not sure. I am still discovering this myself. Does the app help with preventing this cycle? maybe... Its too soon to tell. In theory, some of the cards should help. The most important thing to keep in mind in my opinion, is to experiment and keeping track of what works and what's not working. It can be difficult to figure this out at first, as it may seem very random. And it could be... but people say its not. So lets hope there is some order to the chaos.
+So.. how can you prevent this from happening? I am not sure. I am still discovering this myself. Does the app help with preventing this cycle? maybe... Its too soon to tell. In theory, some of the cards should help. The most important thing to keep in mind in my opinion, is to experiment and keep track of what works and what doesn't work. It can be difficult to figure this out at first, as it may seem very random. And it might as well be... but people say its not. So lets hope there is some order to this chaos.

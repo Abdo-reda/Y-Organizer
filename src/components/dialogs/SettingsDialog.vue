@@ -4,7 +4,7 @@ import { DialogContent, DialogDescription, DialogHeader, DialogTitle } from "@/c
 import { Label } from "@/components/ui/label";
 import { Select, SelectContent, SelectGroup, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { SettingsIcon, PaletteIcon, DatabaseIcon, DownloadIcon, UploadIcon, RefreshCwIcon } from "lucide-vue-next";
-import { ref } from "vue";
+import { ref, Transition } from "vue";
 import { Input } from "../ui/input";
 import SettingSection from "../common/SettingSection.vue";
 import useSettings from "@/store/useSettings";
@@ -21,7 +21,7 @@ const settingCatogories = [
 
 const { exportDatabase, importDatabase } = useTauri();
 const { settings, updateSetting } = useSettings();
-const { checkLatest } = useUpdater();
+const { resetUpdaterState, checkLatest, downloadAndInstall, checkingUpdates, checkedWithUpdates, newVersion, updaterProgress } = useUpdater();
 const activeCategory = ref("general");
 
 function saveSettings(code: SettingsCodeEnum) {
@@ -30,21 +30,24 @@ function saveSettings(code: SettingsCodeEnum) {
 
 // TODO: sonnets!
 function handleExportData() {
-    exportDatabase();
+	exportDatabase();
 }
 
 function handleImportData() {
-    importDatabase();
+	importDatabase();
 }
 
 function checkForUpdates() {
-	// Update check logic here
 	checkLatest();
+}
+
+function download() {
+	downloadAndInstall();
 }
 </script>
 
 <template>
-	<DialogContent class="gap-0 p-0" @open-auto-focus.prevent>
+	<DialogContent class="gap-0 p-0" @open-auto-focus.prevent="resetUpdaterState()">
 		<DialogHeader class="p-4 border-b">
 			<DialogTitle>Settings</DialogTitle>
 			<DialogDescription>Manage your application preferences and settings</DialogDescription>
@@ -84,10 +87,34 @@ function checkForUpdates() {
 								<p class="my-0.5 text-xs text-muted-foreground/75">Check for updates</p>
 							</div>
 							<Button class="flex-1" variant="outline" size="sm" @click="checkForUpdates">
-								<RefreshCwIcon class="size-4" />
+								<RefreshCwIcon class="size-4" :class="{ 'animate-spin': checkingUpdates }" />
 								<p>Check</p>
 							</Button>
 						</div>
+                        <TransitionGroup name="auto" tag="ul" class="relative">
+							<li v-if="checkedWithUpdates !== null" class="border bg-muted flex flex-col gap-2 p-4 w-full rounded-md" key="update">
+								<template v-if="checkedWithUpdates">
+									<p class="text-sm">
+										New Update Available <span class="font-semibold"> v{{ newVersion }} </span>
+									</p>
+									<Button class="flex-1 p-1" variant="outline" size="sm" @click="download">
+										<DownloadIcon class="size-4" :class="{ 'animate-spin': checkingUpdates }" />
+										<p>Download & Install</p>
+									</Button>
+								</template>
+								<template v-else>
+									<p class="text-sm">
+										No new updates found... <br />
+										App is in <span class="font-semibold"> latest </span> version.
+									</p>
+								</template>
+                                <li v-if="updaterProgress" key="progress">
+                                    <div class="h-2 overflow-hidden rounded-full bg-muted my-1">
+                                        <div class="h-full rounded-full bg-foreground" :style="{ width: `${Math.round(updaterProgress* 100)}%` }"></div>
+                                    </div>
+                                </li>
+							</li>
+                        </TransitionGroup>
 					</SettingSection>
 
 					<SettingSection v-else-if="activeCategory === 'appearance'" title="Appearance Settings">
