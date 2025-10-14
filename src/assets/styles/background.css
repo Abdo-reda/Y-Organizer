@@ -25,23 +25,3 @@ body {
         --tw-gradient-to-position: 85%;
     }
 }
-
-/* @apply relative overflow-hidden bg-radial-[at_100%_100%] from-primary/40 to-transparent to-75%; */
-
-/* body::after {
-    @apply absolute top-full left-full -translate-y-1/2 -translate-x-3/5 w-full aspect-square content-[''] -z-10 bg-radial from-primary to-50% to-transparent;
-    animation: slow-pulse 10s infinite ease-in-out alternate;
-} */
-
-/* 
-@keyframes slow-pulse {
-    0% {
-        transform: scale(1);
-        opacity: 0.4;
-    }
-
-    100% {
-        transform: scale(1.05);
-        opacity: 0.6;
-    }
-} */
