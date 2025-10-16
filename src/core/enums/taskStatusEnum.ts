@@ -9,3 +9,9 @@ export const TaskStatusOrder: Record<TaskStatusEnum, number> = {
     [TaskStatusEnum.PENDING]: 1,
     [TaskStatusEnum.COMPLETED]: 2,
 }
+
+export const NowTaskStatusOrder: Record<TaskStatusEnum, number> = {
+    [TaskStatusEnum.ACTIVE]: 0,
+    [TaskStatusEnum.PENDING]: 1,
+    [TaskStatusEnum.COMPLETED]: 2,
+}

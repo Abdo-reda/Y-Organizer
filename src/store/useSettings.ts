@@ -7,7 +7,7 @@ import { DEFAULT_SETTINGS } from "@/core/constants/defaultSettings";
 import { TAppSettings } from "@/core/types/TAppSettings";
 import { useStorage } from "@vueuse/core";
 
-const appView = useStorage<'welcome'|'week'|'day'>('app-view', 'welcome', sessionStorage) 
+const appView = useStorage<'welcome'|'week'|'day'|'now'>('app-view', 'welcome', sessionStorage) 
 const isGridLocked = ref(true);
 const settings = reactive<TAppSettings>(DEFAULT_SETTINGS);
 const settingsLoading = ref(false);

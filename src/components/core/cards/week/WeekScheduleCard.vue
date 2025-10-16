@@ -8,10 +8,12 @@ import SessionPreviewPopover from '@/components/popovers/SessionPreviewPopover.v
 import { Popover, PopoverAnchor } from '@/components/ui/popover';
 import { ref, shallowRef } from "vue";
 import { type ReferenceElement } from "reka-ui";
+import { ITask } from "@/core/interfaces/entities/ITask";
 
 interface IWeekScheduleCardProps {
 	startOfWeek: DateTime;
 	sessions: ISession[][];
+    tasks: ITask[];
 }
 
 const props = defineProps<IWeekScheduleCardProps>();
@@ -33,7 +35,7 @@ function showPreview(target: ReferenceElement, session: ISession) {
 		<CardContent class="flex-1 px-4 pt-2 overflow-hidden flex gap-1.5">
 			<Popover v-model:open="previewSessionOpen">
 				<PopoverAnchor :reference="sessionPopoverAnchor"> </PopoverAnchor>
-				<SessionPreviewPopover :session="previewSession" />
+				<SessionPreviewPopover :session="previewSession" :tasks="tasks" />
 			</Popover>
 			<div class="h-full flex flex-col">
 				<p class="opacity-0">-</p>

@@ -1,5 +1,5 @@
 body {
-    @apply relative overflow-hidden bg-transparent p-px h-screen;
+    @apply relative overflow-hidden bg-transparent h-screen;
 }
 
 #app {
