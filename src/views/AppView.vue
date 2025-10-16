@@ -10,8 +10,7 @@ import { watch } from "vue";
 import DayView from "./DayView.vue";
 import WeekView from "./WeekView.vue";
 import WelcomeView from "./WelcomeView.vue";
-
-// TODO: fix transitoin between routes... remove routes?
+import NowView from "./NowView.vue";
 
 const { currentTime } = useCurrentTime();
 const { selectedDay, initDay } = useDayState();
@@ -19,7 +18,6 @@ const { appView, fetchSettings } = useSettings();
 const { fetchActivities } = useActivity();
 const { fetchTasks } = useTasks();
 const { fetchGoals } = useMonthlyGoals();
-//TODO: either do a loading state, or have a suspense and await, or a laoding screen or whatever... fuck this shit.
 
 await fetchSettings();
 await fetchActivities();
@@ -41,11 +39,12 @@ watch(
 
 <template>
 	<div class="h-full flex flex-col overflow-hidden">
-		<AppHeader v-if="appView !== 'welcome'" />
+		<AppHeader v-if="appView !== 'welcome' && appView !== 'now'" />
 		<main class="flex-1 px-2 pb-2 overflow-hidden relative" v-auto-animate="{ duration: 100 }">
             <WelcomeView v-if="appView === 'welcome'" />
             <DayView v-else-if="appView === 'day'" key="day" />
             <WeekView v-else-if="appView === 'week'" key="week" />
+            <NowView v-else-if="appView === 'now'" key="now" />
 		</main>
 	</div>
 </template>

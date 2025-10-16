@@ -2,27 +2,27 @@
 import { Card, CardContent } from "@/components/ui/card";
 import { LifeCategoryColorMapper, LifeCategoryEnum, LifeCategoryIconMapper } from "@/core/enums/lifeCategoryEnum";
 import { ISession } from "@/core/interfaces/entities/ISession";
+import { ITask } from "@/core/interfaces/entities/ITask";
 import useActivity from "@/store/useActivity";
 import useMonthlyGoals from "@/store/useMonthlyGoals";
-import useWeekTasks from "@/store/useWeekTasks";
 import { ArrowUpIcon, CheckCheckIcon, CircleDotIcon, PartyPopperIcon } from "lucide-vue-next";
 import { type DateTime } from "luxon";
-import { computed, watch } from "vue";
+import { computed } from "vue";
 
 interface IWeekSummaryCardProps {
 	startOfWeek: DateTime;
 	sessions: ISession[][];
+    tasks: ITask[];
 }
 
 const props = defineProps<IWeekSummaryCardProps>();
 
 const { activities } = useActivity();
-const { tasks, fetchTasks } = useWeekTasks();
 const { monthlyGoals } = useMonthlyGoals();
 
 const endOfWeek = computed(() => props.startOfWeek.plus({ day: 6 }));
 const tasksPoints = computed(() =>
-	tasks
+	props.tasks
 		.filter((t) => t.goal)
 		.reduce<Record<number, number>>((prev, t) => {
 			if (t.goal) prev[t.goal] = (prev[t.goal] ?? 0) + t.points;
@@ -31,7 +31,7 @@ const tasksPoints = computed(() =>
 );
 const totalTasksPoints = computed(() => Object.values(tasksPoints.value).reduce((prev, p) => prev + p, 0));
 const tasksGoals = computed(() => {
-	const taskGoalIds = tasks.map((t) => t.goal);
+	const taskGoalIds = props.tasks.map((t) => t.goal);
 	return monthlyGoals.filter((g) => g.id && taskGoalIds.includes(g.id));
 });
 const goalsPoints = computed(() => tasksGoals.value.reduce((prev, g) => prev + g.totalPoints, 0));
@@ -76,11 +76,6 @@ const topActivites = computed(() =>
 		.slice(0, 3)
 );
 
-watch(
-	() => props.startOfWeek,
-	() => fetchTasks(props.startOfWeek, endOfWeek.value),
-	{ immediate: true }
-);
 </script>
 
 <template>
