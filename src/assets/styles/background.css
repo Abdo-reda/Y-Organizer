@@ -3,7 +3,7 @@ body {
 }
 
 #app {
-    @apply h-full bg-card rounded-xl border shadow-sm transition-colors duration-300;
+    @apply h-full bg-card rounded-xl shadow-sm transition-colors duration-300;
 }
 
 .gradient-background {

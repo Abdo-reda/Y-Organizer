@@ -1,5 +1,23 @@
 # Changelog
 
+## [v0.9.0] - 2025-10-24 
+
+### Added
+- Added summary card when visiting past days.
+
+### Fixed
+- Enhanced saving doodles as pngs, mapped --foreground color to black.
+- Tasks isToday was not mapped from 0,1 to boolean when fetching from sqlite database.
+- Removed border from app because it was leading to weird rendering results.
+- Backlog goals was not scrollable.
+- Goals listing when the title of the goal is long it didn't show the goal points.
+
+### Changed
+- Changed target es to es2021.
+- made active task more readable in now view.
+- Increased activities circle digram thickness from 4 to 6 for better visibility.
+
+
 ## [v0.8.0] - 2025-10-16
 
 ### Added

@@ -8,7 +8,6 @@ import { onBeforeMount } from "vue";
 import { NotebookTabsIcon } from "lucide-vue-next";
 
 const { notes, onNotesFetched, updateNotes } = useDayNotes();
-//TODO: Fix placeholder
 
 //TODO:
 //- fix the colors? text color primary? bg primary? so on ..

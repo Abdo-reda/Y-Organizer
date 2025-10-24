@@ -19,7 +19,9 @@ export interface IStorageService {
     updateSetting<T extends SettingsCodeEnum>(code: T, value: SettingsCodeValueMap[T]|null): Promise<void>;
 
 	getNotes(day: DateTime): Promise<string>;
+	getLearnings(day: DateTime): Promise<string>;
 	updateNotes(day: DateTime, notes: string): Promise<void>;
+	updateLearnings(day: DateTime, learnings: string): Promise<void>;
 
     getDoodle(day: DateTime): Promise<string>;
 	updateDoodle(day: DateTime, doodle: string): Promise<void>;

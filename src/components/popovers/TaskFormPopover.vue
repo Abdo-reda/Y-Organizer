@@ -5,6 +5,7 @@ import { ListTodoIcon, PenIcon } from "lucide-vue-next";
 import { Input } from "../ui/input";
 import { Textarea } from "../ui/textarea";
 import { ITask } from "@/core/interfaces/entities/ITask";
+import { TaskStatusEnum } from "@/core/enums/taskStatusEnum";
 
 const props = defineProps<{ existingTask: ITask; suggestedTasks: ITask[] }>();
 const emits = defineEmits<{
@@ -19,6 +20,7 @@ function setSuggestedTask(task: ITask) {
 	emits("update", task.id, {
 		...task,
 		session: taskForm.session,
+        status: TaskStatusEnum.PENDING,
 	});
 }
 

@@ -4,7 +4,7 @@ import ActivityDialog from '@/components/dialogs/ActivityDialog.vue';
 import { Button } from '@/components/ui/button';
 import { Dialog } from '@/components/ui/dialog';
 import { ActivityStatusEnum } from '@/core/enums/activityStatusEnum';
-import { IActivity, ISessionActivity } from '@/core/interfaces/entities/IActivity';
+import { IActivity } from '@/core/interfaces/entities/IActivity';
 import useActivity from '@/store/useActivity';
 import { ArchiveIcon, CheckCheckIcon, CircleIcon, PlusIcon } from 'lucide-vue-next';
 import {
@@ -16,6 +16,7 @@ import { computed, ref, useTemplateRef } from 'vue';
 import { LifeCategoryIconMapper } from '@/core/enums/lifeCategoryEnum';
 import useDaySessions from '@/store/useDaySessions';
 import { useMouseScroll } from '@/composables/useMouseScroll';
+import useActivityStats from '@/store/useActivityStats';
 
 const CIRCUMFERENCE = 2 * Math.PI * 45;
 const activitiesContainer = useTemplateRef('activities-container');
@@ -23,39 +24,9 @@ const activitiesContainerEl = computed(() => activitiesContainer.value?.$el)
 useMouseScroll(activitiesContainerEl);
 const { sessions } = useDaySessions();
 const { activities, createActivity, updateActivity } = useActivity();
+const { sessionsData, sessionActivities } = useActivityStats(activities, sessions)
 const editActivity = ref<IActivity | null>(null);
 const dialogOpen = ref(false);
-const sessionsData = computed(() => {
-    let totalDuration = 0;
-    const activityDurations: Record<string, number> = {};
-    const todayActivites = new Set<string>();
-    sessions.forEach(session => {
-        const activity = session.activity;
-        const duration = session.endTime.diff(session.startTime, 'minutes').minutes;
-        totalDuration += duration;
-        activityDurations[activity] = (activityDurations[activity] || 0) + duration;
-        todayActivites.add(activity);
-    });
-
-    return {
-        totalDuration,
-        activityDurations,
-        todayActivites,
-    };
-});
-const sessionActivities = computed(() => {
-    let sessionActivites: ISessionActivity[] = [];
-    let activityOffset = 0;
-    activities.forEach(a => {
-        if (sessionsData.value.todayActivites.has(a.name)) {
-            const activityDuration = sessionsData.value.activityDurations[a.name];
-            const activityRatio = Math.round(activityDuration * 100 / sessionsData.value.totalDuration);
-            sessionActivites.push({ ...a, duration: activityDuration, ratio: activityRatio, offset: activityOffset });
-            activityOffset += activityRatio;
-        }
-    })
-    return sessionActivites.sort((a, b) => b.duration - a.duration);
-});
 
 const sortedActivites = computed(() => activities.sort((a, b) => a.name.localeCompare(b.name)));
 
@@ -109,9 +80,9 @@ function handleUpdate(id: string, activity: IActivity) {
                             <div class="relative flex items-center justify-center flex-1 overflow-hidden">
                                 <svg viewBox="0 0 100 100" class="w-full h-full">
                                     <circle v-if="!sessionActivities.length" cx="50" cy="50" r="45" fill="none"
-                                        class="stroke-muted-foreground/85" stroke-width="4" />
+                                        class="stroke-muted-foreground/85" stroke-width="6" />
                                     <circle v-for="activity in sessionActivities" :key="activity.name" cx="50" cy="50"
-                                        r="45" fill="none" :stroke="activity.color" stroke-width="4"
+                                        r="45" fill="none" :stroke="activity.color" stroke-width="6"
                                         stroke-linecap="round"
                                         :stroke-dasharray="`${(activity.ratio / 100) * CIRCUMFERENCE} ${CIRCUMFERENCE}`"
                                         :stroke-dashoffset="-(CIRCUMFERENCE * activity.offset / 100)"
