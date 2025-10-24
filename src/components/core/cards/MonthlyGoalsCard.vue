@@ -126,7 +126,7 @@ function closeEditDialog() {
 									</div>
 								</div>
 
-								<div class="flex-1 flex gap-3 justify-between items-start">
+								<div class="flex-1 flex gap-3 overflow-hidden justify-between items-start">
 									<div class="min-w-0">
 										<p class="text-sm font-semibold truncate">
 											<span class="strikethrough" :class="{ 'has-strikethrough': goal.status === GoalStatusEnum.COMPLETED }">
@@ -139,7 +139,7 @@ function closeEditDialog() {
 											</span>
 										</p>
 									</div>
-                                    <p class="min-w-fit text-xs text-muted-foreground">
+                                    <p class="whitespace-nowrap text-xs text-muted-foreground">
                                         <span class="text-hover"> {{ goal.points }} </span> / {{ goal.totalPoints }}
                                     </p>
 								</div>
@@ -147,7 +147,7 @@ function closeEditDialog() {
 						</TransitionGroup>
 					</CarouselItem>
 					<CarouselItem>
-						<TransitionGroup ref="backlog-goals-container" name="auto" tag="ul" class="h-full select-none relative">
+						<TransitionGroup ref="backlog-goals-container" name="auto" tag="ul" class="h-full select-none relative scroll-drag">
 							<li
 								v-for="goal in backlogGoals"
 								:key="goal.id"

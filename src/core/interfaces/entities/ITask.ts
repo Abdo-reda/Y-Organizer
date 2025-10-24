@@ -17,7 +17,7 @@ export interface ITask {
     //priority? 0-3?
 }
 
-export function getDefaultSessionTask(session?: ISession, status: TaskStatusEnum = TaskStatusEnum.PENDING): ITask {
+export function getDefaultSessionTask(session?: ISession): ITask {
     return {
         title: '',
         description: '',
@@ -25,7 +25,7 @@ export function getDefaultSessionTask(session?: ISession, status: TaskStatusEnum
         session: session?.id ?? null,
         isToday: true,
         completedDay: '',
-        status: status,
+        status: TaskStatusEnum.PENDING,
         goal: null,
         points: 0,
     }

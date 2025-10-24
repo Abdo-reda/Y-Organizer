@@ -5,8 +5,8 @@ import { LoggingService } from "@/core/services/loggingService";
 
 export default function useDayNotes() {
 	const { selectedDay } = useDayState();
-
 	const storageService = inject(StorageServiceKey)!;
+    
 	const notes = ref("");
     let fetchCallback: (() => void) | undefined;
 

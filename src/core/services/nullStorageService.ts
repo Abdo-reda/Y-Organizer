@@ -41,7 +41,15 @@ export class NullStroageService implements IStorageService {
 		return Promise.resolve("");
 	}
 
+	getLearnings(_day: DateTime): Promise<string> {
+		return Promise.resolve("");
+	}
+
 	updateNotes(_day: DateTime, _notes: string): Promise<void> {
+		return Promise.resolve();
+	}
+
+	updateLearnings(_day: DateTime, _learnings: string): Promise<void> {
 		return Promise.resolve();
 	}
 

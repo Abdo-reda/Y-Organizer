@@ -50,8 +50,17 @@ export class SqliteStroageService implements IStorageService {
 		return dayData.length > 0 ? dayData[0].notes : "";
 	}
 
+	async getLearnings(day: DateTime): Promise<string> {
+		const dayData = await this.database.select<IDay[]>("SELECT learnings FROM days WHERE day = $1;", [day.toISODate()]);
+		return dayData.length > 0 ? dayData[0].learnings : "";
+	}
+
 	async updateNotes(day: DateTime, notes: string) {
 		await this.database.execute("UPDATE days SET notes = $1 WHERE day = $2;", [notes, day.toISODate()]);
+	}
+
+	async updateLearnings(day: DateTime, learnings: string) {
+		await this.database.execute("UPDATE days SET learnings = $1 WHERE day = $2;", [learnings, day.toISODate()]);
 	}
 
 	async getDoodle(day: DateTime): Promise<string> {
@@ -179,11 +188,15 @@ export class SqliteStroageService implements IStorageService {
 		await this.database.execute("DELETE FROM sessions WHERE id = $1;", [id]);
 	}
 
-	getTasks(day: DateTime, endDate?: DateTime): Promise<ITask[]> {
+	async getTasks(day: DateTime, endDate?: DateTime): Promise<ITask[]> {
+        let tasks = [];
         if (endDate) {
-            return this.database.select<ITask[]>("SELECT * FROM tasks WHERE completedDay BETWEEN $1 AND $2;", [day.toISODate(), endDate.toISODate()]);
+            tasks = await this.database.select<ITask[]>("SELECT * FROM tasks WHERE completedDay BETWEEN $1 AND $2;", [day.toISODate(), endDate.toISODate()]);
+        } else {
+            tasks = await this.database.select<ITask[]>("SELECT * FROM tasks WHERE completedDay = $1 OR completedDay = '';", [day.toISODate()]);
         }
-		return this.database.select<ITask[]>("SELECT * FROM tasks WHERE completedDay = $1 OR completedDay = '';", [day.toISODate()]);
+        this.mapTasks(tasks);
+        return tasks;
 	}
 
 	async createTask(task: ITask): Promise<number | undefined> {
@@ -252,6 +265,18 @@ export class SqliteStroageService implements IStorageService {
 
 	async deleteGoal(id: number): Promise<void> {
         await this.database.execute("DELETE FROM goals WHERE id = $1;", [id]);
+	}
+
+    private mapTasks(tasks: ITask[]) {
+		tasks.forEach((task) => {
+			if (typeof task.isToday === "number") {
+				try {
+					task.isToday = !!task.isToday;
+				} catch (e) {
+					LoggingService.log("Failed to parse task isToday", e);
+				}
+			}
+		});
 	}
 
 	private mapSessions(sesions: ISession[]) {

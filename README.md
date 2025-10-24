@@ -52,7 +52,6 @@ _You can email me at [3bdo.reda@gmail.com](mailto:3bdo.reda@gmail.com)_
 **Features & Enhancements**
 - Backup functionality
 - Sync functionality
-- Focus mode
 - Summary Card -- Now card become a summary card in other days.
 - Sounds & Audio -- Simple feedback & maybe toasts and sonnets
 - Autostartup?

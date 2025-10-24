@@ -52,7 +52,7 @@ function handleTaskSecondary(event: MouseEvent, task: ITask) {
 
 function handleOpenPopover(_event: MouseEvent, task?: ITask) {
 	if (!currentSession.value) return;
-	editTask.value = task ?? getDefaultSessionTask(currentSession.value, activeSessionTask.value ? TaskStatusEnum.PENDING : TaskStatusEnum.ACTIVE);
+	editTask.value = task ?? getDefaultSessionTask(currentSession.value);
 }
 
 async function markTaskActive(task: ITask) {
@@ -89,7 +89,7 @@ function handleUpdateTask(id: number, task: ITask) {
 }
 
 function handleClosePopover() {
-	editTask.value = getDefaultSessionTask(currentSession.value, TaskStatusEnum.PENDING);
+	editTask.value = getDefaultSessionTask(currentSession.value);
 }
 
 async function toggleFullscreen() {
@@ -157,16 +157,19 @@ async function toggleFullscreen() {
 						}"
 					>
 						<Button v-if="task.status !== TaskStatusEnum.COMPLETED" @click.stop="markTaskCompleted(task)" variant="ghost" size="icon" class="text-foreground size-7 border border-foreground">
-							<CheckIcon class="size-4" />
+							<CheckIcon class="size-4"  />
 						</Button>
                         <div v-else class="size-7 flex items-center justify-center bg-primary rounded-full">
                             <CheckCheckIcon class="size-4 text-background" />
                         </div>
 						<div class="flex-1 min-w-0">
-							<div class="font-medium text-lg text-foreground truncate" :class="{
-                                'line-through': task.status === TaskStatusEnum.COMPLETED
+							<div class="text-lg text-foreground truncate" :class="{
+                                'line-through': task.status === TaskStatusEnum.COMPLETED,
+                                'font-bold': task.status === TaskStatusEnum.ACTIVE
                             }">{{ task.title }}</div>
-							<div v-if="task.description && task.status !== TaskStatusEnum.COMPLETED" class="text-base text-muted-foreground mt-1 truncate">{{ task.description }}</div>
+							<div v-if="task.description && task.status !== TaskStatusEnum.COMPLETED" class="text-base text-muted-foreground mt-1 truncate" :class="{
+                                'font-medium': task.status === TaskStatusEnum.ACTIVE
+                            }">{{ task.description }}</div>
 						</div>
 						<div
 							class="absolute top-0 right-0 m-2 opacity-0 transition-opacity"

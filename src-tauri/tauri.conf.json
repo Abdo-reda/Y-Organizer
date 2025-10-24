@@ -30,7 +30,7 @@
 				"decorations": false,
 				"transparent": true,
 				"shadow": false,
-				"zoomHotkeysEnabled": true
+				"zoomHotkeysEnabled": false
 			}
 		],
 		"security": {

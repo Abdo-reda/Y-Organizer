@@ -110,6 +110,13 @@ impl YMigrations {
             kind: MigrationKind::Up,
         };
 
+        let add_learnings_column_migration = Migration {
+            version: 9,
+            description: "Add learnings column to days table",
+            sql: "ALTER TABLE days ADD COLUMN learnings TEXT;",
+            kind: MigrationKind::Up,
+        };
+
         vec![
             days_table_migration,
             settings_table_migration,
@@ -118,7 +125,8 @@ impl YMigrations {
             goals_table_migration,
             tasks_table_migration,
             remembers_table_migration,
-            gratitude_table_migration
+            gratitude_table_migration,
+            add_learnings_column_migration,
         ]
     }
 }

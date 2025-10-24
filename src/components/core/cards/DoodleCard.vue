@@ -48,7 +48,10 @@ useMouseShortcuts(
             e.stopPropagation();
         },
         onCtrlClick: () => lineMode(),
-        onAltClick: () => saveSvgAsPng(),
+        onAltClick: (e) => {
+            saveSvgAsPng();
+            e.stopPropagation();
+        },
     },
     { capture: true }
 );
@@ -82,7 +85,8 @@ function saveSvg() {
 
 function saveSvgAsPng() {
     if (!drawArea.value) return;
-    const serializedSvg = new XMLSerializer().serializeToString(drawArea.value);
+    let serializedSvg = new XMLSerializer().serializeToString(drawArea.value);
+    serializedSvg = serializedSvg.replaceAll('var(--color-foreground)', "black");
     const svgUrl = URL.createObjectURL(new Blob([serializedSvg], { type: "image/svg+xml" }));
     const doodleImage = new Image();
     doodleImage.onload = () => {
