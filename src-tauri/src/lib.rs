@@ -11,6 +11,29 @@ pub fn run() {
     migrations.extend(YSeeders::get_seeders());
 
     let mut builder = tauri::Builder::default();
+    
+    //TODO: possible macos fix
+//    builder = builder.setup(|app| {
+//       let win_builder =
+//         WebviewWindowBuilder::new(app, "main", WebviewUrl::default())
+//             .title("y")
+//             .inner_size(1366.0, 768.0)
+//             .min_inner_size(640.0, 360.0)
+//             .shadow(false)
+//             .transparent(true)
+//             .zoom_hotkeys_enabled(false);
+
+//       #[cfg(target_os = "macos")]
+//       let win_builder = win_builder.title_bar_style(TitleBarStyle::Transparent);
+
+//       #[cfg(target_os = "windows")]
+//       let win_builder = win_builder.decorations(false);
+
+//       let window = win_builder.build().unwrap();
+
+//       Ok(())
+//     });
+
     #[cfg(desktop)]
     {
         builder = builder.plugin(tauri_plugin_single_instance::init(|app, _args, _cwd| {

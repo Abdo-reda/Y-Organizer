@@ -21,15 +21,16 @@ const completedTasks = computed(() => props.tasks.filter((t) => t.status === Tas
 			</div>
 
 			<div class="flex items-start gap-2">
-				<GoalIcon class="size-4 text-muted-foreground m-0.5" />
-				<p class="flex-1 text-base leading-tight">{{ session.title }}</p>
+				<GoalIcon class="size-4 m-0.5" />
+				<p v-if="session.title" class="flex-1 text-base leading-tight">{{ session.title }}</p>
+				<span v-else class="italic"> - No Goal - </span>
 			</div>
 
 			<div class="flex items-start gap-2">
 				<NotepadTextIcon class="size-4 text-muted-foreground m-0.5" />
 				<p class="flex-1 text-sm text-muted-foreground">
 					<span v-if="session.notes"> {{ session.notes }} </span>
-					<span v-else class="italic"> no notes... </span>
+					<span v-else class="italic"> - no notes - </span>
 				</p>
 			</div>
 

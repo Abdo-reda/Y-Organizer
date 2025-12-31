@@ -2,8 +2,8 @@
 @import "tw-animate-css";
 @plugin "@tailwindcss/typography";
 
-@utility app-drag {
-    app-region: drag;
+*[data-tauri-drag-region] {
+  app-region: drag;
 }
 
 @utility app-no-drag {

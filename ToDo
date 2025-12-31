@@ -62,3 +62,21 @@ https://iconscout.com/lottie-animations/tick
 
 //------ Look into
 - check figma playground... has the idea of cards or small activities.. pretty cool
+
+//----- installer customization
+//this is ai generated... might not be true..
+"nsis": {
+	"installerIcon": "icons/icon.ico",
+	"sidebarImage": "assets/installer-sidebar.bmp",
+	"headerImage": "assets/installer-header.bmp"
+},
+"wix": {
+	"bannerPath": "assets/banner.bmp",
+	"dialogImagePath": "assets/dialog.bmp"
+}
+"dmg": {
+	"background": "assets/dmg-background.png",
+	"windowSize": { "width": 600, "height": 400 },
+	"appPosition": { "x": 150, "y": 150 },
+	"trashPosition": { "x": 450, "y": 150 }
+}
