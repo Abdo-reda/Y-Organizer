@@ -4,7 +4,7 @@
 
 This might look like another note-taking/to-do app, but its not really like that! 
 
-**Y-Organizer** was simply born out of the question that I have every other night when I about to go to sleep "_what the hell did I do today?_"
+**Y-Organizer** was simply born out of the question that I have every other night when I am about to go to sleep "_what the hell did I do today?_"
 
 If you are anything like me, and you like to **keep track of your time**, or you tend to lose **focus** on what you are suppose to be doing right **now**, or you keep **not seeing the forest for the trees.** _Then this app might help you!_
 
