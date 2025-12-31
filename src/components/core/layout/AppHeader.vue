@@ -73,8 +73,8 @@ function nextDate() {
 </script>
 
 <template>
-    <header class="px-2 py-1 grid grid-cols-3 select-none draggable app-drag">
-        <div class="flex items-center px-2">
+    <header class="px-2 py-1 grid grid-cols-3 select-none">
+        <div data-tauri-drag-region class="flex items-center px-2">
             <div @click="handleLogo" class="p-4 relative flex items-center justify-center group">
                 <img class="absolute brightness-85 opacity-20 group-hover:opacity-60 duration-500 transition-opacity"
                     src="@/assets/images/sphere.png" />
@@ -89,18 +89,18 @@ function nextDate() {
                 <SettingsDialog />
             </Dialog>
         </div>
-        <div class="flex flex-1 items-center justify-center gap-2">
+        <div data-tauri-drag-region class="flex flex-1 items-center justify-center gap-2">
             <div class="flex items-end relative">
                 <div class="flex items-center gap-0 hover:gap-2 transition-all group">
                     <Button @click="prevDate" variant="ghost"
-                        class="hover:bg-transparent dark:hover:bg-transparent app-no-drag !p-0 w-2 opacity-0 group-hover:opacity-100">
+                        class="hover:bg-transparent dark:hover:bg-transparent app-no-drag w-3 opacity-0 group-hover:opacity-100">
                         <ChevronLeftIcon />
                     </Button>
                     <h1 @click="setToday" class="text-4xl font-bold text-primary capitalize transition-colors">
                         {{ appView === 'day' ? relativeDate : `Week ${selectedDay.weekNumber}` }}
                     </h1>
                     <Button @click="nextDate" variant="ghost"
-                        class="hover:bg-transparent dark:hover:bg-transparent app-no-drag !p-0 w-2 opacity-0 group-hover:opacity-100">
+                        class="hover:bg-transparent dark:hover:bg-transparent app-no-drag w-3 opacity-0 group-hover:opacity-100">
                         <ChevronRightIcon />
                     </Button>
                 </div>
@@ -117,7 +117,7 @@ function nextDate() {
                 </Popover>
             </div>
         </div>
-        <div class="flex justify-end items-center px-2 gap-6">
+        <div data-tauri-drag-region class="flex justify-end items-center px-2 gap-6">
             <div class="flex items-center">
                 <Button @click="switchView" variant="ghost" size="icon"
                     class="text-muted-foreground/85 app-no-drag hover:bg-transparent">

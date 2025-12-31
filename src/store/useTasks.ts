@@ -41,12 +41,31 @@ export default function useTasks() {
         if (taskGoal) await updateGoalPoints(taskGoal, task.points);
 	}
 
+	async function toggleArchiveTask(task: ITask) {
+		task.session = null;
+		task.isToday = !task.isToday;
+		await updateTask(task.id, task);
+	}
+
+	async function unCompleteTask(task: ITask) {
+		LoggingService.log("Uncompleting a task...");
+		task.status = TaskStatusEnum.PENDING;
+		task.completedDay = "",
+		await updateTask(task.id, task);
+        const taskGoal = monthlyGoals.find(g => g.id === task.goal);
+        if (taskGoal) await updateGoalPoints(taskGoal, -task.points);
+	}
+
 	async function deleteTask(id: number | undefined) {
 		if (!id) return;
 		const index = tasks.findIndex((t) => t.id === id);
-		if (index > -1) tasks.splice(index, 1);
+		if (index == -1) return;
+		const task = tasks[index];
+		tasks.splice(index, 1);
 		LoggingService.log("deleting task...", id);
 		await storageService.deleteTask(id);
+		const taskGoal = monthlyGoals.find(g => g.id === task.goal);
+        if (taskGoal) await updateGoalPoints(taskGoal, -task.points);
 	}
 
 	return {
@@ -56,5 +75,7 @@ export default function useTasks() {
 		updateTask,
 		deleteTask,
         completeTask,
+		unCompleteTask,
+		toggleArchiveTask,
 	};
 }

@@ -11,7 +11,7 @@ import useActivity from "@/store/useActivity";
 import useDaySessions from "@/store/useDaySessions";
 import useDayState from "@/store/useDayState";
 import useTasks from "@/store/useTasks";
-import { CheckIcon, PlusIcon } from "lucide-vue-next";
+import { CheckCheckIcon, CheckIcon, PlusIcon } from "lucide-vue-next";
 import { DateTime } from "luxon";
 import { computed, ref, useTemplateRef } from "vue";
 
@@ -24,7 +24,7 @@ useMouseScroll(backlogContainerEl);
 const { selectedDay } = useDayState();
 const { activities } = useActivity();
 const { currentSession } = useDaySessions();
-const { tasks, createTask, updateTask, deleteTask, completeTask } = useTasks();
+const { tasks, createTask, updateTask, deleteTask, completeTask, unCompleteTask, toggleArchiveTask } = useTasks();
 const todayTasks = computed(() =>
 	tasks
 		.filter((t) => (t.isToday && selectedDay.value.hasSame(DateTime.now(), "day")) || t.completedDay === selectedDay.value.toISODate())
@@ -60,7 +60,12 @@ function setTaskToSession(task: ITask) {
 
 function handleTaskSecondary(event: MouseEvent, task: ITask) {
 	if (event.altKey) deleteTask(task.id);
-	else updateTask(task.id, { ...task, session: null, isToday: !task.isToday });
+	
+	if (task.status === TaskStatusEnum.COMPLETED) {
+		unCompleteTask(task);
+	} else {
+		toggleArchiveTask(task);
+	}
 }
 
 function handleCreate(task: ITask) {
@@ -75,6 +80,13 @@ function handleUpdate(id: number, task: ITask) {
 
 function markTaskCompleted(task: ITask) {
 	completeTask(task);
+}
+
+function duplicateTask(task: ITask) {
+	const newTask = {...task};
+	newTask.status = TaskStatusEnum.PENDING;
+	newTask.id = undefined;
+	createTask(newTask);
 }
 
 function openEditDialog(task: ITask | null = null) {
@@ -104,6 +116,7 @@ function closeEditDialog() {
 									<li
 										v-for="task in todayTasks"
 										:key="task.id"
+										@mousedown.middle="duplicateTask(task)"
 										@contextmenu="handleTaskSecondary($event, task)"
 										@click="handleTaskPrimary($event, task)"
 										class="relative p-1 flex items-center min-w-0 justify-between ring ring-transparent rounded-md transition-shadow gap-2.5 hover:ring-hover/80"
@@ -123,6 +136,7 @@ function closeEditDialog() {
 										>
 											<CheckIcon class="size-3" />
 										</Button>
+										<CheckCheckIcon v-if="task.status === TaskStatusEnum.COMPLETED" class="size-3 mx-1" />
 										<div class="flex-1 min-w-0">
 											<div class="flex gap-1.5 items-center">
 												<span class="size-2 rounded-full bg-hover aspect-square"> </span>
@@ -155,6 +169,7 @@ function closeEditDialog() {
 								<li
 									v-for="task in backlogTasks"
 									:key="task.id"
+									@mousedown.middle="duplicateTask(task)"
 									@contextmenu="handleTaskSecondary($event, task)"
 									@click="handleTaskPrimary($event, task)"
 									class="relative p-1 flex items-center min-w-0 justify-between ring ring-transparent rounded-md transition-shadow gap-2.5 hover:ring-hover/80"
@@ -174,6 +189,7 @@ function closeEditDialog() {
 									>
 										<CheckIcon class="size-3" />
 									</Button>
+									<CheckCheckIcon v-if="task.status === TaskStatusEnum.COMPLETED" class="size-3 mx-1" />
 									<div class="flex-1 min-w-0">
 										<div class="flex gap-1.5 items-center">
 											<span class="size-2 rounded-full bg-hover aspect-square"> </span>

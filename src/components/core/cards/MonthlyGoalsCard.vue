@@ -168,7 +168,7 @@ function closeEditDialog() {
 											class="text-hover transition-all duration-500 ease-in-out"
 											stroke-width="3"
 											stroke-dasharray="100"
-											:stroke-dashoffset="CIRCUMFERENCE - (CIRCUMFERENCE * (goal.points / goal.totalPoints)) / 100"
+											:stroke-dashoffset="CIRCUMFERENCE - CIRCUMFERENCE * (goal.points / goal.totalPoints)"
 											stroke-linecap="round"
 											stroke="currentColor"
 											fill="none"

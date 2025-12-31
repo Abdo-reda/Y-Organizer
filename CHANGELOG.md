@@ -1,5 +1,38 @@
 # Changelog
 
+## [UPCOMING] - TODO
+
+- //not even working on mac
+- dragging on mac
+- transparency on mac
+- create web app 
+- maybe hide time indicator when on other day?
+- a way to duplicate sessions or a duplicate day, or something
+- logo of installer & installer customization
+- //make dropdown autocomplete --> I think use comboxbox for activities.. not sure about this one
+- a way to Plan sessions tasks
+- add a built-in changelog view...
+- rename fitness to health & change icon //will require huge changes in db and stuff.. i will not do it...
+
+
+## [v0.9.1] - 2025-12-31 
+
+### Added
+- You can now DUPLICATE TASKS!, in the tasks section if you middle mouse a task it will be duplicated.
+- You can now UN-COMPLETE TASKS!, in the tasks section if you right click a task it will be undone.
+- Added min size to the window.
+
+### Fixed
+- Fixed Typo in ReadMe.
+- Fixed an Issue in Mac Signing Configuration.
+- Fixed monthly goals progress in other carousal tab.
+- Fixed deleting & uncompleting tasks will update the monthly goals progress accordingly.
+
+### Changed
+- Updated session preview when there is no goal to show "No Goal" instead of being blank.
+- Removed app-drag utility class and used tauri built in data attribute [data-tauri-drag-region], should fix issues in macos hopefully.
+- Tried to Enhance the usability of the switch days in the app header... still sucks.
+
 ## [v0.9.0] - 2025-10-24 
 
 ### Added
