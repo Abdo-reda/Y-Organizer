@@ -24,22 +24,21 @@ const remainingTime = computed(() => (currentSession.value ? Math.ceil(currentSe
 const suggestedTasks = computed(() =>
 	tasks.filter((t) => t.session !== currentSession.value?.id && t.status !== TaskStatusEnum.COMPLETED && t.activity === currentSession.value?.activity && t.isToday)
 );
-const allSessionTasks = computed(() => tasks.filter((t) => t.session === currentSession.value?.id).sort((a,b) => NowTaskStatusOrder[a.status] - NowTaskStatusOrder[b.status]));
+const allSessionTasks = computed(() => tasks.filter((t) => t.session === currentSession.value?.id).sort((a, b) => NowTaskStatusOrder[a.status] - NowTaskStatusOrder[b.status]));
 const activeSessionTask = computed(() => tasks.find((t) => t.session === currentSession.value?.id && t.status === TaskStatusEnum.ACTIVE));
 
 watchEffect(() => {
 	const curActive = activeSessionTask.value;
-	const firstPending = allSessionTasks.value.find(s => s.status === TaskStatusEnum.PENDING);
-    console.log("--- hello?", curActive, firstPending)
+	const firstPending = allSessionTasks.value.find((s) => s.status === TaskStatusEnum.PENDING);
 	if (!curActive && firstPending) setAutoActiveTask(firstPending);
 });
 
 function handleTaskPrimary(event: MouseEvent, task: ITask) {
-    if (event.ctrlKey) {
-        handleOpenPopover(event, task);
-    } else {
-        markTaskActive(task);
-    }
+	if (event.ctrlKey) {
+		handleOpenPopover(event, task);
+	} else {
+		markTaskActive(task);
+	}
 }
 
 function handleTaskSecondary(event: MouseEvent, task: ITask) {
@@ -73,7 +72,6 @@ function updateSessionNotes() {
 }
 
 function setAutoActiveTask(newActive: ITask) {
-    console.log("--- setting auto active?")
 	newActive.status = TaskStatusEnum.ACTIVE;
 	updateTask(newActive.id, newActive);
 }
@@ -101,7 +99,7 @@ async function toggleFullscreen() {
 
 <template>
 	<div class="flex flex-col h-full">
-		<div class="app-drag h-20" />
+		<div data-tauri-drag-region class="h-20" />
 		<div class="flex-1 flex gap-10 px-20">
 			<div class="flex-1 flex flex-col items-center justify-center h-full gap-4 text-center">
 				<p class="text-7xl font-extrabold text-primary capitalize drop-shadow-md">{{ currentSession?.activity ?? "FREE SLOT" }}</p>
@@ -156,20 +154,37 @@ async function toggleFullscreen() {
 							'hover:ring-primary/75': task.status !== TaskStatusEnum.ACTIVE,
 						}"
 					>
-						<Button v-if="task.status !== TaskStatusEnum.COMPLETED" @click.stop="markTaskCompleted(task)" variant="ghost" size="icon" class="text-foreground size-7 border border-foreground">
-							<CheckIcon class="size-4"  />
+						<Button
+							v-if="task.status !== TaskStatusEnum.COMPLETED"
+							@click.stop="markTaskCompleted(task)"
+							variant="ghost"
+							size="icon"
+							class="text-foreground size-7 border border-foreground"
+						>
+							<CheckIcon class="size-4" />
 						</Button>
-                        <div v-else class="size-7 flex items-center justify-center bg-primary rounded-full">
-                            <CheckCheckIcon class="size-4 text-background" />
-                        </div>
+						<div v-else class="size-7 flex items-center justify-center bg-primary rounded-full">
+							<CheckCheckIcon class="size-4 text-background" />
+						</div>
 						<div class="flex-1 min-w-0">
-							<div class="text-lg text-foreground truncate" :class="{
-                                'line-through': task.status === TaskStatusEnum.COMPLETED,
-                                'font-bold': task.status === TaskStatusEnum.ACTIVE
-                            }">{{ task.title }}</div>
-							<div v-if="task.description && task.status !== TaskStatusEnum.COMPLETED" class="text-base text-muted-foreground mt-1 truncate" :class="{
-                                'font-medium': task.status === TaskStatusEnum.ACTIVE
-                            }">{{ task.description }}</div>
+							<div
+								class="text-lg text-foreground truncate"
+								:class="{
+									'line-through': task.status === TaskStatusEnum.COMPLETED,
+									'font-bold': task.status === TaskStatusEnum.ACTIVE,
+								}"
+							>
+								{{ task.title }}
+							</div>
+							<div
+								v-if="task.description && task.status !== TaskStatusEnum.COMPLETED"
+								class="text-base text-muted-foreground mt-1 truncate"
+								:class="{
+									'font-medium': task.status === TaskStatusEnum.ACTIVE,
+								}"
+							>
+								{{ task.description }}
+							</div>
 						</div>
 						<div
 							class="absolute top-0 right-0 m-2 opacity-0 transition-opacity"

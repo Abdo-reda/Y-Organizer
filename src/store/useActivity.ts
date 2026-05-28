@@ -9,7 +9,7 @@ const activities = reactive<IActivity[]>([]);
 export default function useActivity() {
 	const storageService = inject(StorageServiceKey)!;
 
-    const {removeActivitySessions, switchSessionsActivity} = useDaySessions();
+    const {removeActivitySessions} = useDaySessions();
 
 	async function fetchActivities() {
 		LoggingService.log("fetching activities...")
@@ -28,7 +28,9 @@ export default function useActivity() {
         if (!oldActivity) return;
         Object.assign(oldActivity, activity)
 		await storageService.updateActivity(id, activity);
-        if (id !== activity.name) switchSessionsActivity(id, activity.name);
+        // if (id !== activity.name) switchSessionsActivity(id, activity.name);
+		//TODO: everything that references the activity, needs refetched...
+		//goals, tasks, sessions, ... it would be better to just reload the page i guess...
 	}
 
 	async function deleteActivity(id: string) {

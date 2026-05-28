@@ -29,7 +29,7 @@ watch(() => settings.FONT_SIZE, (newSize) => {
 
 watchEffect(() => {
     const appTheme = settings.THEME;
-    if (appTheme === 'ambient') currentTime.value.hour < 12 ? theme.value = 'light' : theme.value = 'dark' 
+    if (appTheme === 'ambient') (currentTime.value.hour > 5 && currentTime.value.hour < 17) ? theme.value = 'light' : theme.value = 'dark' 
     else theme.value = appTheme;
 })
 

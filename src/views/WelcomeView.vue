@@ -28,7 +28,7 @@ onMounted(() => showLogo.value = true)
 
 <template>
 	<div class="h-full flex flex-col p-2">
-        <div class="app-drag p-8" />
+        <div data-tauri-drag-region class="p-8" />
 		<div class="flex-1 flex flex-col gap-8 items-center justify-center w-full select-none" v-auto-animate>
 			<div v-if="showLogo" class="relative  brightness-85 rounded-full aspect-square p-8 flex items-center justify-center">
 				<img class="absolute opacity-30" src="@/assets/images/sphere.png" />

@@ -27,27 +27,19 @@ export default function useMonthlyGoals() {
 		LoggingService.log("updating monthly goal...", monthlyGoal);
 		const oldMonthGoal = monthlyGoals.find((t) => t.id === id);
 		if (!oldMonthGoal) return;
+		if (oldMonthGoal.totalPoints !== monthlyGoal.totalPoints) handleTotalPointsChange(monthlyGoal);
 		Object.assign(oldMonthGoal, monthlyGoal);
 		await storageService.updateGoal(id, monthlyGoal);
 	}
 
 	async function updateGoalStatus(goal: IGoal, status: GoalStatusEnum) {
-		goal.status = status;
-        if (status === GoalStatusEnum.COMPLETED) goal.completedDay = DateTime.now().toISODate({precision: 'month'});
-        else goal.completedDay = '';
+		handleStatusChange(goal, status);
 		await updateGoal(goal.id, goal);
 	}
 
-    async function updateGoalPoints(goal: IGoal, points: number) {
-		goal.points = Math.max(Math.min(goal.points + points, goal.totalPoints), 0);
-        if (goal.points === goal.totalPoints) {
-            goal.status = GoalStatusEnum.COMPLETED;
-            goal.completedDay = DateTime.now().toISODate({precision: 'month'});
-        } else if (goal.status === GoalStatusEnum.COMPLETED) {
-    		goal.status = GoalStatusEnum.ACTIVE;
-            goal.completedDay = ""
-		}
-		await updateGoal(goal.id, goal);
+	async function updateGoalPoints(goal: IGoal, points: number) {
+		handlePointsChange(goal, points);
+		updateGoal(goal.id, goal);
 	}
 
 	async function deleteGoal(id: number | undefined) {
@@ -58,6 +50,27 @@ export default function useMonthlyGoals() {
 		await storageService.deleteGoal(id);
 	}
 
+	function handleStatusChange(goal: IGoal, status: GoalStatusEnum) {
+		goal.status = status;
+		if (status === GoalStatusEnum.COMPLETED) goal.completedDay = DateTime.now().toISODate({ precision: "month" });
+		else if (status === GoalStatusEnum.ACTIVE) goal.completedDay = "";
+	}
+
+	function handleTotalPointsChange(goal: IGoal) {
+		if (goal.totalPoints <= goal.points) {
+			goal.totalPoints = goal.points;
+			handleStatusChange(goal, GoalStatusEnum.COMPLETED);
+		} else if (goal.totalPoints > goal.points) {
+			handleStatusChange(goal, GoalStatusEnum.ACTIVE);
+		}
+	}
+
+	function handlePointsChange(goal: IGoal, points: number) {
+		goal.points = Math.max(Math.min(goal.points + points, goal.totalPoints), 0);
+		if (goal.points === goal.totalPoints) handleStatusChange(goal, GoalStatusEnum.COMPLETED);
+		else if (goal.status === GoalStatusEnum.COMPLETED) handleStatusChange(goal, GoalStatusEnum.ACTIVE);
+	}
+
 	return {
 		monthlyGoals,
 		fetchGoals,
@@ -65,6 +78,6 @@ export default function useMonthlyGoals() {
 		updateGoal,
 		deleteGoal,
 		updateGoalStatus,
-        updateGoalPoints,
+		updateGoalPoints,
 	};
 }

@@ -2,18 +2,31 @@
 
 ## [UPCOMING] - TODO
 
-- //not even working on mac
-- dragging on mac
-- transparency on mac
+- MAC SUPPORT //not even working on mac
+	- dragging on mac
+	- transparency on mac
 - create web app 
+	- indexdb + backup option & a lots of things
 - maybe hide time indicator when on other day?
-- a way to duplicate sessions or a duplicate day, or something
 - logo of installer & installer customization
 - //make dropdown autocomplete --> I think use comboxbox for activities.. not sure about this one
 - a way to Plan sessions tasks
 - add a built-in changelog view...
 - rename fitness to health & change icon //will require huge changes in db and stuff.. i will not do it...
+- TODO!!!! when renaming activities, refetch dependencies... or update dependecies.
 
+## [v0.10.0] - 2026-01-01 
+
+### Added
+- Finally added a popup to manage the current session.
+
+### Fixed
+- Lots of small fixes related to updating goals and their states & points.
+
+### Changed
+- Better handling of archived goals & completed goals.
+- Made dynamic theme a bit more accurate, the light theme is now on between (5:00-17:00), instead of toggeling at noon (12:00).
+- Removed some remaning app-drag utility classes and used tauri built in data attribute [data-tauri-drag-region].
 
 ## [v0.9.1] - 2025-12-31 
 
